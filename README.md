@@ -1,9 +1,13 @@
-# Vlodia ORM
-
-[![npm version](https://badge.fury.io/js/vlodia.svg)](https://badge.fury.io/js/vlodia)
-[![Build Status](https://github.com/vlodia/vlodia/workflows/CI/badge.svg)](https://github.com/vlodia/vlodia/actions)
-[![Coverage Status](https://coveralls.io/repos/github/vlodia/vlodia/badge.svg?branch=main)](https://coveralls.io/github/vlodia/vlodia?branch=main)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/vlodia/vlodia/main/assets/logo.svg" alt="Vlodia ORM Logo" width="200" height="200">
+  
+  # Vlodia ORM
+  
+  [![npm version](https://badge.fury.io/js/vlodia.svg)](https://badge.fury.io/js/vlodia)
+  [![Build Status](https://github.com/vlodia/vlodia/workflows/CI/badge.svg)](https://github.com/vlodia/vlodia/actions)
+  [![Coverage Status](https://coveralls.io/repos/github/vlodia/vlodia/badge.svg?branch=main)](https://coveralls.io/github/vlodia/vlodia?branch=main)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+</div>
 
 **Vlodia** is a next-generation TypeScript ORM that combines the best features of modern ORMs with enterprise-grade performance and developer experience. Built for TypeScript-first development with reflection-driven metadata, database-agnostic architecture, and production-ready features.
 
