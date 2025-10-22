@@ -18,11 +18,10 @@ tsconfig.json
 typedoc.json
 
 # Build files
-src/
+
 *.map
 
 # Documentation
-docs/
 *.md
 !README.md
 !CHANGELOG.md
