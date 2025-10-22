@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vlodia ORM - User Guide</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <style>
+        .guide-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .guide-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .guide-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: #000;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+        }
+        .guide-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .guide-section h2 {
+            color: #007bff;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .step {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .step h3 {
+            color: #2d3748;
+            margin-top: 0;
+        }
+        .navigation {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .navigation a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="guide-container">
+        <div class="navigation">
+            <a href="../">← Back to Documentation</a>
+            <a href="../index.html">API Reference</a>
+            <a href="https://github.com/vlodia/vlodia">GitHub</a>
+        </div>
+
+        <div class="guide-header">
+            <div class="guide-logo">V</div>
+            <h1>Vlodia ORM User Guide</h1>
+            <p>Complete guide to using Vlodia ORM in your TypeScript projects</p>
+        </div>
+
+        <div class="guide-section">
+            <h2>🚀 Quick Start</h2>
+            <div class="step">
+                <h3>1. Installation</h3>
+                <div class="code-block">
+npm install vlodia
+npm install pg mysql sqlite redis
+npm install -D @types/pg @types/mysql
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>2. Project Initialization</h3>
+                <div class="code-block">
+# Initialize Vlodia project
+vlodia init
+
+# Or with specific database
+vlodia init --database postgres --host localhost --username postgres --password password --name myapp
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>3. Basic Setup</h3>
+                <div class="code-block">
+import { Vlodia } from 'vlodia';
+import { User } from './entities/User';
+
+const orm = new Vlodia({
+  database: {
+    type: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    username: 'postgres',
+    password: 'password',
+    database: 'myapp'
+  },
+  entities: [User]
+});
+
+await orm.initialize();
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h2>📊 Entity Definition</h2>
+            <div class="step">
+                <h3>Creating Entities</h3>
+                <div class="code-block">
+import { Entity, Column, PrimaryKey, OneToMany } from 'vlodia';
+
+@Entity({ tableName: 'users' })
+export class User {
+  @PrimaryKey()
+  @Column({ type: 'number', generated: true })
+  id!: number;
+
+  @Column({ type: 'string', length: 100 })
+  name!: string;
+
+  @Column({ type: 'string', unique: true })
+  email!: string;
+
+  @Column({ type: 'string' })
+  password!: string;
+
+  @Column({ type: 'boolean', default: true })
+  active!: boolean;
+
+  @Column({ type: 'date', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt!: Date;
+
+  @OneToMany(() => Post, 'authorId')
+  posts!: Post[];
+}
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>Relations</h3>
+                <div class="code-block">
+// One-to-Many
+@OneToMany(() => Post, 'authorId')
+posts!: Post[];
+
+// Many-to-One
+@ManyToOne(() => User, 'posts')
+author!: User;
+
+// One-to-One
+@OneToOne(() => Profile, 'userId')
+profile!: Profile;
+
+// Many-to-Many
+@ManyToMany(() => Tag, 'user_tags')
+tags!: Tag[];
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h2>🔍 Database Operations</h2>
+            <div class="step">
+                <h3>Basic CRUD Operations</h3>
+                <div class="code-block">
+// Create
+const user = new User();
+user.name = 'John Doe';
+user.email = 'john@example.com';
+user.password = 'password123';
+const savedUser = await orm.manager.save(user);
+
+// Read
+const users = await orm.manager.find(User, {});
+const user = await orm.manager.findOne(User, { where: { id: 1 } });
+
+// Update
+user.name = 'Jane Doe';
+await orm.manager.save(user);
+
+// Delete
+await orm.manager.remove(user);
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>Advanced Queries</h3>
+                <div class="code-block">
+// Complex queries
+const users = await orm.manager.find(User, {
+  where: { active: true },
+  relations: ['posts'],
+  orderBy: { createdAt: 'DESC' },
+  limit: 10,
+  offset: 0
+});
+
+// Custom queries
+const result = await orm.manager.query(
+  'SELECT * FROM users WHERE age > ? AND city = ?',
+  [18, 'New York']
+);
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h2>🔄 Transactions</h2>
+            <div class="step">
+                <h3>Transaction Management</h3>
+                <div class="code-block">
+// Basic transaction
+await orm.transaction(async (manager) => {
+  const user = new User();
+  user.name = 'John Doe';
+  await manager.save(user);
+
+  const post = new Post();
+  post.title = 'My First Post';
+  post.author = user;
+  await manager.save(post);
+});
+
+// Nested transactions
+await orm.transaction(async (manager) => {
+  await orm.transaction(async (nestedManager) => {
+    // Nested transaction logic
+  });
+});
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h2>⚡ Performance & Caching</h2>
+            <div class="step">
+                <h3>Query Optimization</h3>
+                <div class="code-block">
+// Enable query analysis
+const orm = new Vlodia({
+  database: { /* ... */ },
+  logging: {
+    level: 'debug',
+    queries: true,
+    slowQueries: true,
+    slowQueryThreshold: 1000
+  }
+});
+
+// Get performance metrics
+const metrics = orm.getPerformanceMetrics();
+console.log('Performance score:', metrics.performanceScore);
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>Caching</h3>
+                <div class="code-block">
+// Enable caching
+const orm = new Vlodia({
+  database: { /* ... */ },
+  cache: {
+    enabled: true,
+    type: 'redis',
+    ttl: 3600,
+    maxSize: 10000
+  }
+});
+
+// Manual cache operations
+await orm.cacheInstance.set('user:1', user, 3600);
+const cachedUser = await orm.cacheInstance.get('user:1');
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h2>🌐 Real-time Features</h2>
+            <div class="step">
+                <h3>WebSocket Integration</h3>
+                <div class="code-block">
+// Enable real-time features
+const orm = new Vlodia({
+  database: { /* ... */ },
+  realtime: {
+    enabled: true,
+    port: 8080,
+    path: '/ws'
+  }
+});
+
+// Get WebSocket manager
+const wsManager = orm.getWebSocketManager();
+wsManager?.subscribe('user_created', (data) => {
+  console.log('New user created:', data);
+});
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h2>🔧 CLI Commands</h2>
+            <div class="step">
+                <h3>Available Commands</h3>
+                <div class="code-block">
+# Project management
+vlodia init <project-name>
+vlodia generate:entity User
+vlodia generate:entity Post --with-relations
+
+# Migration management
+vlodia migration:create AddUserTable
+vlodia migration:run
+vlodia migration:revert
+
+# Schema management
+vlodia schema:sync
+vlodia schema:validate
+
+# Real-time features
+vlodia realtime:start --port 8080
+
+# Performance analysis
+vlodia performance:analyze
+vlodia performance:report
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h2>📚 Best Practices</h2>
+            <div class="step">
+                <h3>Entity Design</h3>
+                <ul>
+                    <li>Use descriptive entity and column names</li>
+                    <li>Define proper relationships between entities</li>
+                    <li>Use appropriate data types and constraints</li>
+                    <li>Add validation rules where necessary</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <h3>Query Optimization</h3>
+                <ul>
+                    <li>Use relations to avoid N+1 queries</li>
+                    <li>Implement pagination for large datasets</li>
+                    <li>Use specific field selection when possible</li>
+                    <li>Monitor query performance regularly</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <h3>Error Handling</h3>
+                <div class="code-block">
+try {
+  const user = await orm.manager.save(newUser);
+  console.log('User created:', user);
+} catch (error) {
+  if (error instanceof VlodiaError) {
+    console.error('Vlodia error:', error.message);
+  } else {
+    console.error('Unexpected error:', error);
+  }
+}
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h2>🔗 Additional Resources</h2>
+            <div class="step">
+                <h3>Documentation Links</h3>
+                <ul>
+                    <li><a href="../index.html">API Reference</a> - Complete API documentation</li>
+                    <li><a href="https://github.com/vlodia/vlodia">GitHub Repository</a> - Source code and issues</li>
+                    <li><a href="https://www.npmjs.com/package/vlodia">NPM Package</a> - Installation and versions</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
