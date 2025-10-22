@@ -7,6 +7,8 @@
 
 **Vlodia** is a next-generation TypeScript ORM that combines the best features of modern ORMs with enterprise-grade performance and developer experience. Built for TypeScript-first development with reflection-driven metadata, database-agnostic architecture, and production-ready features.
 
+**[Full Documentation](https://vlodia.github.io/vlodia)** | **[Quick Start](#quick-start)** | **[Examples](#examples)**
+
 ## Quick Start
 
 ### 1. Installation
@@ -47,7 +49,7 @@ This creates:
 ```
 my-vlodia-app/
 ├── vlodia/
-│   ├── schema.vlodia    # Schema definition (like Prisma's schema.prisma)
+│   ├── schema.vlodia    # Schema definition
 │   └── config.ts       # Auto-generated configuration
 ├── src/
 │   ├── entities/       # Entity definitions
@@ -58,7 +60,7 @@ my-vlodia-app/
 └── .env.example       # Environment template
 ```
 
-### 4. Generate Types (like Prisma)
+### 4. Generate Types
 
 ```bash
 # Generate TypeScript types from schema.vlodia
@@ -67,7 +69,7 @@ vlodia generate
 
 ### 5. Database Configuration
 
-The `vlodia/schema.vlodia` file (like Prisma's `schema.prisma`):
+The `vlodia/schema.vlodia` file
 
 ```vlodia
 // Vlodia Schema Definition
@@ -1153,7 +1155,6 @@ export class User {
   email: string;
 }
 
-// Vlodia
 @Entity({ tableName: 'users' })
 export class User {
   @PrimaryKey()
@@ -1168,10 +1169,7 @@ export class User {
 }
 ```
 
-### From Prisma
-
 ```typescript
-// Prisma Schema
 model User {
   id    Int    @id @default(autoincrement())
   name  String
@@ -1214,22 +1212,6 @@ We welcome contributions! Here's how you can help:
 3. **Submit pull requests** for bug fixes and features
 4. **Improve documentation** by submitting PRs
 5. **Share examples** and use cases
-
-### Roadmap
-
-- [ ] **v1.1**: Advanced caching strategies
-- [ ] **v1.2**: Database sharding support
-- [ ] **v1.3**: Machine learning query optimization
-- [ ] **v2.0**: Multi-database support
-- [ ] **v2.1**: Advanced real-time features
-- [ ] **v2.2**: Enterprise security features
-
-## Acknowledgments
-
-- Inspired by modern ORMs like Prisma, TypeORM, and Sequelize
-- Built with TypeScript and modern JavaScript features
-- Community-driven development and feedback
-- Special thanks to all contributors and early adopters
 
 ## Database Setup
 
@@ -1844,6 +1826,12 @@ vlodia schema:sync
 - **QueryAnalyzer**: Performance analysis
 - **SchemaDesigner**: Visual schema management
 - **TenantManager**: Multi-tenancy support
+
+## Documentation
+
+- **API Reference**: [https://vlodia.github.io/vlodia](https://vlodia.github.io/vlodia)
+- **User Guide**: [https://vlodia.github.io/vlodia/guide](https://vlodia.github.io/vlodia/guide)
+- **Examples**: [https://vlodia.github.io/vlodia/examples](https://vlodia.github.io/vlodia/examples)
 
 ## License
 
