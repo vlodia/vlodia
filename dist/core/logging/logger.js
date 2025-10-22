@@ -23,7 +23,7 @@ class JSONLogFormatter {
             level: entry.level,
             message: entry.message,
             context: entry.context,
-            meta: entry.meta
+            meta: entry.meta,
         });
     }
 }
@@ -93,7 +93,7 @@ class DefaultLogger {
             message,
             timestamp: new Date(),
             meta,
-            context: context || this.context
+            context: context || this.context,
         };
         const formatted = this.formatter.format(entry);
         // Output to appropriate stream
@@ -125,7 +125,7 @@ class QueryLogger {
         this.logger.debug('Query started', {
             sql: this.maskSensitiveData(sql),
             params: this.maskSensitiveParams(params),
-            timestamp: Date.now()
+            timestamp: Date.now(),
         }, 'QUERY');
     }
     /**
@@ -138,7 +138,7 @@ class QueryLogger {
             sql: this.maskSensitiveData(sql),
             duration: `${duration}ms`,
             rowCount,
-            timestamp: Date.now()
+            timestamp: Date.now(),
         }, 'QUERY');
     }
     /**
@@ -149,7 +149,7 @@ class QueryLogger {
             sql: this.maskSensitiveData(sql),
             error: error.message,
             duration: duration ? `${duration}ms` : undefined,
-            stack: error.stack
+            stack: error.stack,
         }, 'QUERY');
     }
     /**
@@ -169,9 +169,8 @@ class QueryLogger {
         if (!params)
             return [];
         return params.map(param => {
-            if (typeof param === 'string' && (param.includes('password') ||
-                param.includes('token') ||
-                param.includes('secret'))) {
+            if (typeof param === 'string' &&
+                (param.includes('password') || param.includes('token') || param.includes('secret'))) {
                 return '***';
             }
             return param;
@@ -204,7 +203,7 @@ class PerformanceLogger {
         this.timers.delete(name);
         this.logger.debug(`Performance: ${name}`, {
             duration: `${duration}ms`,
-            timestamp: Date.now()
+            timestamp: Date.now(),
         }, context || 'PERFORMANCE');
         return duration;
     }

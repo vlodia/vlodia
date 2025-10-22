@@ -168,8 +168,7 @@ class SqliteAdapter extends base_adapter_1.BaseAdapter {
      * Get SQLite-specific order by syntax
      */
     getOrderBySyntax(orderBy) {
-        const clauses = Object.entries(orderBy)
-            .map(([column, direction]) => `"${column}" ${direction}`);
+        const clauses = Object.entries(orderBy).map(([column, direction]) => `"${column}" ${direction}`);
         return `ORDER BY ${clauses.join(', ')}`;
     }
     /**

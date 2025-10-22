@@ -2,8 +2,8 @@
 /**
  * MySQL Adapter
  * Database adapter implementation for MySQL with connection pooling
-  * Provides optimized MySQL-specific features and syntax
-*/
+ * Provides optimized MySQL-specific features and syntax
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MysqlAdapter = void 0;
 const base_adapter_1 = require("./base-adapter");
@@ -46,7 +46,7 @@ class MysqlAdapter extends base_adapter_1.BaseAdapter {
                     reject(err);
                     return;
                 }
-                connection.ping((pingErr) => {
+                connection.ping(pingErr => {
                     connection.release();
                     if (pingErr) {
                         reject(pingErr);
@@ -104,9 +104,9 @@ class MysqlAdapter extends base_adapter_1.BaseAdapter {
                             name: typeof field.name === 'string' ? field.name : '',
                             dataType: typeof field.type === 'number'
                                 ? String(field.type)
-                                : (typeof field.type === 'string'
+                                : typeof field.type === 'string'
                                     ? field.type
-                                    : ''),
+                                    : '',
                             // MySQL 'flags' field is a number (bitmask); lowest bit (1) = NOT_NULL flag.
                             // If field.flags is not a number, default to true (nullable).
                             nullable: typeof field.flags === 'number' ? !(field.flags & 1) : true,
@@ -136,7 +136,7 @@ class MysqlAdapter extends base_adapter_1.BaseAdapter {
                     reject(err);
                     return;
                 }
-                connection.query('START TRANSACTION', (queryErr) => {
+                connection.query('START TRANSACTION', queryErr => {
                     connection.release();
                     if (queryErr) {
                         reject(queryErr);
@@ -160,7 +160,7 @@ class MysqlAdapter extends base_adapter_1.BaseAdapter {
                     reject(err);
                     return;
                 }
-                connection.query('COMMIT', (queryErr) => {
+                connection.query('COMMIT', queryErr => {
                     connection.release();
                     if (queryErr) {
                         reject(queryErr);
@@ -185,7 +185,7 @@ class MysqlAdapter extends base_adapter_1.BaseAdapter {
                     reject(err);
                     return;
                 }
-                connection.query('ROLLBACK', (queryErr) => {
+                connection.query('ROLLBACK', queryErr => {
                     connection.release();
                     if (queryErr) {
                         reject(queryErr);
@@ -210,7 +210,7 @@ class MysqlAdapter extends base_adapter_1.BaseAdapter {
                     reject(err);
                     return;
                 }
-                connection.query(`SAVEPOINT ${name}`, (queryErr) => {
+                connection.query(`SAVEPOINT ${name}`, queryErr => {
                     connection.release();
                     if (queryErr) {
                         reject(queryErr);
@@ -238,7 +238,7 @@ class MysqlAdapter extends base_adapter_1.BaseAdapter {
                     reject(err);
                     return;
                 }
-                connection.query(`ROLLBACK TO SAVEPOINT ${name}`, (queryErr) => {
+                connection.query(`ROLLBACK TO SAVEPOINT ${name}`, queryErr => {
                     connection.release();
                     if (queryErr) {
                         reject(queryErr);
@@ -268,7 +268,7 @@ class MysqlAdapter extends base_adapter_1.BaseAdapter {
                     reject(err);
                     return;
                 }
-                connection.query(`RELEASE SAVEPOINT ${name}`, (queryErr) => {
+                connection.query(`RELEASE SAVEPOINT ${name}`, queryErr => {
                     connection.release();
                     if (queryErr) {
                         reject(queryErr);
@@ -310,8 +310,7 @@ class MysqlAdapter extends base_adapter_1.BaseAdapter {
      * Get MySQL-specific order by syntax
      */
     getOrderBySyntax(orderBy) {
-        const clauses = Object.entries(orderBy)
-            .map(([column, direction]) => `\`${column}\` ${direction}`);
+        const clauses = Object.entries(orderBy).map(([column, direction]) => `\`${column}\` ${direction}`);
         return `ORDER BY ${clauses.join(', ')}`;
     }
     /**

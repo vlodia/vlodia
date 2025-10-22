@@ -15,7 +15,7 @@ class QueryAnalyzer {
     performanceThresholds = {
         slowQuery: 1000, // 1 second
         n1Threshold: 5, // 5+ similar queries
-        criticalThreshold: 10 // 10+ similar queries
+        criticalThreshold: 10, // 10+ similar queries
     };
     constructor(logger) {
         this.metadataRegistry = metadata_registry_1.MetadataRegistry.getInstance();
@@ -37,7 +37,7 @@ class QueryAnalyzer {
             n1Detected,
             optimizationSuggestions,
             performanceScore,
-            timestamp: new Date()
+            timestamp: new Date(),
         };
         this.queryHistory.push(analysis);
         this.updateN1Patterns(analysis);
@@ -47,7 +47,7 @@ class QueryAnalyzer {
                 queryId,
                 sql: this.sanitizeSQL(sql),
                 executionTime,
-                suggestions: optimizationSuggestions
+                suggestions: optimizationSuggestions,
             });
         }
         if (executionTime > this.performanceThresholds.slowQuery) {
@@ -55,7 +55,7 @@ class QueryAnalyzer {
                 queryId,
                 sql: this.sanitizeSQL(sql),
                 executionTime,
-                threshold: this.performanceThresholds.slowQuery
+                threshold: this.performanceThresholds.slowQuery,
             });
         }
         return analysis;
@@ -74,7 +74,7 @@ class QueryAnalyzer {
             // Pattern 3: Loop-like patterns
             /SELECT.*FROM.*WHERE.*id\s*IN\s*\([^)]+\)/i,
             // Pattern 4: Missing JOINs
-            /SELECT.*FROM.*WHERE.*NOT\s+EXISTS/i
+            /SELECT.*FROM.*WHERE.*NOT\s+EXISTS/i,
         ];
         for (const pattern of n1Patterns) {
             if (pattern.test(normalizedSQL)) {
@@ -105,7 +105,7 @@ class QueryAnalyzer {
                         this.logger.debug('Entity-specific N+1 pattern detected', {
                             entity: entity.name,
                             relation: relation.propertyName,
-                            type: relation.type
+                            type: relation.type,
                         });
                         return true;
                     }
@@ -118,7 +118,7 @@ class QueryAnalyzer {
                     if (hasRelationQueries) {
                         this.logger.debug('Missing JOIN pattern detected', {
                             entity: entity.name,
-                            relation: relation.propertyName
+                            relation: relation.propertyName,
                         });
                         return true;
                     }
@@ -154,11 +154,7 @@ class QueryAnalyzer {
      * Normalize SQL for pattern matching
      */
     normalizeSQL(sql) {
-        return sql
-            .toLowerCase()
-            .replace(/\s+/g, ' ')
-            .replace(/`/g, '')
-            .trim();
+        return sql.toLowerCase().replace(/\s+/g, ' ').replace(/`/g, '').trim();
     }
     /**
      * Generate optimization suggestions
@@ -268,7 +264,7 @@ class QueryAnalyzer {
                 count: 1,
                 severity: 'medium',
                 suggestions: analysis.optimizationSuggestions,
-                affectedQueries: [analysis.queryId]
+                affectedQueries: [analysis.queryId],
             });
         }
     }
@@ -288,7 +284,7 @@ class QueryAnalyzer {
             averageExecutionTime,
             slowestQuery,
             optimizationOpportunities,
-            performanceScore
+            performanceScore,
         };
     }
     /**
@@ -311,8 +307,8 @@ class QueryAnalyzer {
                 'Use batch loading for collection relations',
                 'Add database indexes on frequently queried columns',
                 'Consider query result caching for expensive operations',
-                'Optimize complex queries by breaking them into simpler parts'
-            ]
+                'Optimize complex queries by breaking them into simpler parts',
+            ],
         };
     }
     /**
@@ -337,7 +333,7 @@ class QueryAnalyzer {
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
             const char = str.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
+            hash = (hash << 5) - hash + char;
             hash = hash & hash; // Convert to 32-bit integer
         }
         return Math.abs(hash).toString(36);
@@ -346,10 +342,8 @@ class QueryAnalyzer {
      * Sanitize SQL for logging
      */
     sanitizeSQL(sql) {
-        return sql
-            .replace(/\?\d+/g, '?')
-            .replace(/\d+/g, 'N')
-            .substring(0, 200) + (sql.length > 200 ? '...' : '');
+        return (sql.replace(/\?\d+/g, '?').replace(/\d+/g, 'N').substring(0, 200) +
+            (sql.length > 200 ? '...' : ''));
     }
 }
 exports.QueryAnalyzer = QueryAnalyzer;

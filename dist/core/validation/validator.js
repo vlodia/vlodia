@@ -90,7 +90,7 @@ class EntityValidator {
         // Apply nullable
         if (!column.nullable) {
             schema = schema.refine(val => val !== null && val !== undefined, {
-                message: `${column.propertyName} is required`
+                message: `${column.propertyName} is required`,
             });
         }
         // Apply length constraints
@@ -209,12 +209,14 @@ class CustomValidationRule {
         }
         return {
             valid: false,
-            errors: [{
+            errors: [
+                {
                     field: this.field,
                     message: this.message,
                     value,
                     code: 'CUSTOM_VALIDATION',
-                }],
+                },
+            ],
         };
     }
 }
@@ -308,12 +310,14 @@ class UniqueValidationRule {
         }
         return {
             valid: false,
-            errors: [{
+            errors: [
+                {
                     field: this.field,
                     message: `${this.field} must be unique`,
                     value,
                     code: 'NOT_UNIQUE',
-                }],
+                },
+            ],
         };
     }
 }

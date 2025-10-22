@@ -51,7 +51,7 @@ class DefaultEventBus {
         return {
             unsubscribe: () => {
                 this.off(event, handler);
-            }
+            },
         };
     }
     /**
@@ -84,7 +84,7 @@ class DefaultEventBus {
         return {
             unsubscribe: () => {
                 this.off(event, handler);
-            }
+            },
         };
     }
     /**

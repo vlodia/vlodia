@@ -168,18 +168,18 @@ const advancedConfig = {
         username: 'postgres',
         password: 'password',
         database: 'vlodia_advanced',
-        ssl: false
+        ssl: false,
     },
     entities: [User, Post, Comment],
     logging: {
         level: 'debug',
         format: 'json',
-        queries: true
+        queries: true,
     },
     cache: {
         enabled: true,
         type: 'memory',
-        ttl: 3600
+        ttl: 3600,
     },
     // Real-time features
     realtime: {
@@ -188,12 +188,12 @@ const advancedConfig = {
         path: '/ws',
         cors: {
             origin: ['http://localhost:3000'],
-            credentials: true
+            credentials: true,
         },
         heartbeat: {
             interval: 30000,
-            timeout: 10000
-        }
+            timeout: 10000,
+        },
     },
     // GraphQL features
     graphql: {
@@ -204,14 +204,14 @@ const advancedConfig = {
         subscriptions: true,
         cors: {
             origin: ['http://localhost:3000'],
-            credentials: true
-        }
+            credentials: true,
+        },
     },
     // Multi-tenancy
     tenancy: {
         enabled: true,
-        defaultTenant: 'default'
-    }
+        defaultTenant: 'default',
+    },
 };
 exports.advancedConfig = advancedConfig;
 // ===== BASIC USAGE EXAMPLES =====
@@ -312,11 +312,8 @@ async function basicUsageExample() {
             where: {
                 $and: [
                     { published: true },
-                    { $or: [
-                            { title: { $like: '%first%' } },
-                            { content: { $like: '%content%' } }
-                        ] }
-                ]
+                    { $or: [{ title: { $like: '%first%' } }, { content: { $like: '%content%' } }] },
+                ],
             },
             relations: ['author', 'comments'],
             orderBy: { createdAt: 'DESC' },
@@ -400,18 +397,18 @@ async function advancedUsageExample() {
                     limits: {
                         maxUsers: 1000,
                         maxStorage: 10000000,
-                        maxRequests: 100000
+                        maxRequests: 100000,
                     },
                     settings: {
                         timezone: 'UTC',
-                        language: 'en'
+                        language: 'en',
                     },
                     security: {
                         encryption: true,
                         auditLogging: true,
-                        dataRetention: 365
-                    }
-                }
+                        dataRetention: 365,
+                    },
+                },
             });
             console.log(`   - Tenant created: ${tenant.name} (${tenant.id})`);
             console.log(`   - Database: ${tenant.database}`);
@@ -440,7 +437,7 @@ async function advancedUsageExample() {
         console.log(`✅ Post created: ${savedPost.title} (ID: ${savedPost.id})`);
         // Query with performance analysis
         const users = await orm.manager.find(User, {
-            relations: ['posts']
+            relations: ['posts'],
         });
         console.log(`✅ Users with posts loaded: ${users.length}`);
         // ===== REAL-TIME SUBSCRIPTIONS =====
@@ -513,7 +510,7 @@ async function repositoryPatternExample() {
         const startDate = new Date('2023-01-01');
         const endDate = new Date('2023-12-31');
         const usersByDateRange = await userRepository.find({
-            where: { createdAt: { between: [startDate, endDate] } }
+            where: { createdAt: { between: [startDate, endDate] } },
         });
         console.log('✅ Users by date range:', usersByDateRange);
         // Find users with null values
@@ -532,11 +529,7 @@ async function repositoryPatternExample() {
         const lastUsers = await userRepository.find({ limit: 5, orderBy: { id: 'DESC' } });
         console.log('✅ Last 5 users:', lastUsers);
         // Batch operations
-        const users = [
-            new User(),
-            new User(),
-            new User(),
-        ];
+        const users = [new User(), new User(), new User()];
         users[0].name = 'User 1';
         users[0].email = 'user1@example.com';
         users[0].password = 'password1';
@@ -555,13 +548,13 @@ async function repositoryPatternExample() {
         const savedUsers = await userRepository.saveMany(users);
         console.log('✅ Batch saved users:', savedUsers);
         // Event handling
-        orm.events.on('transaction:start', (data) => {
+        orm.events.on('transaction:start', data => {
             console.log('✅ Transaction started:', data.transactionId);
         });
-        orm.events.on('transaction:commit', (data) => {
+        orm.events.on('transaction:commit', data => {
             console.log('✅ Transaction committed:', data.transactionId);
         });
-        orm.events.on('transaction:rollback', (data) => {
+        orm.events.on('transaction:rollback', data => {
             console.log('✅ Transaction rolled back:', data.transactionId);
         });
         // Cache operations

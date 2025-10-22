@@ -1,8 +1,8 @@
 /**
  * MySQL Adapter
  * Database adapter implementation for MySQL with connection pooling
-  * Provides optimized MySQL-specific features and syntax
-*/
+ * Provides optimized MySQL-specific features and syntax
+ */
 import { BaseAdapter } from './base-adapter';
 import { QueryResult, Transaction, DatabaseConfig } from '@/types';
 /**

@@ -51,10 +51,7 @@ class CLICommands {
      */
     setupCommands() {
         const program = new commander_1.Command();
-        program
-            .name('vlodia')
-            .description('Vlodia ORM CLI')
-            .version('0.1.0');
+        program.name('vlodia').description('Vlodia ORM CLI').version('0.1.0');
         // Init command (like prisma init)
         program
             .command('init')
@@ -130,10 +127,7 @@ class CLICommands {
             .option('-f, --force', 'Force reset')
             .action(this.resetDatabase.bind(this));
         // Cache commands
-        program
-            .command('cache:clear')
-            .description('Clear cache')
-            .action(this.clearCache.bind(this));
+        program.command('cache:clear').description('Clear cache').action(this.clearCache.bind(this));
         program
             .command('cache:stats')
             .description('Show cache statistics')
@@ -161,10 +155,7 @@ class CLICommands {
             .command('help:examples')
             .description('Show usage examples')
             .action(this.showExamples.bind(this));
-        program
-            .command('help:docs')
-            .description('Open documentation')
-            .action(this.openDocs.bind(this));
+        program.command('help:docs').description('Open documentation').action(this.openDocs.bind(this));
         program.parse();
     }
     /**
@@ -555,7 +546,7 @@ class CLICommands {
             const entityPath = 'src/entities/**/*.ts';
             const watcher = chokidar.watch(entityPath, {
                 ignored: /node_modules/,
-                persistent: true
+                persistent: true,
             });
             watcher.on('change', (filePath) => {
                 console.log(chalk_1.default.yellow(`File changed: ${filePath}`));
@@ -687,9 +678,9 @@ export class ${className} {
         return {
             database: {
                 type: 'sqlite',
-                database: 'vlodia.db'
+                database: 'vlodia.db',
             },
-            entities: [] // Required by VlodiaConfig; empty by default for minimal safe config.
+            entities: [], // Required by VlodiaConfig; empty by default for minimal safe config.
         };
     }
     /**
@@ -743,7 +734,7 @@ export class ${className} {
         return entities.map(entity => ({
             name: entity.name,
             tableName: entity.tableName,
-            columns: entity.columns
+            columns: entity.columns,
         }));
     }
     /**
@@ -782,13 +773,13 @@ export class ${this.toPascalCase(name)} implements Migration {
      */
     async getPendingMigrations() {
         const migrationsPath = 'src/migrations';
-        if (!await fs.pathExists(migrationsPath)) {
+        if (!(await fs.pathExists(migrationsPath))) {
             return [];
         }
         const files = await glob.glob('*.ts', { cwd: migrationsPath });
         return files.map(file => ({
             name: path.basename(file, '.ts'),
-            path: path.join(migrationsPath, file)
+            path: path.join(migrationsPath, file),
         }));
     }
     /**
@@ -986,18 +977,18 @@ export class ${this.toPascalCase(name)} implements Migration {
                     limits: {
                         maxUsers: 100,
                         maxStorage: 1000000,
-                        maxRequests: 10000
+                        maxRequests: 10000,
                     },
                     settings: {
                         timezone: 'UTC',
-                        language: 'en'
+                        language: 'en',
                     },
                     security: {
                         encryption: true,
                         auditLogging: true,
-                        dataRetention: 365
-                    }
-                }
+                        dataRetention: 365,
+                    },
+                },
             });
             spinner.succeed(chalk_1.default.green(`Tenant created: ${tenant.name} (${tenant.id})`));
         }
@@ -1352,8 +1343,8 @@ main();`;
         const spinner = (0, ora_1.default)('Generating TypeScript types from schema.vlodia').start();
         try {
             // Check if schema.vlodia exists
-            if (!await fs.pathExists('vlodia/schema.vlodia')) {
-                throw new Error('schema.vlodia file not found. Run \'vlodia init\' first.');
+            if (!(await fs.pathExists('vlodia/schema.vlodia'))) {
+                throw new Error("schema.vlodia file not found. Run 'vlodia init' first.");
             }
             // Read schema.vlodia
             const schemaContent = await fs.readFile('vlodia/schema.vlodia', 'utf8');
@@ -1385,7 +1376,7 @@ main();`;
             realtime: {},
             graphql: {},
             tenancy: {},
-            entities: []
+            entities: [],
         };
         // Parse database config
         const dbMatch = content.match(/database\s*\{([^}]+)\}/s);
@@ -1409,7 +1400,7 @@ main();`;
                 if (nameMatch) {
                     config.entities.push({
                         name: nameMatch[1],
-                        content: entityMatch
+                        content: entityMatch,
                     });
                 }
             }
@@ -1422,7 +1413,7 @@ main();`;
     extractValue(content, key) {
         const regex = new RegExp(`${key}\\s*=\\s*"([^"]+)"`);
         const match = content.match(regex);
-        return match ? (match[1] || '') : '';
+        return match ? match[1] || '' : '';
     }
     /**
      * Generate config from parsed schema
@@ -1516,10 +1507,7 @@ export class ${entity.name} {
      */
     setupNewCommands() {
         const program = new commander_1.Command();
-        program
-            .name('vlodia')
-            .description('Vlodia ORM CLI with new features')
-            .version('0.1.0');
+        program.name('vlodia').description('Vlodia ORM CLI with new features').version('0.1.0');
         // Generate command (like prisma generate)
         program
             .command('generate')

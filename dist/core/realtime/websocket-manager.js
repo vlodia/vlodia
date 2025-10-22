@@ -34,7 +34,7 @@ class WebSocketManager {
             this.server = new WebSocket.Server({
                 server,
                 path: this.config.path,
-                cors: this.config.cors
+                cors: this.config.cors,
             });
             this.setupWebSocketHandlers();
             this.setupEventListeners();
@@ -42,7 +42,7 @@ class WebSocketManager {
             server.listen(this.config.port, () => {
                 this.logger.info('WebSocket server started', {
                     port: this.config.port,
-                    path: this.config.path
+                    path: this.config.path,
                 });
             });
         }
@@ -64,13 +64,13 @@ class WebSocketManager {
                 id: connectionId,
                 socket,
                 subscriptions: new Set(),
-                lastActivity: new Date()
+                lastActivity: new Date(),
             };
             this.connections.set(connectionId, connection);
             this.logger.debug('WebSocket connection established', {
                 connectionId,
                 clientIP,
-                userAgent
+                userAgent,
             });
             socket.on('message', (message) => {
                 this.handleMessage(connectionId, message);
@@ -85,7 +85,7 @@ class WebSocketManager {
             this.sendMessage(connectionId, {
                 type: 'connected',
                 connectionId,
-                timestamp: new Date()
+                timestamp: new Date(),
             });
         });
     }
@@ -100,7 +100,7 @@ class WebSocketManager {
                 data: event.data,
                 timestamp: new Date(),
                 userId: event.userId,
-                tenantId: event.tenantId
+                tenantId: event.tenantId,
             });
         });
         this.eventBus.on('entity_updated', (event) => {
@@ -110,7 +110,7 @@ class WebSocketManager {
                 data: event.data,
                 timestamp: new Date(),
                 userId: event.userId,
-                tenantId: event.tenantId
+                tenantId: event.tenantId,
             });
         });
         this.eventBus.on('entity_deleted', (event) => {
@@ -120,7 +120,7 @@ class WebSocketManager {
                 data: event.data,
                 timestamp: new Date(),
                 userId: event.userId,
-                tenantId: event.tenantId
+                tenantId: event.tenantId,
             });
         });
         this.eventBus.on('query_executed', (event) => {
@@ -130,7 +130,7 @@ class WebSocketManager {
                 data: event.data,
                 timestamp: new Date(),
                 userId: event.userId,
-                tenantId: event.tenantId
+                tenantId: event.tenantId,
             });
         });
     }
@@ -180,12 +180,12 @@ class WebSocketManager {
         this.logger.debug('Entity subscription added', {
             connectionId,
             entity,
-            subscriptionKey
+            subscriptionKey,
         });
         this.sendMessage(connectionId, {
             type: 'subscribed',
             entity,
-            timestamp: new Date()
+            timestamp: new Date(),
         });
     }
     /**
@@ -208,12 +208,12 @@ class WebSocketManager {
         this.logger.debug('Entity subscription removed', {
             connectionId,
             entity,
-            subscriptionKey
+            subscriptionKey,
         });
         this.sendMessage(connectionId, {
             type: 'unsubscribed',
             entity,
-            timestamp: new Date()
+            timestamp: new Date(),
         });
     }
     /**
@@ -305,7 +305,7 @@ class WebSocketManager {
         return {
             connections: this.connections.size,
             subscriptions: this.subscriptions.size,
-            uptime: process.uptime()
+            uptime: process.uptime(),
         };
     }
     /**

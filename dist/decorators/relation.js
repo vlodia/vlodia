@@ -11,28 +11,40 @@ const metadata_registry_1 = require("../core/metadata-registry");
 const METADATA_KEY = Symbol('vlodia:relation');
 function OneToOne(targetOrOptions, joinColumn) {
     if (typeof targetOrOptions === 'function') {
-        return createRelationDecorator('OneToOne', { target: targetOrOptions, joinColumn: joinColumn || '' });
+        return createRelationDecorator('OneToOne', {
+            target: targetOrOptions,
+            joinColumn: joinColumn || '',
+        });
     }
     return createRelationDecorator('OneToOne', targetOrOptions);
 }
 exports.OneToOne = OneToOne;
 function OneToMany(targetOrOptions, joinColumn) {
     if (typeof targetOrOptions === 'function') {
-        return createRelationDecorator('OneToMany', { target: targetOrOptions, joinColumn: joinColumn || '' });
+        return createRelationDecorator('OneToMany', {
+            target: targetOrOptions,
+            joinColumn: joinColumn || '',
+        });
     }
     return createRelationDecorator('OneToMany', targetOrOptions);
 }
 exports.OneToMany = OneToMany;
 function ManyToOne(targetOrOptions, joinColumn) {
     if (typeof targetOrOptions === 'function') {
-        return createRelationDecorator('ManyToOne', { target: targetOrOptions, joinColumn: joinColumn || '' });
+        return createRelationDecorator('ManyToOne', {
+            target: targetOrOptions,
+            joinColumn: joinColumn || '',
+        });
     }
     return createRelationDecorator('ManyToOne', targetOrOptions);
 }
 exports.ManyToOne = ManyToOne;
 function ManyToMany(targetOrOptions, joinTable) {
     if (typeof targetOrOptions === 'function') {
-        return createRelationDecorator('ManyToMany', { target: targetOrOptions, joinTable: joinTable || '' });
+        return createRelationDecorator('ManyToMany', {
+            target: targetOrOptions,
+            joinTable: joinTable || '',
+        });
     }
     return createRelationDecorator('ManyToMany', targetOrOptions);
 }

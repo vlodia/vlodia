@@ -102,7 +102,7 @@ class Vlodia {
             showTypes: true,
             showRelations: true,
             showConstraints: true,
-            autoLayout: true
+            autoLayout: true,
         });
         this.logger.info('Schema Designer initialized');
         // Initialize Tenant Manager
@@ -327,12 +327,9 @@ class Vlodia {
             get: async (_key) => {
                 return null;
             },
-            set: async (_key, _value, _ttl) => {
-            },
-            del: async (_key) => {
-            },
-            clear: async () => {
-            },
+            set: async (_key, _value, _ttl) => { },
+            del: async (_key) => { },
+            clear: async () => { },
         };
     }
     /**

@@ -80,7 +80,7 @@ class RelationManager {
             return;
         }
         const relatedEntities = await this.entityManager.find(relationMetadata.target, {
-            where: { [joinColumn]: { $in: entityIds } }
+            where: { [joinColumn]: { $in: entityIds } },
         });
         // Group related entities by foreign key
         const relatedEntitiesMap = new Map();
@@ -110,7 +110,7 @@ class RelationManager {
             return;
         }
         const relatedEntities = await this.entityManager.find(relationMetadata.target, {
-            where: { [joinColumn]: { $in: entityIds } }
+            where: { [joinColumn]: { $in: entityIds } },
         });
         // Group related entities by foreign key
         const relatedEntitiesMap = new Map();
@@ -140,7 +140,7 @@ class RelationManager {
             return;
         }
         const relatedEntities = await this.entityManager.find(relationMetadata.target, {
-            where: { id: { $in: foreignKeyValues } }
+            where: { id: { $in: foreignKeyValues } },
         });
         // Group related entities by ID
         const relatedEntitiesMap = new Map();
@@ -173,7 +173,7 @@ class RelationManager {
         }
         // Get join table data - for ManyToMany we need to query the join table
         const joinTableData = await this.entityManager.find(relationMetadata.target, {
-            where: { [joinColumn]: { $in: entityIds } }
+            where: { [joinColumn]: { $in: entityIds } },
         });
         // Log join table usage for debugging
         this.logger?.debug(`ManyToMany relation using join table: ${joinTable}, inverse column: ${inverseJoinColumn}`);

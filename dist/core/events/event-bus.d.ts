@@ -87,5 +87,5 @@ export declare const ORM_EVENTS: {
     readonly ERROR: "error";
     readonly WARNING: "warning";
 };
-export type ORMEvent = typeof ORM_EVENTS[keyof typeof ORM_EVENTS];
+export type ORMEvent = (typeof ORM_EVENTS)[keyof typeof ORM_EVENTS];
 //# sourceMappingURL=event-bus.d.ts.map

@@ -190,7 +190,7 @@ function hashString(str) {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
         const char = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
+        hash = (hash << 5) - hash + char;
         hash = hash & hash; // Convert to 32-bit integer
     }
     return hash.toString(36);
@@ -244,7 +244,7 @@ function throttle(func, limit) {
         if (!inThrottle) {
             func.apply(null, args);
             inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
+            setTimeout(() => (inThrottle = false), limit);
         }
     };
 }
@@ -285,24 +285,24 @@ exports.formatDuration = formatDuration;
  * Check if value is primitive
  */
 function isPrimitive(value) {
-    return value === null ||
+    return (value === null ||
         value === undefined ||
         typeof value === 'string' ||
         typeof value === 'number' ||
         typeof value === 'boolean' ||
         typeof value === 'symbol' ||
-        typeof value === 'bigint';
+        typeof value === 'bigint');
 }
 exports.isPrimitive = isPrimitive;
 /**
  * Check if value is object
  */
 function isObject(value) {
-    return value !== null &&
+    return (value !== null &&
         typeof value === 'object' &&
         !Array.isArray(value) &&
         !(value instanceof Date) &&
-        !(value instanceof RegExp);
+        !(value instanceof RegExp));
 }
 exports.isObject = isObject;
 /**

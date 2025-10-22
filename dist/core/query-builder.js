@@ -210,8 +210,7 @@ class QueryBuilder {
         }
         // Add ORDER BY clause
         if (this.ast.orderBy) {
-            const orderByClauses = Object.entries(this.ast.orderBy)
-                .map(([column, direction]) => `${column} ${direction}`);
+            const orderByClauses = Object.entries(this.ast.orderBy).map(([column, direction]) => `${column} ${direction}`);
             sql += ` ORDER BY ${orderByClauses.join(', ')}`;
         }
         // Add LIMIT clause
@@ -242,8 +241,7 @@ class QueryBuilder {
         if (!this.ast.set) {
             throw new Error('UPDATE query requires set values');
         }
-        const setClauses = Object.entries(this.ast.set)
-            .map(([column, value]) => `${column} = ${this.addParameter(value)}`);
+        const setClauses = Object.entries(this.ast.set).map(([column, value]) => `${column} = ${this.addParameter(value)}`);
         let sql = `UPDATE ${this.ast.table} SET ${setClauses.join(', ')}`;
         // Add WHERE clause
         if (this.ast.where) {

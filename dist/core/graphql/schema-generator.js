@@ -25,7 +25,7 @@ class GraphQLSchemaGenerator {
         return {
             typeDefs,
             resolvers,
-            subscriptions
+            subscriptions,
         };
     }
     /**
@@ -246,13 +246,13 @@ class GraphQLSchemaGenerator {
             Date: {
                 serialize: (value) => value.toISOString(),
                 parseValue: (value) => new Date(value),
-                parseLiteral: (ast) => new Date(ast.value)
+                parseLiteral: (ast) => new Date(ast.value),
             },
             JSON: {
                 serialize: (value) => value,
                 parseValue: (value) => value,
-                parseLiteral: (ast) => ast.value
-            }
+                parseLiteral: (ast) => ast.value,
+            },
         };
         if (this.config.subscriptions) {
             resolvers.Subscription = {};
@@ -286,7 +286,7 @@ class GraphQLSchemaGenerator {
                 where: args.where,
                 orderBy: args.orderBy,
                 limit: args.limit,
-                offset: args.offset
+                offset: args.offset,
             });
         };
     }
@@ -348,7 +348,7 @@ class GraphQLSchemaGenerator {
             subscribe: async (_parent, _args, context) => {
                 const { pubsub } = context;
                 return pubsub.asyncIterator(`${entity.name.toLowerCase()}_${event}`);
-            }
+            },
         };
     }
     /**
@@ -401,19 +401,19 @@ class GraphQLSchemaGenerator {
                 subscribe: async (_parent, _args, context) => {
                     const { pubsub } = context;
                     return pubsub.asyncIterator(`${entityName}_created`);
-                }
+                },
             };
             subscriptions[`${entityName}Updated`] = {
                 subscribe: async (_parent, _args, context) => {
                     const { pubsub } = context;
                     return pubsub.asyncIterator(`${entityName}_updated`);
-                }
+                },
             };
             subscriptions[`${entityName}Deleted`] = {
                 subscribe: async (_parent, _args, context) => {
                     const { pubsub } = context;
                     return pubsub.asyncIterator(`${entityName}_deleted`);
-                }
+                },
             };
         }
         return subscriptions;

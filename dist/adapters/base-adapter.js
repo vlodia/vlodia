@@ -136,8 +136,7 @@ class BaseAdapter {
      * Get database-specific order by syntax
      */
     getOrderBySyntax(orderBy) {
-        const clauses = Object.entries(orderBy)
-            .map(([column, direction]) => `${this.escapeIdentifier(column)} ${direction}`);
+        const clauses = Object.entries(orderBy).map(([column, direction]) => `${this.escapeIdentifier(column)} ${direction}`);
         return `ORDER BY ${clauses.join(', ')}`;
     }
 }

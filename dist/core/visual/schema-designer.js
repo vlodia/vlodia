@@ -55,8 +55,8 @@ class SchemaDesigner {
                 description: 'Visual representation of database schema',
                 version: '1.0.0',
                 createdAt: new Date(),
-                updatedAt: new Date()
-            }
+                updatedAt: new Date(),
+            },
         };
     }
     /**
@@ -71,13 +71,13 @@ class SchemaDesigner {
             properties: {
                 tableName: entity.tableName,
                 columns: entity.columns.length,
-                relations: entity.relations.length
+                relations: entity.relations.length,
             },
             style: {
                 color: this.getEntityColor(entity),
                 size: 100,
-                shape: 'rectangle'
-            }
+                shape: 'rectangle',
+            },
         };
     }
     /**
@@ -94,13 +94,13 @@ class SchemaDesigner {
                 nullable: column.nullable,
                 primary: column.primary,
                 unique: column.unique,
-                generated: column.generated
+                generated: column.generated,
             },
             style: {
                 color: this.getColumnColor(column),
                 size: 60,
-                shape: column.primary ? 'diamond' : 'circle'
-            }
+                shape: column.primary ? 'diamond' : 'circle',
+            },
         };
     }
     /**
@@ -115,13 +115,13 @@ class SchemaDesigner {
             properties: {
                 columnType: column.type,
                 nullable: column.nullable,
-                primary: column.primary
+                primary: column.primary,
             },
             style: {
                 color: column.primary ? '#ff6b6b' : '#4ecdc4',
                 width: column.primary ? 3 : 1,
-                style: column.primary ? 'solid' : 'dashed'
-            }
+                style: column.primary ? 'solid' : 'dashed',
+            },
         };
     }
     /**
@@ -140,13 +140,13 @@ class SchemaDesigner {
                 relationType: relation.type,
                 propertyName: relation.propertyName,
                 joinColumn: relation.joinColumn,
-                cascade: relation.cascade
+                cascade: relation.cascade,
             },
             style: {
                 color: this.getRelationColor(relation.type),
                 width: 2,
-                style: 'solid'
-            }
+                style: 'solid',
+            },
         };
     }
     /**
@@ -190,7 +190,7 @@ class SchemaDesigner {
                 const radius = 150;
                 node.position = {
                     x: entityNode.position.x + Math.cos(angle) * radius,
-                    y: entityNode.position.y + Math.sin(angle) * radius
+                    y: entityNode.position.y + Math.sin(angle) * radius,
                 };
             }
         });
@@ -206,7 +206,7 @@ class SchemaDesigner {
         nodes.forEach(node => {
             node.position = {
                 x: Math.random() * 800,
-                y: Math.random() * 600
+                y: Math.random() * 600,
             };
         });
         // Apply force-directed algorithm
@@ -226,7 +226,7 @@ class SchemaDesigner {
                     const dx = node1.position.x - node2.position.x;
                     const dy = node1.position.y - node2.position.y;
                     const distance = Math.sqrt(dx * dx + dy * dy) || 1;
-                    const force = k * k / distance;
+                    const force = (k * k) / distance;
                     const fx = (dx / distance) * force;
                     const fy = (dy / distance) * force;
                     forces.get(node1.id).x += fx;
@@ -243,7 +243,7 @@ class SchemaDesigner {
                     const dx = targetNode.position.x - sourceNode.position.x;
                     const dy = targetNode.position.y - sourceNode.position.y;
                     const distance = Math.sqrt(dx * dx + dy * dy) || 1;
-                    const force = distance * distance / k;
+                    const force = (distance * distance) / k;
                     const fx = (dx / distance) * force;
                     const fy = (dy / distance) * force;
                     forces.get(sourceNode.id).x += fx;
@@ -271,7 +271,7 @@ class SchemaDesigner {
             const angle = (index * 2 * Math.PI) / nodes.length;
             node.position = {
                 x: centerX + Math.cos(angle) * radius,
-                y: centerY + Math.sin(angle) * radius
+                y: centerY + Math.sin(angle) * radius,
             };
         });
     }
@@ -287,7 +287,7 @@ class SchemaDesigner {
             const col = index % cols;
             node.position = {
                 x: col * cellWidth,
-                y: row * cellHeight
+                y: row * cellHeight,
             };
         });
     }
@@ -319,11 +319,16 @@ class SchemaDesigner {
      */
     getRelationColor(relationType) {
         switch (relationType) {
-            case 'OneToOne': return '#00b894';
-            case 'OneToMany': return '#0984e3';
-            case 'ManyToOne': return '#e17055';
-            case 'ManyToMany': return '#fd79a8';
-            default: return '#636e72';
+            case 'OneToOne':
+                return '#00b894';
+            case 'OneToMany':
+                return '#0984e3';
+            case 'ManyToOne':
+                return '#e17055';
+            case 'ManyToMany':
+                return '#fd79a8';
+            default:
+                return '#636e72';
         }
     }
     /**

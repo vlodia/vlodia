@@ -62,7 +62,7 @@ class EntityManager {
             throw new Error(`Entity ${entityClass.name} has no primary key`);
         }
         return this.findOne(entityClass, {
-            where: { [primaryKey.name]: id }
+            where: { [primaryKey.name]: id },
         });
     }
     /**
@@ -118,7 +118,8 @@ class EntityManager {
         // Set generated primary key
         const primaryKey = this.metadataRegistry.getPrimaryKey(entityClass);
         if (primaryKey && primaryKey.generated) {
-            entity[primaryKey.propertyName] = result.rows[0]?.id || result.rows[0]?.[primaryKey.name];
+            entity[primaryKey.propertyName] =
+                result.rows[0]?.id || result.rows[0]?.[primaryKey.name];
         }
         // Add to identity map
         this.addToIdentityMap(entity);

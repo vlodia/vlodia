@@ -241,12 +241,9 @@ class CacheManager {
             get: async (_key) => {
                 return null;
             },
-            set: async (_key, _value, _ttl) => {
-            },
-            del: async (_key) => {
-            },
-            clear: async () => {
-            },
+            set: async (_key, _value, _ttl) => { },
+            del: async (_key) => { },
+            clear: async () => { },
         };
     }
     /**
@@ -257,7 +254,7 @@ class CacheManager {
         let hash = 0;
         for (let i = 0; i < queryString.length; i++) {
             const char = queryString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
+            hash = (hash << 5) - hash + char;
             hash = hash & hash; // Convert to 32-bit integer
         }
         return hash.toString(36);

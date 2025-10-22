@@ -17,7 +17,7 @@ class EntitySerializer {
      * Serialize entity to JSON
      */
     serialize(entity, options = {}) {
-        const { excludeMetadata = true, excludeRelations = false, excludeHooks = true, excludePrivate = true, excludeUndefined = true, excludeNull = false, maxDepth = 10, replacer } = options;
+        const { excludeMetadata = true, excludeRelations = false, excludeHooks = true, excludePrivate = true, excludeUndefined = true, excludeNull = false, maxDepth = 10, replacer, } = options;
         this.visited.clear();
         return this.serializeValue(entity, {
             excludeMetadata,
@@ -28,7 +28,7 @@ class EntitySerializer {
             excludeNull,
             maxDepth,
             replacer,
-            currentDepth: 0
+            currentDepth: 0,
         });
     }
     /**
@@ -41,9 +41,9 @@ class EntitySerializer {
      * Serialize value with options
      */
     serializeValue(value, options) {
-        const { excludeMetadata, excludeRelations, excludeHooks, excludePrivate, excludeUndefined, excludeNull, maxDepth, replacer, currentDepth } = options;
+        const { excludeMetadata, excludeRelations, excludeHooks, excludePrivate, excludeUndefined, excludeNull, maxDepth, replacer, currentDepth, } = options;
         // Check depth limit defensively, ensuring maxDepth is always a number
-        if (typeof maxDepth !== "number" || currentDepth >= maxDepth) {
+        if (typeof maxDepth !== 'number' || currentDepth >= maxDepth) {
             return '[Max Depth Reached]';
         }
         // Handle null and undefined
@@ -65,7 +65,7 @@ class EntitySerializer {
         if (Array.isArray(value)) {
             return value.map(item => this.serializeValue(item, {
                 ...options,
-                currentDepth: currentDepth + 1
+                currentDepth: currentDepth + 1,
             }));
         }
         // Handle circular references
@@ -116,7 +116,7 @@ class EntitySerializer {
                 // Serialize nested value
                 serializedValue = this.serializeValue(serializedValue, {
                     ...options,
-                    currentDepth: currentDepth + 1
+                    currentDepth: currentDepth + 1,
                 });
                 // Skip undefined/null values based on options
                 if (serializedValue === undefined && excludeUndefined) {

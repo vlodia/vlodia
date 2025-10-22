@@ -162,7 +162,7 @@ class BenchmarkRunner {
             duration,
             operations: iterations,
             opsPerSecond: Math.round((iterations / duration) * 1000),
-            memoryUsage: Math.round(memoryUsage / 1024 / 1024) // MB
+            memoryUsage: Math.round(memoryUsage / 1024 / 1024), // MB
         });
         console.log(`INSERT: ${iterations} records in ${duration}ms (${Math.round((iterations / duration) * 1000)} ops/sec)`);
     }
@@ -177,7 +177,7 @@ class BenchmarkRunner {
         for (let i = 0; i < iterations; i++) {
             await this.orm.manager.find(BenchmarkUser, {
                 where: { age: { $gt: 25 } },
-                limit: 10
+                limit: 10,
             });
         }
         const endTime = Date.now();
@@ -189,7 +189,7 @@ class BenchmarkRunner {
             duration,
             operations: iterations,
             opsPerSecond: Math.round((iterations / duration) * 1000),
-            memoryUsage: Math.round(memoryUsage / 1024 / 1024) // MB
+            memoryUsage: Math.round(memoryUsage / 1024 / 1024), // MB
         });
         console.log(`FIND: ${iterations} queries in ${duration}ms (${Math.round((iterations / duration) * 1000)} ops/sec)`);
     }
@@ -215,7 +215,7 @@ class BenchmarkRunner {
             duration,
             operations: iterations,
             opsPerSecond: Math.round((iterations / duration) * 1000),
-            memoryUsage: Math.round(memoryUsage / 1024 / 1024) // MB
+            memoryUsage: Math.round(memoryUsage / 1024 / 1024), // MB
         });
         console.log(`UPDATE: ${iterations} records in ${duration}ms (${Math.round((iterations / duration) * 1000)} ops/sec)`);
     }
@@ -240,7 +240,7 @@ class BenchmarkRunner {
             duration,
             operations: iterations,
             opsPerSecond: Math.round((iterations / duration) * 1000),
-            memoryUsage: Math.round(memoryUsage / 1024 / 1024) // MB
+            memoryUsage: Math.round(memoryUsage / 1024 / 1024), // MB
         });
         console.log(`DELETE: ${iterations} records in ${duration}ms (${Math.round((iterations / duration) * 1000)} ops/sec)`);
     }
@@ -276,7 +276,7 @@ class BenchmarkRunner {
         for (let i = 0; i < iterations; i++) {
             await this.orm.manager.find(BenchmarkUser, {
                 relations: ['posts'],
-                limit: 10
+                limit: 10,
             });
         }
         const endTime = Date.now();
@@ -288,7 +288,7 @@ class BenchmarkRunner {
             duration,
             operations: iterations,
             opsPerSecond: Math.round((iterations / duration) * 1000),
-            memoryUsage: Math.round(memoryUsage / 1024 / 1024) // MB
+            memoryUsage: Math.round(memoryUsage / 1024 / 1024), // MB
         });
         console.log(`RELATIONS: ${iterations} queries in ${duration}ms (${Math.round((iterations / duration) * 1000)} ops/sec)`);
     }
@@ -326,7 +326,7 @@ class BenchmarkRunner {
             duration,
             operations: iterations,
             opsPerSecond: Math.round((iterations / duration) * 1000),
-            memoryUsage: Math.round(memoryUsage / 1024 / 1024) // MB
+            memoryUsage: Math.round(memoryUsage / 1024 / 1024), // MB
         });
         console.log(`TRANSACTIONS: ${iterations} transactions in ${duration}ms (${Math.round((iterations / duration) * 1000)} ops/sec)`);
     }
@@ -361,7 +361,7 @@ class BenchmarkRunner {
             duration,
             operations: totalOperations,
             opsPerSecond: Math.round((totalOperations / duration) * 1000),
-            memoryUsage: Math.round(memoryUsage / 1024 / 1024) // MB
+            memoryUsage: Math.round(memoryUsage / 1024 / 1024), // MB
         });
         console.log(`BULK: ${totalOperations} records in ${duration}ms (${Math.round((totalOperations / duration) * 1000)} ops/sec)`);
     }
@@ -378,14 +378,11 @@ class BenchmarkRunner {
                 where: {
                     $and: [
                         { age: { $gt: 25 } },
-                        { $or: [
-                                { name: { $like: '%User%' } },
-                                { email: { $like: '%@example.com' } }
-                            ] }
-                    ]
+                        { $or: [{ name: { $like: '%User%' } }, { email: { $like: '%@example.com' } }] },
+                    ],
                 },
                 orderBy: { createdAt: 'DESC' },
-                limit: 20
+                limit: 20,
             });
         }
         const endTime = Date.now();
@@ -397,7 +394,7 @@ class BenchmarkRunner {
             duration,
             operations: iterations,
             opsPerSecond: Math.round((iterations / duration) * 1000),
-            memoryUsage: Math.round(memoryUsage / 1024 / 1024) // MB
+            memoryUsage: Math.round(memoryUsage / 1024 / 1024), // MB
         });
         console.log(`COMPLEX: ${iterations} queries in ${duration}ms (${Math.round((iterations / duration) * 1000)} ops/sec)`);
     }
