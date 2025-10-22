@@ -110,8 +110,8 @@ export class SchemaDesigner {
         description: 'Visual representation of database schema',
         version: '1.0.0',
         createdAt: new Date(),
-        updatedAt: new Date()
-      }
+        updatedAt: new Date(),
+      },
     };
   }
 
@@ -127,13 +127,13 @@ export class SchemaDesigner {
       properties: {
         tableName: entity.tableName,
         columns: entity.columns.length,
-        relations: entity.relations.length
+        relations: entity.relations.length,
       },
       style: {
         color: this.getEntityColor(entity),
         size: 100,
-        shape: 'rectangle'
-      }
+        shape: 'rectangle',
+      },
     };
   }
 
@@ -151,13 +151,13 @@ export class SchemaDesigner {
         nullable: column.nullable,
         primary: column.primary,
         unique: column.unique,
-        generated: column.generated
+        generated: column.generated,
       },
       style: {
         color: this.getColumnColor(column),
         size: 60,
-        shape: column.primary ? 'diamond' : 'circle'
-      }
+        shape: column.primary ? 'diamond' : 'circle',
+      },
     };
   }
 
@@ -173,20 +173,23 @@ export class SchemaDesigner {
       properties: {
         columnType: column.type,
         nullable: column.nullable,
-        primary: column.primary
+        primary: column.primary,
       },
       style: {
         color: column.primary ? '#ff6b6b' : '#4ecdc4',
         width: column.primary ? 3 : 1,
-        style: column.primary ? 'solid' : 'dashed'
-      }
+        style: column.primary ? 'solid' : 'dashed',
+      },
     };
   }
 
   /**
    * Create relation edge
    */
-  private createRelationEdge(entity: EntityMetadata, relation: RelationMetadata): SchemaEdge | null {
+  private createRelationEdge(
+    entity: EntityMetadata,
+    relation: RelationMetadata
+  ): SchemaEdge | null {
     const targetEntity = this.metadataRegistry.getEntity(relation.target as any);
     if (!targetEntity) return null;
 
@@ -199,13 +202,13 @@ export class SchemaDesigner {
         relationType: relation.type,
         propertyName: relation.propertyName,
         joinColumn: relation.joinColumn,
-        cascade: relation.cascade
+        cascade: relation.cascade,
       },
       style: {
         color: this.getRelationColor(relation.type),
         width: 2,
-        style: 'solid'
-      }
+        style: 'solid',
+      },
     };
   }
 
@@ -235,7 +238,7 @@ export class SchemaDesigner {
   private applyHierarchicalLayout(nodes: SchemaNode[], _edges: SchemaEdge[]): void {
     const entityNodes = nodes.filter(n => n.type === 'entity');
     const columnNodes = nodes.filter(n => n.type === 'column');
-    
+
     // Position entities in a grid
     const cols = Math.ceil(Math.sqrt(entityNodes.length));
     entityNodes.forEach((node, index) => {
@@ -253,7 +256,7 @@ export class SchemaDesigner {
         const radius = 150;
         node.position = {
           x: entityNode.position.x + Math.cos(angle) * radius,
-          y: entityNode.position.y + Math.sin(angle) * radius
+          y: entityNode.position.y + Math.sin(angle) * radius,
         };
       }
     });
@@ -271,14 +274,14 @@ export class SchemaDesigner {
     nodes.forEach(node => {
       node.position = {
         x: Math.random() * 800,
-        y: Math.random() * 600
+        y: Math.random() * 600,
       };
     });
 
     // Apply force-directed algorithm
     for (let i = 0; i < iterations; i++) {
       const forces = new Map<string, { x: number; y: number }>();
-      
+
       // Initialize forces
       nodes.forEach(node => {
         forces.set(node.id, { x: 0, y: 0 });
@@ -290,15 +293,15 @@ export class SchemaDesigner {
           const node1 = nodes[i];
           const node2 = nodes[j];
           if (!node1 || !node2) continue;
-          
+
           const dx = node1.position.x - node2.position.x;
           const dy = node1.position.y - node2.position.y;
           const distance = Math.sqrt(dx * dx + dy * dy) || 1;
-          const force = k * k / distance;
-          
+          const force = (k * k) / distance;
+
           const fx = (dx / distance) * force;
           const fy = (dy / distance) * force;
-          
+
           forces.get(node1.id)!.x += fx;
           forces.get(node1.id)!.y += fy;
           forces.get(node2.id)!.x -= fx;
@@ -314,11 +317,11 @@ export class SchemaDesigner {
           const dx = targetNode.position.x - sourceNode.position.x;
           const dy = targetNode.position.y - sourceNode.position.y;
           const distance = Math.sqrt(dx * dx + dy * dy) || 1;
-          const force = distance * distance / k;
-          
+          const force = (distance * distance) / k;
+
           const fx = (dx / distance) * force;
           const fy = (dy / distance) * force;
-          
+
           forces.get(sourceNode.id)!.x += fx;
           forces.get(sourceNode.id)!.y += fy;
           forces.get(targetNode.id)!.x -= fx;
@@ -342,12 +345,12 @@ export class SchemaDesigner {
     const centerX = 400;
     const centerY = 300;
     const radius = 200;
-    
+
     nodes.forEach((node, index) => {
       const angle = (index * 2 * Math.PI) / nodes.length;
       node.position = {
         x: centerX + Math.cos(angle) * radius,
-        y: centerY + Math.sin(angle) * radius
+        y: centerY + Math.sin(angle) * radius,
       };
     });
   }
@@ -359,13 +362,13 @@ export class SchemaDesigner {
     const cols = Math.ceil(Math.sqrt(nodes.length));
     const cellWidth = 200;
     const cellHeight = 150;
-    
+
     nodes.forEach((node, index) => {
       const row = Math.floor(index / cols);
       const col = index % cols;
       node.position = {
         x: col * cellWidth,
-        y: row * cellHeight
+        y: row * cellHeight,
       };
     });
   }
@@ -395,11 +398,16 @@ export class SchemaDesigner {
    */
   private getRelationColor(relationType: string): string {
     switch (relationType) {
-      case 'OneToOne': return '#00b894';
-      case 'OneToMany': return '#0984e3';
-      case 'ManyToOne': return '#e17055';
-      case 'ManyToMany': return '#fd79a8';
-      default: return '#636e72';
+      case 'OneToOne':
+        return '#00b894';
+      case 'OneToMany':
+        return '#0984e3';
+      case 'ManyToOne':
+        return '#e17055';
+      case 'ManyToMany':
+        return '#fd79a8';
+      default:
+        return '#636e72';
     }
   }
 
@@ -422,12 +430,12 @@ export class SchemaDesigner {
    */
   generateSVG(diagram: SchemaDiagram): string {
     let svg = `<svg width="1000" height="800" xmlns="http://www.w3.org/2000/svg">`;
-    
+
     // Add edges
     diagram.edges.forEach(edge => {
       const sourceNode = diagram.nodes.find(n => n.id === edge.source);
       const targetNode = diagram.nodes.find(n => n.id === edge.target);
-      
+
       if (sourceNode && targetNode) {
         svg += `<line x1="${sourceNode.position.x}" y1="${sourceNode.position.y}" 
                       x2="${targetNode.position.x}" y2="${targetNode.position.y}" 
@@ -435,7 +443,7 @@ export class SchemaDesigner {
                       stroke-dasharray="${edge.style.style === 'dashed' ? '5,5' : 'none'}" />`;
       }
     });
-    
+
     // Add nodes
     diagram.nodes.forEach(node => {
       if (node.style.shape === 'rectangle') {
@@ -447,13 +455,13 @@ export class SchemaDesigner {
                        r="${node.style.size / 2}" fill="${node.style.color}" 
                        stroke="#000" stroke-width="2" />`;
       }
-      
+
       // Add text
       svg += `<text x="${node.position.x}" y="${node.position.y + 5}" 
                    text-anchor="middle" font-family="Arial" font-size="12" 
                    fill="#000">${node.name}</text>`;
     });
-    
+
     svg += `</svg>`;
     return svg;
   }

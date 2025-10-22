@@ -27,14 +27,14 @@ export class DefaultRepositoryFactory implements RepositoryFactory {
    */
   create<T extends object>(entityClass: new () => T): Repository<T> {
     const className = entityClass.name;
-    
+
     if (this.repositories.has(className)) {
       return this.repositories.get(className)!;
     }
 
     const repository = new BaseRepository(this.entityManager, entityClass);
     this.repositories.set(className, repository);
-    
+
     return repository;
   }
 

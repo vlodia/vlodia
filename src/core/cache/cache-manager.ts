@@ -222,7 +222,7 @@ export class CacheManager {
   } {
     const l1Size = this.l1Cache.size;
     const l2Enabled = this.l2Cache !== null;
-    
+
     // Calculate memory usage (approximate)
     let memoryUsage = 0;
     for (const entry of this.l1Cache.values()) {
@@ -312,12 +312,9 @@ export class CacheManager {
       get: async <T>(_key: string): Promise<T | null> => {
         return null;
       },
-      set: async <T>(_key: string, _value: T, _ttl?: number): Promise<void> => {
-      },
-      del: async (_key: string): Promise<void> => {
-      },
-      clear: async (): Promise<void> => {
-      },
+      set: async <T>(_key: string, _value: T, _ttl?: number): Promise<void> => {},
+      del: async (_key: string): Promise<void> => {},
+      clear: async (): Promise<void> => {},
     };
   }
 
@@ -329,7 +326,7 @@ export class CacheManager {
     let hash = 0;
     for (let i = 0; i < queryString.length; i++) {
       const char = queryString.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
     return hash.toString(36);
@@ -398,13 +395,13 @@ export class CacheManager {
   async invalidateEntityCaches<T>(entityClass: new () => T, entityId: any): Promise<void> {
     const entityKey = this.generateEntityKey(entityClass, entityId);
     const queryPattern = `query:${entityClass.name}:*`;
-    
+
     // Add to invalidation queue
     this.addToInvalidationQueue(entityKey);
-    
+
     // Invalidate by pattern
     await this.invalidateByPattern(queryPattern);
-    
+
     // Get entity metadata for related entities
     const entityMetadata = this.metadataRegistry.getEntity(entityClass);
     if (entityMetadata) {

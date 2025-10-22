@@ -102,14 +102,14 @@ export class EntityValidator {
    */
   private getSchema<T>(entityClass: new () => T): z.ZodSchema {
     const className = entityClass.name;
-    
+
     if (this.schemas.has(className)) {
       return this.schemas.get(className)!;
     }
 
     const schema = this.createEntitySchema(entityClass);
     this.schemas.set(className, schema);
-    
+
     return schema;
   }
 
@@ -136,7 +136,7 @@ export class EntityValidator {
     // Apply nullable
     if (!column.nullable) {
       schema = schema.refine(val => val !== null && val !== undefined, {
-        message: `${column.propertyName} is required`
+        message: `${column.propertyName} is required`,
       });
     }
 
@@ -190,10 +190,7 @@ export class EntityValidator {
   /**
    * Get property schema
    */
-  private getPropertySchema<T>(
-    entityClass: new () => T,
-    propertyName: string
-  ): z.ZodSchema {
+  private getPropertySchema<T>(entityClass: new () => T, propertyName: string): z.ZodSchema {
     const column = this.metadataRegistry.getColumn(entityClass, propertyName);
     if (!column) {
       throw new Error(`Property ${propertyName} not found in entity ${entityClass.name}`);
@@ -223,7 +220,7 @@ export class EntityValidator {
     options: ValidationOptions = {}
   ): Promise<ValidationResult> {
     const baseResult = this.validate(entityClass, data, options);
-    
+
     if (!baseResult.valid) {
       return baseResult;
     }
@@ -287,12 +284,14 @@ export class CustomValidationRule implements ValidationRule {
 
     return {
       valid: false,
-      errors: [{
-        field: this.field,
-        message: this.message,
-        value,
-        code: 'CUSTOM_VALIDATION',
-      }],
+      errors: [
+        {
+          field: this.field,
+          message: this.message,
+          value,
+          code: 'CUSTOM_VALIDATION',
+        },
+      ],
     };
   }
 }
@@ -393,12 +392,14 @@ export class UniqueValidationRule implements ValidationRule {
 
     return {
       valid: false,
-      errors: [{
-        field: this.field,
-        message: `${this.field} must be unique`,
-        value,
-        code: 'NOT_UNIQUE',
-      }],
+      errors: [
+        {
+          field: this.field,
+          message: `${this.field} must be unique`,
+          value,
+          code: 'NOT_UNIQUE',
+        },
+      ],
     };
   }
 }

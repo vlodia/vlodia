@@ -5,7 +5,13 @@
  */
 
 import 'reflect-metadata';
-import { EntityMetadata, ColumnMetadata, RelationMetadata, HookMetadata, IndexMetadata } from '@/types';
+import {
+  EntityMetadata,
+  ColumnMetadata,
+  RelationMetadata,
+  HookMetadata,
+  IndexMetadata,
+} from '@/types';
 
 export class MetadataRegistry {
   private static instance: MetadataRegistry;
@@ -79,11 +85,7 @@ export class MetadataRegistry {
   /**
    * Register a hook metadata for an entity
    */
-  registerHook<T>(
-    entityClass: new () => T,
-    propertyName: string,
-    metadata: HookMetadata
-  ): void {
+  registerHook<T>(entityClass: new () => T, propertyName: string, metadata: HookMetadata): void {
     let entityHooks = this.hooks.get(entityClass);
     if (!entityHooks) {
       entityHooks = new Map();
@@ -95,11 +97,7 @@ export class MetadataRegistry {
   /**
    * Register an index metadata for an entity
    */
-  registerIndex<T>(
-    entityClass: new () => T,
-    indexName: string,
-    metadata: IndexMetadata
-  ): void {
+  registerIndex<T>(entityClass: new () => T, indexName: string, metadata: IndexMetadata): void {
     const entityIndexes = this.indexes.get(entityClass);
     if (entityIndexes) {
       entityIndexes.set(indexName, metadata);
@@ -116,10 +114,7 @@ export class MetadataRegistry {
   /**
    * Get column metadata for an entity property
    */
-  getColumn<T>(
-    entityClass: new () => T,
-    propertyName: string
-  ): ColumnMetadata | undefined {
+  getColumn<T>(entityClass: new () => T, propertyName: string): ColumnMetadata | undefined {
     const entityColumns = this.columns.get(entityClass);
     return entityColumns?.get(propertyName);
   }
@@ -135,10 +130,7 @@ export class MetadataRegistry {
   /**
    * Get relation metadata for an entity property
    */
-  getRelation<T>(
-    entityClass: new () => T,
-    propertyName: string
-  ): RelationMetadata | undefined {
+  getRelation<T>(entityClass: new () => T, propertyName: string): RelationMetadata | undefined {
     const entityRelations = this.relations.get(entityClass);
     return entityRelations?.get(propertyName);
   }
@@ -154,10 +146,7 @@ export class MetadataRegistry {
   /**
    * Get hook metadata for an entity property
    */
-  getHook<T>(
-    entityClass: new () => T,
-    propertyName: string
-  ): HookMetadata | undefined {
+  getHook<T>(entityClass: new () => T, propertyName: string): HookMetadata | undefined {
     const entityHooks = this.hooks.get(entityClass);
     return entityHooks?.get(propertyName);
   }
@@ -173,10 +162,7 @@ export class MetadataRegistry {
   /**
    * Get index metadata for an entity
    */
-  getIndex<T>(
-    entityClass: new () => T,
-    indexName: string
-  ): IndexMetadata | undefined {
+  getIndex<T>(entityClass: new () => T, indexName: string): IndexMetadata | undefined {
     const entityIndexes = this.indexes.get(entityClass);
     return entityIndexes?.get(indexName);
   }

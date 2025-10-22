@@ -35,7 +35,13 @@ export { CacheManager } from './core/cache/cache-manager';
 export { RelationManager } from './core/relations/relation-manager';
 
 // Validation
-export { EntityValidator, CustomValidationRule, EmailValidationRule, PasswordValidationRule, UniqueValidationRule } from './core/validation/validator';
+export {
+  EntityValidator,
+  CustomValidationRule,
+  EmailValidationRule,
+  PasswordValidationRule,
+  UniqueValidationRule,
+} from './core/validation/validator';
 
 // Serialization
 export { EntitySerializer } from './core/serialization/serializer';
@@ -44,7 +50,13 @@ export { EntitySerializer } from './core/serialization/serializer';
 export { DefaultEventBus, ORM_EVENTS } from './core/events/event-bus';
 
 // Logging
-export { DefaultLogger, QueryLogger, PerformanceLogger, DefaultLogFormatter, JSONLogFormatter } from './core/logging/logger';
+export {
+  DefaultLogger,
+  QueryLogger,
+  PerformanceLogger,
+  DefaultLogFormatter,
+  JSONLogFormatter,
+} from './core/logging/logger';
 
 // CLI
 export { CLICommands } from './cli/commands';

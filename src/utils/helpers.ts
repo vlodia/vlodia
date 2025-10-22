@@ -48,7 +48,8 @@ export function generateRandomEmail(): string {
 export function generateRandomDate(start?: Date, end?: Date): Date {
   const startDate = start || new Date(2020, 0, 1);
   const endDate = end || new Date();
-  const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
+  const randomTime =
+    startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
   return new Date(randomTime);
 }
 
@@ -197,7 +198,7 @@ export function hashString(str: string): string {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash; // Convert to 32-bit integer
   }
   return hash.toString(36);
@@ -219,22 +220,22 @@ export async function retry<T>(
   delay: number = 1000
 ): Promise<T> {
   let lastError: Error;
-  
+
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       return await fn();
     } catch (error) {
       lastError = error as Error;
-      
+
       if (attempt === maxAttempts) {
         throw lastError;
       }
-      
+
       const backoffDelay = delay * Math.pow(2, attempt - 1);
       await sleep(backoffDelay);
     }
   }
-  
+
   throw lastError!;
 }
 
@@ -246,7 +247,7 @@ export function debounce<T extends (...args: any[]) => any>(
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout;
-  
+
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func.apply(null, args), wait);
@@ -261,12 +262,12 @@ export function throttle<T extends (...args: any[]) => any>(
   limit: number
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
-  
+
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
       func.apply(null, args);
       inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      setTimeout(() => (inThrottle = false), limit);
     }
   };
 }
@@ -276,13 +277,13 @@ export function throttle<T extends (...args: any[]) => any>(
  */
 export function formatBytes(bytes: number, decimals: number = 2): string {
   if (bytes === 0) return '0 Bytes';
-  
+
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  
+
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
@@ -293,17 +294,17 @@ export function formatDuration(ms: number): string {
   if (ms < 1000) {
     return `${ms}ms`;
   }
-  
+
   const seconds = Math.floor(ms / 1000);
   if (seconds < 60) {
     return `${seconds}s`;
   }
-  
+
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) {
     return `${minutes}m ${seconds % 60}s`;
   }
-  
+
   const hours = Math.floor(minutes / 60);
   return `${hours}h ${minutes % 60}m`;
 }
@@ -312,24 +313,28 @@ export function formatDuration(ms: number): string {
  * Check if value is primitive
  */
 export function isPrimitive(value: any): boolean {
-  return value === null || 
-         value === undefined || 
-         typeof value === 'string' || 
-         typeof value === 'number' || 
-         typeof value === 'boolean' || 
-         typeof value === 'symbol' || 
-         typeof value === 'bigint';
+  return (
+    value === null ||
+    value === undefined ||
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean' ||
+    typeof value === 'symbol' ||
+    typeof value === 'bigint'
+  );
 }
 
 /**
  * Check if value is object
  */
 export function isObject(value: any): boolean {
-  return value !== null && 
-         typeof value === 'object' && 
-         !Array.isArray(value) && 
-         !(value instanceof Date) && 
-         !(value instanceof RegExp);
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    !(value instanceof Date) &&
+    !(value instanceof RegExp)
+  );
 }
 
 /**
@@ -337,18 +342,18 @@ export function isObject(value: any): boolean {
  */
 export function getObjectKeys(obj: any, prefix: string = ''): string[] {
   const keys: string[] = [];
-  
+
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       const fullKey = prefix ? `${prefix}.${key}` : key;
       keys.push(fullKey);
-      
+
       if (isObject(obj[key])) {
         keys.push(...getObjectKeys(obj[key], fullKey));
       }
     }
   }
-  
+
   return keys;
 }
 
@@ -357,11 +362,11 @@ export function getObjectKeys(obj: any, prefix: string = ''): string[] {
  */
 export function flattenObject(obj: any, prefix: string = ''): Record<string, any> {
   const flattened: Record<string, any> = {};
-  
+
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       const fullKey = prefix ? `${prefix}.${key}` : key;
-      
+
       if (isObject(obj[key])) {
         Object.assign(flattened, flattenObject(obj[key], fullKey));
       } else {
@@ -369,7 +374,7 @@ export function flattenObject(obj: any, prefix: string = ''): Record<string, any
       }
     }
   }
-  
+
   return flattened;
 }
 
@@ -378,12 +383,12 @@ export function flattenObject(obj: any, prefix: string = ''): Record<string, any
  */
 export function unflattenObject(obj: Record<string, any>): any {
   const result: any = {};
-  
+
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       const keys = key.split('.');
       let current = result;
-      
+
       for (let i = 0; i < keys.length - 1; i++) {
         const k = keys[i];
         if (k && !(k in current)) {
@@ -393,13 +398,13 @@ export function unflattenObject(obj: Record<string, any>): any {
           current = current[k];
         }
       }
-      
+
       const lastKey = keys[keys.length - 1];
       if (lastKey) {
         current[lastKey] = obj[key];
       }
     }
   }
-  
+
   return result;
 }

@@ -34,7 +34,7 @@ export class DefaultLogFormatter implements LogFormatter {
     const level = entry.level.toUpperCase().padEnd(5);
     const context = entry.context ? `[${entry.context}]` : '';
     const meta = entry.meta ? ` ${JSON.stringify(entry.meta)}` : '';
-    
+
     return `${timestamp} ${level} ${context} ${entry.message}${meta}`;
   }
 }
@@ -46,7 +46,7 @@ export class JSONLogFormatter implements LogFormatter {
       level: entry.level,
       message: entry.message,
       context: entry.context,
-      meta: entry.meta
+      meta: entry.meta,
     });
   }
 }
@@ -126,11 +126,11 @@ export class DefaultLogger implements Logger {
       message,
       timestamp: new Date(),
       meta,
-      context: context || this.context
+      context: context || this.context,
     };
 
     const formatted = this.formatter.format(entry);
-    
+
     // Output to appropriate stream
     if (level === 'error') {
       console.error(formatted);
@@ -157,11 +157,15 @@ export class QueryLogger {
   logQueryStart(sql: string, params?: any[]): void {
     if (!this.enabled) return;
 
-    this.logger.debug('Query started', {
-      sql: this.maskSensitiveData(sql),
-      params: this.maskSensitiveParams(params),
-      timestamp: Date.now()
-    }, 'QUERY');
+    this.logger.debug(
+      'Query started',
+      {
+        sql: this.maskSensitiveData(sql),
+        params: this.maskSensitiveParams(params),
+        timestamp: Date.now(),
+      },
+      'QUERY'
+    );
   }
 
   /**
@@ -170,24 +174,32 @@ export class QueryLogger {
   logQueryEnd(sql: string, duration: number, rowCount?: number): void {
     if (!this.enabled) return;
 
-    this.logger.debug('Query completed', {
-      sql: this.maskSensitiveData(sql),
-      duration: `${duration}ms`,
-      rowCount,
-      timestamp: Date.now()
-    }, 'QUERY');
+    this.logger.debug(
+      'Query completed',
+      {
+        sql: this.maskSensitiveData(sql),
+        duration: `${duration}ms`,
+        rowCount,
+        timestamp: Date.now(),
+      },
+      'QUERY'
+    );
   }
 
   /**
    * Log query error
    */
   logQueryError(sql: string, error: Error, duration?: number): void {
-    this.logger.error('Query failed', {
-      sql: this.maskSensitiveData(sql),
-      error: error.message,
-      duration: duration ? `${duration}ms` : undefined,
-      stack: error.stack
-    }, 'QUERY');
+    this.logger.error(
+      'Query failed',
+      {
+        sql: this.maskSensitiveData(sql),
+        error: error.message,
+        duration: duration ? `${duration}ms` : undefined,
+        stack: error.stack,
+      },
+      'QUERY'
+    );
   }
 
   /**
@@ -206,13 +218,12 @@ export class QueryLogger {
    */
   private maskSensitiveParams(params?: any[]): any[] {
     if (!params) return [];
-    
+
     return params.map(param => {
-      if (typeof param === 'string' && (
-        param.includes('password') ||
-        param.includes('token') ||
-        param.includes('secret')
-      )) {
+      if (
+        typeof param === 'string' &&
+        (param.includes('password') || param.includes('token') || param.includes('secret'))
+      ) {
         return '***';
       }
       return param;
@@ -248,10 +259,14 @@ export class PerformanceLogger {
     const duration = Date.now() - startTime;
     this.timers.delete(name);
 
-    this.logger.debug(`Performance: ${name}`, {
-      duration: `${duration}ms`,
-      timestamp: Date.now()
-    }, context || 'PERFORMANCE');
+    this.logger.debug(
+      `Performance: ${name}`,
+      {
+        duration: `${duration}ms`,
+        timestamp: Date.now(),
+      },
+      context || 'PERFORMANCE'
+    );
 
     return duration;
   }

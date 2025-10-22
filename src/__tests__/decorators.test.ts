@@ -6,7 +6,17 @@
 
 import 'reflect-metadata';
 import { MetadataRegistry } from '../core/metadata-registry';
-import { Entity, Column, PrimaryKey, OneToMany, ManyToOne, OneToOne, ManyToMany, BeforeInsert, AfterUpdate } from '../decorators';
+import {
+  Entity,
+  Column,
+  PrimaryKey,
+  OneToMany,
+  ManyToOne,
+  OneToOne,
+  ManyToMany,
+  BeforeInsert,
+  AfterUpdate,
+} from '../decorators';
 
 describe('Decorators', () => {
   let metadataRegistry: MetadataRegistry;
@@ -173,11 +183,11 @@ describe('Decorators', () => {
         @PrimaryKey()
         id!: number;
 
-        @OneToMany({ 
+        @OneToMany({
           target: () => Post,
           joinColumn: 'userId',
           cascade: ['insert', 'update', 'remove'],
-          eager: true
+          eager: true,
         })
         posts!: Post[];
       }
@@ -256,7 +266,7 @@ describe('Decorators', () => {
           target: () => Tag,
           joinTable: 'post_tags',
           joinColumn: 'postId',
-          inverseJoinColumn: 'tagId'
+          inverseJoinColumn: 'tagId',
         })
         tags!: Tag[];
       }
@@ -406,7 +416,7 @@ describe('Decorators', () => {
           target: () => ComplexTag,
           joinTable: 'post_tags',
           joinColumn: 'postId',
-          inverseJoinColumn: 'tagId'
+          inverseJoinColumn: 'tagId',
         })
         tags!: ComplexTag[];
       }

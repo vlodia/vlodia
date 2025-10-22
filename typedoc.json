@@ -12,7 +12,7 @@
   "defaultCategory": "Other",
   "categoryOrder": [
     "Core",
-    "Decorators", 
+    "Decorators",
     "Adapters",
     "Repository",
     "Validation",

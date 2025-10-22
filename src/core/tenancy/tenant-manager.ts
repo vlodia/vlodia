@@ -64,8 +64,8 @@ export class TenantManager {
    */
   async initialize(): Promise<void> {
     await this.loadTenants();
-    this.logger.info('Tenant manager initialized', { 
-      tenantCount: this.tenants.size 
+    this.logger.info('Tenant manager initialized', {
+      tenantCount: this.tenants.size,
     });
   }
 
@@ -88,20 +88,20 @@ export class TenantManager {
             limits: {
               maxUsers: 100,
               maxStorage: 1000000,
-              maxRequests: 10000
+              maxRequests: 10000,
             },
             settings: {
               timezone: 'UTC',
-              language: 'en'
+              language: 'en',
             },
             security: {
               encryption: true,
               auditLogging: true,
-              dataRetention: 365
-            }
+              dataRetention: 365,
+            },
           },
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
         {
           id: 'tenant_2',
@@ -114,21 +114,21 @@ export class TenantManager {
             limits: {
               maxUsers: 1000,
               maxStorage: 10000000,
-              maxRequests: 100000
+              maxRequests: 100000,
             },
             settings: {
               timezone: 'EST',
-              language: 'en'
+              language: 'en',
             },
             security: {
               encryption: true,
               auditLogging: true,
-              dataRetention: 730
-            }
+              dataRetention: 730,
+            },
           },
           createdAt: new Date(),
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       ];
 
       for (const tenant of sampleTenants) {
@@ -145,9 +145,9 @@ export class TenantManager {
    */
   setTenantContext(context: TenantContext): void {
     this.currentContext = context;
-    this.logger.debug('Tenant context set', { 
+    this.logger.debug('Tenant context set', {
       tenantId: context.tenantId,
-      userId: context.userId 
+      userId: context.userId,
     });
   }
 
@@ -185,17 +185,17 @@ export class TenantManager {
       id: `tenant_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       ...tenantData,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     this.tenants.set(tenant.id, tenant);
-    
+
     // Create tenant-specific database schema
     await this.createTenantSchema(tenant);
-    
-    this.logger.info('Tenant created', { 
+
+    this.logger.info('Tenant created', {
       tenantId: tenant.id,
-      name: tenant.name 
+      name: tenant.name,
     });
 
     return tenant;
@@ -213,14 +213,14 @@ export class TenantManager {
     const updatedTenant = {
       ...tenant,
       ...updates,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     this.tenants.set(tenantId, updatedTenant);
-    
-    this.logger.info('Tenant updated', { 
+
+    this.logger.info('Tenant updated', {
       tenantId,
-      updates: Object.keys(updates) 
+      updates: Object.keys(updates),
     });
 
     return updatedTenant;
@@ -237,9 +237,9 @@ export class TenantManager {
 
     // Drop tenant-specific schema
     await this.dropTenantSchema(tenant);
-    
+
     this.tenants.delete(tenantId);
-    
+
     this.logger.info('Tenant deleted', { tenantId });
     return true;
   }
@@ -254,7 +254,7 @@ export class TenantManager {
 
     /**
      * Underlying RDBMS adapters typically require raw SQL for schema DDL operations, but schema identifiers
-     * cannot be bound as parameters in prepared statements. To mitigate SQL injection risk, 
+     * cannot be bound as parameters in prepared statements. To mitigate SQL injection risk,
      * validate schema names using a conservative whitelist regex.
      */
     const schemaName = tenant.schema;
@@ -268,9 +268,9 @@ export class TenantManager {
     await sqlExecutor.executeRaw(`CREATE SCHEMA IF NOT EXISTS "${schemaName}"`);
     await sqlExecutor.executeRaw(`SET search_path TO "${schemaName}", public`);
 
-    this.logger.debug('Tenant schema created', { 
+    this.logger.debug('Tenant schema created', {
       tenantId: tenant.id,
-      schema: tenant.schema 
+      schema: tenant.schema,
     });
   }
 
@@ -299,14 +299,14 @@ export class TenantManager {
     try {
       await sqlExecutor.executeRaw(`DROP SCHEMA IF EXISTS "${schemaName}" CASCADE`);
 
-      this.logger.debug('Tenant schema dropped', { 
+      this.logger.debug('Tenant schema dropped', {
         tenantId: tenant.id,
-        schema: tenant.schema 
+        schema: tenant.schema,
       });
     } catch (error) {
-      this.logger.error('Failed to drop tenant schema', { 
+      this.logger.error('Failed to drop tenant schema', {
         tenantId: tenant.id,
-        error 
+        error,
       });
       throw error;
     }
@@ -314,10 +314,7 @@ export class TenantManager {
   /**
    * Execute tenant-aware query
    */
-  async executeTenantQuery<T>(
-    entityClass: new () => T,
-    query: TenantQuery
-  ): Promise<T[]> {
+  async executeTenantQuery<T>(entityClass: new () => T, query: TenantQuery): Promise<T[]> {
     if (!this.currentContext) {
       throw new Error('No tenant context set');
     }
@@ -330,18 +327,18 @@ export class TenantManager {
     // Add tenant filter to query
     const tenantFilter = {
       ...query.filters,
-      tenantId: query.tenantId
+      tenantId: query.tenantId,
     };
 
     // Execute query with tenant isolation
     const results = await this.entityManager.find(entityClass, {
-      where: tenantFilter
+      where: tenantFilter,
     });
 
     this.logger.debug('Tenant query executed', {
       tenantId: query.tenantId,
       entity: entityClass.name,
-      resultCount: results.length
+      resultCount: results.length,
     });
 
     return results;
@@ -388,7 +385,7 @@ export class TenantManager {
       userCount: Math.floor(Math.random() * 100),
       dataSize: Math.floor(Math.random() * 1000000),
       requestCount: Math.floor(Math.random() * 10000),
-      lastActivity: new Date()
+      lastActivity: new Date(),
     };
   }
 
@@ -424,7 +421,7 @@ export class TenantManager {
 
     return {
       withinLimits: warnings.length === 0,
-      warnings
+      warnings,
     };
   }
 
@@ -454,7 +451,7 @@ export class TenantManager {
     return {
       size: this.tenantCache.size,
       hitRate: 0.85, // Mock hit rate
-      memoryUsage: this.tenantCache.size * 1024 // Mock memory usage
+      memoryUsage: this.tenantCache.size * 1024, // Mock memory usage
     };
   }
 }

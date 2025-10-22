@@ -29,9 +29,15 @@ const METADATA_KEY = Symbol('vlodia:relation');
  */
 export function OneToOne(target: () => Function, joinColumn?: string): PropertyDecorator;
 export function OneToOne(options: RelationOptions): PropertyDecorator;
-export function OneToOne(targetOrOptions: (() => Function) | RelationOptions, joinColumn?: string): PropertyDecorator {
+export function OneToOne(
+  targetOrOptions: (() => Function) | RelationOptions,
+  joinColumn?: string
+): PropertyDecorator {
   if (typeof targetOrOptions === 'function') {
-    return createRelationDecorator('OneToOne', { target: targetOrOptions, joinColumn: joinColumn || '' });
+    return createRelationDecorator('OneToOne', {
+      target: targetOrOptions,
+      joinColumn: joinColumn || '',
+    });
   }
   return createRelationDecorator('OneToOne', targetOrOptions);
 }
@@ -42,9 +48,15 @@ export function OneToOne(targetOrOptions: (() => Function) | RelationOptions, jo
  */
 export function OneToMany(target: () => Function, joinColumn: string): PropertyDecorator;
 export function OneToMany(options: RelationOptions): PropertyDecorator;
-export function OneToMany(targetOrOptions: (() => Function) | RelationOptions, joinColumn?: string): PropertyDecorator {
+export function OneToMany(
+  targetOrOptions: (() => Function) | RelationOptions,
+  joinColumn?: string
+): PropertyDecorator {
   if (typeof targetOrOptions === 'function') {
-    return createRelationDecorator('OneToMany', { target: targetOrOptions, joinColumn: joinColumn || '' });
+    return createRelationDecorator('OneToMany', {
+      target: targetOrOptions,
+      joinColumn: joinColumn || '',
+    });
   }
   return createRelationDecorator('OneToMany', targetOrOptions);
 }
@@ -55,9 +67,15 @@ export function OneToMany(targetOrOptions: (() => Function) | RelationOptions, j
  */
 export function ManyToOne(target: () => Function, joinColumn: string): PropertyDecorator;
 export function ManyToOne(options: RelationOptions): PropertyDecorator;
-export function ManyToOne(targetOrOptions: (() => Function) | RelationOptions, joinColumn?: string): PropertyDecorator {
+export function ManyToOne(
+  targetOrOptions: (() => Function) | RelationOptions,
+  joinColumn?: string
+): PropertyDecorator {
   if (typeof targetOrOptions === 'function') {
-    return createRelationDecorator('ManyToOne', { target: targetOrOptions, joinColumn: joinColumn || '' });
+    return createRelationDecorator('ManyToOne', {
+      target: targetOrOptions,
+      joinColumn: joinColumn || '',
+    });
   }
   return createRelationDecorator('ManyToOne', targetOrOptions);
 }
@@ -68,9 +86,15 @@ export function ManyToOne(targetOrOptions: (() => Function) | RelationOptions, j
  */
 export function ManyToMany(target: () => Function, joinTable: string): PropertyDecorator;
 export function ManyToMany(options: RelationOptions): PropertyDecorator;
-export function ManyToMany(targetOrOptions: (() => Function) | RelationOptions, joinTable?: string): PropertyDecorator {
+export function ManyToMany(
+  targetOrOptions: (() => Function) | RelationOptions,
+  joinTable?: string
+): PropertyDecorator {
   if (typeof targetOrOptions === 'function') {
-    return createRelationDecorator('ManyToMany', { target: targetOrOptions, joinTable: joinTable || '' });
+    return createRelationDecorator('ManyToMany', {
+      target: targetOrOptions,
+      joinTable: joinTable || '',
+    });
   }
   return createRelationDecorator('ManyToMany', targetOrOptions);
 }
@@ -78,13 +102,10 @@ export function ManyToMany(targetOrOptions: (() => Function) | RelationOptions, 
 /**
  * Create a relation decorator with the specified type
  */
-function createRelationDecorator(
-  type: RelationType,
-  options: RelationOptions
-): PropertyDecorator {
+function createRelationDecorator(type: RelationType, options: RelationOptions): PropertyDecorator {
   return function (target: any, propertyKey: string | symbol) {
     const registry = MetadataRegistry.getInstance();
-    
+
     const metadata: RelationMetadata = {
       name: String(propertyKey),
       propertyName: String(propertyKey),
@@ -100,7 +121,7 @@ function createRelationDecorator(
 
     // Store metadata in reflection
     Reflect.defineMetadata(METADATA_KEY, metadata, target, propertyKey);
-    
+
     // Register with metadata registry
     // Property decorators receive the prototype, but we need the constructor
     const constructor = target.constructor;
@@ -111,7 +132,10 @@ function createRelationDecorator(
 /**
  * Get relation metadata from a property
  */
-export function getRelationMetadata(target: any, propertyKey: string | symbol): RelationMetadata | undefined {
+export function getRelationMetadata(
+  target: any,
+  propertyKey: string | symbol
+): RelationMetadata | undefined {
   return Reflect.getMetadata(METADATA_KEY, target, propertyKey);
 }
 

@@ -37,7 +37,7 @@ export class EntitySerializer {
       excludeUndefined = true,
       excludeNull = false,
       maxDepth = 10,
-      replacer
+      replacer,
     } = options;
 
     this.visited.clear();
@@ -50,7 +50,7 @@ export class EntitySerializer {
       excludeNull,
       maxDepth,
       replacer,
-      currentDepth: 0
+      currentDepth: 0,
     });
   }
 
@@ -77,11 +77,11 @@ export class EntitySerializer {
       excludeNull,
       maxDepth,
       replacer,
-      currentDepth
+      currentDepth,
     } = options;
 
     // Check depth limit defensively, ensuring maxDepth is always a number
-    if (typeof maxDepth !== "number" || currentDepth >= maxDepth) {
+    if (typeof maxDepth !== 'number' || currentDepth >= maxDepth) {
       return '[Max Depth Reached]';
     }
 
@@ -90,7 +90,7 @@ export class EntitySerializer {
     if (value === null) {
       return excludeNull ? undefined : null;
     }
-    
+
     if (value === undefined) {
       return excludeUndefined ? undefined : undefined;
     }
@@ -107,10 +107,12 @@ export class EntitySerializer {
 
     // Handle Array
     if (Array.isArray(value)) {
-      return value.map(item => this.serializeValue(item, {
-        ...options,
-        currentDepth: currentDepth + 1
-      }));
+      return value.map(item =>
+        this.serializeValue(item, {
+          ...options,
+          currentDepth: currentDepth + 1,
+        })
+      );
     }
 
     // Handle circular references
@@ -170,14 +172,14 @@ export class EntitySerializer {
         // Serialize nested value
         serializedValue = this.serializeValue(serializedValue, {
           ...options,
-          currentDepth: currentDepth + 1
+          currentDepth: currentDepth + 1,
         });
 
         // Skip undefined/null values based on options
         if (serializedValue === undefined && excludeUndefined) {
           continue;
         }
-        
+
         if (serializedValue === null && excludeNull) {
           continue;
         }
@@ -258,8 +260,8 @@ export class EntitySerializer {
    */
   addToJSONMethod<T>(entityClass: new () => T): void {
     const originalPrototype = entityClass.prototype;
-    
-    originalPrototype.toJSON = function(options: SerializationOptions = {}) {
+
+    originalPrototype.toJSON = function (options: SerializationOptions = {}) {
       const serializer = new EntitySerializer();
       return serializer.serialize(this, options);
     };
@@ -270,7 +272,7 @@ export class EntitySerializer {
    */
   removeCircularReferences(obj: any, maxDepth: number = 10): any {
     const visited = new Set<any>();
-    
+
     const removeCircular = (value: any, depth: number): any => {
       if (depth >= maxDepth) {
         return '[Max Depth Reached]';

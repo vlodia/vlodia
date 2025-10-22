@@ -43,7 +43,7 @@ export class QueryAnalyzer {
   private performanceThresholds = {
     slowQuery: 1000, // 1 second
     n1Threshold: 5, // 5+ similar queries
-    criticalThreshold: 10 // 10+ similar queries
+    criticalThreshold: 10, // 10+ similar queries
   };
 
   constructor(logger: Logger) {
@@ -68,7 +68,7 @@ export class QueryAnalyzer {
       n1Detected,
       optimizationSuggestions,
       performanceScore,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
     this.queryHistory.push(analysis);
@@ -80,7 +80,7 @@ export class QueryAnalyzer {
         queryId,
         sql: this.sanitizeSQL(sql),
         executionTime,
-        suggestions: optimizationSuggestions
+        suggestions: optimizationSuggestions,
       });
     }
 
@@ -89,7 +89,7 @@ export class QueryAnalyzer {
         queryId,
         sql: this.sanitizeSQL(sql),
         executionTime,
-        threshold: this.performanceThresholds.slowQuery
+        threshold: this.performanceThresholds.slowQuery,
       });
     }
 
@@ -101,20 +101,20 @@ export class QueryAnalyzer {
    */
   private detectN1Pattern(sql: string): boolean {
     const normalizedSQL = this.normalizeSQL(sql);
-    
+
     // Check for common N+1 patterns
     const n1Patterns = [
       // Pattern 1: SELECT with WHERE IN (subquery)
       /SELECT.*FROM.*WHERE.*IN\s*\(\s*SELECT/i,
-      
+
       // Pattern 2: Multiple similar SELECTs in sequence
       /SELECT.*FROM.*WHERE.*id\s*=\s*\?/i,
-      
+
       // Pattern 3: Loop-like patterns
       /SELECT.*FROM.*WHERE.*id\s*IN\s*\([^)]+\)/i,
-      
+
       // Pattern 4: Missing JOINs
-      /SELECT.*FROM.*WHERE.*NOT\s+EXISTS/i
+      /SELECT.*FROM.*WHERE.*NOT\s+EXISTS/i,
     ];
 
     for (const pattern of n1Patterns) {
@@ -139,10 +139,10 @@ export class QueryAnalyzer {
    */
   private detectEntityN1Pattern(sql: string): boolean {
     const entities = this.metadataRegistry.getAllEntities();
-    
+
     for (const entity of entities) {
       const relations = entity.relations;
-      
+
       for (const relation of relations) {
         // Check for OneToMany/ManyToMany N+1 patterns
         if (relation.type === 'OneToMany' || relation.type === 'ManyToMany') {
@@ -150,35 +150,36 @@ export class QueryAnalyzer {
             `SELECT.*FROM.*${relation.target.name.toLowerCase()}.*WHERE.*${entity.name.toLowerCase()}_id\\s*=\\s*\\?`,
             'i'
           );
-          
+
           if (relationPattern.test(sql)) {
             this.logger.debug('Entity-specific N+1 pattern detected', {
               entity: entity.name,
               relation: relation.propertyName,
-              type: relation.type
+              type: relation.type,
             });
             return true;
           }
         }
-        
+
         // Check for missing JOIN patterns
         if (sql.includes(`FROM ${entity.tableName}`) && !sql.includes('JOIN')) {
-          const hasRelationQueries = this.queryHistory.some(q => 
-            q.sql.includes(relation.target.name.toLowerCase()) && 
-            q.timestamp.getTime() > Date.now() - 5000 // Within last 5 seconds
+          const hasRelationQueries = this.queryHistory.some(
+            q =>
+              q.sql.includes(relation.target.name.toLowerCase()) &&
+              q.timestamp.getTime() > Date.now() - 5000 // Within last 5 seconds
           );
-          
+
           if (hasRelationQueries) {
             this.logger.debug('Missing JOIN pattern detected', {
               entity: entity.name,
-              relation: relation.propertyName
+              relation: relation.propertyName,
             });
             return true;
           }
         }
       }
     }
-    
+
     return false;
   }
 
@@ -188,7 +189,7 @@ export class QueryAnalyzer {
   private findSimilarQueries(sql: string): QueryAnalysis[] {
     const normalizedSQL = this.normalizeSQL(sql);
     const basePattern = this.extractBasePattern(normalizedSQL);
-    
+
     return this.queryHistory.filter(query => {
       const queryPattern = this.extractBasePattern(this.normalizeSQL(query.sql));
       return queryPattern === basePattern;
@@ -212,11 +213,7 @@ export class QueryAnalyzer {
    * Normalize SQL for pattern matching
    */
   private normalizeSQL(sql: string): string {
-    return sql
-      .toLowerCase()
-      .replace(/\s+/g, ' ')
-      .replace(/`/g, '')
-      .trim();
+    return sql.toLowerCase().replace(/\s+/g, ' ').replace(/`/g, '').trim();
   }
 
   /**
@@ -230,7 +227,7 @@ export class QueryAnalyzer {
       suggestions.push('Consider using JOINs instead of multiple queries');
       suggestions.push('Use eager loading for related entities');
       suggestions.push('Implement batch loading for collections');
-      
+
       // Add entity-specific suggestions
       const entitySuggestions = this.generateEntityOptimizationSuggestions(sql);
       suggestions.push(...entitySuggestions);
@@ -265,11 +262,11 @@ export class QueryAnalyzer {
   private generateEntityOptimizationSuggestions(sql: string): string[] {
     const suggestions: string[] = [];
     const entities = this.metadataRegistry.getAllEntities();
-    
+
     for (const entity of entities) {
       if (sql.includes(entity.tableName)) {
         const relations = entity.relations;
-        
+
         for (const relation of relations) {
           if (relation.type === 'OneToMany' || relation.type === 'ManyToMany') {
             suggestions.push(
@@ -279,33 +276,33 @@ export class QueryAnalyzer {
               `Add JOIN with ${relation.target.name} table for ${relation.propertyName}`
             );
           }
-          
+
           if (relation.type === 'ManyToOne' || relation.type === 'OneToOne') {
-            suggestions.push(
-              `Consider including ${relation.propertyName} in the initial query`
-            );
+            suggestions.push(`Consider including ${relation.propertyName} in the initial query`);
           }
         }
-        
+
         // Check for missing indexes on foreign keys
         const columns = entity.columns;
         for (const column of columns) {
           if (column.name.endsWith('_id') || column.name.endsWith('Id')) {
-            suggestions.push(
-              `Ensure index exists on ${entity.tableName}.${column.name}`
-            );
+            suggestions.push(`Ensure index exists on ${entity.tableName}.${column.name}`);
           }
         }
       }
     }
-    
+
     return suggestions;
   }
 
   /**
    * Calculate performance score (0-100)
    */
-  private calculatePerformanceScore(executionTime: number, rowCount: number, n1Detected: boolean): number {
+  private calculatePerformanceScore(
+    executionTime: number,
+    rowCount: number,
+    n1Detected: boolean
+  ): number {
     let score = 100;
 
     // Penalize for execution time
@@ -335,7 +332,7 @@ export class QueryAnalyzer {
     if (existing) {
       existing.count++;
       existing.affectedQueries.push(analysis.queryId);
-      
+
       // Update severity
       if (existing.count >= this.performanceThresholds.criticalThreshold) {
         existing.severity = 'critical';
@@ -348,7 +345,7 @@ export class QueryAnalyzer {
         count: 1,
         severity: 'medium',
         suggestions: analysis.optimizationSuggestions,
-        affectedQueries: [analysis.queryId]
+        affectedQueries: [analysis.queryId],
       });
     }
   }
@@ -359,12 +356,14 @@ export class QueryAnalyzer {
   getPerformanceMetrics(): PerformanceMetrics {
     const totalQueries = this.queryHistory.length;
     const n1Queries = this.queryHistory.filter(q => q.n1Detected).length;
-    const averageExecutionTime = this.queryHistory.reduce((sum, q) => sum + q.executionTime, 0) / totalQueries;
-    const slowestQuery = this.queryHistory.reduce((slowest, current) => 
+    const averageExecutionTime =
+      this.queryHistory.reduce((sum, q) => sum + q.executionTime, 0) / totalQueries;
+    const slowestQuery = this.queryHistory.reduce((slowest, current) =>
       current.executionTime > slowest.executionTime ? current : slowest
     );
     const optimizationOpportunities = this.n1Patterns.size;
-    const performanceScore = this.queryHistory.reduce((sum, q) => sum + q.performanceScore, 0) / totalQueries;
+    const performanceScore =
+      this.queryHistory.reduce((sum, q) => sum + q.performanceScore, 0) / totalQueries;
 
     return {
       totalQueries,
@@ -372,7 +371,7 @@ export class QueryAnalyzer {
       averageExecutionTime,
       slowestQuery,
       optimizationOpportunities,
-      performanceScore
+      performanceScore,
     };
   }
 
@@ -393,7 +392,7 @@ export class QueryAnalyzer {
     suggestions: string[];
   } {
     const patterns = this.getN1DetectionReport();
-    
+
     return {
       critical: patterns.filter(p => p.severity === 'critical'),
       high: patterns.filter(p => p.severity === 'high'),
@@ -403,8 +402,8 @@ export class QueryAnalyzer {
         'Use batch loading for collection relations',
         'Add database indexes on frequently queried columns',
         'Consider query result caching for expensive operations',
-        'Optimize complex queries by breaking them into simpler parts'
-      ]
+        'Optimize complex queries by breaking them into simpler parts',
+      ],
     };
   }
 
@@ -432,7 +431,7 @@ export class QueryAnalyzer {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
     return Math.abs(hash).toString(36);
@@ -442,9 +441,9 @@ export class QueryAnalyzer {
    * Sanitize SQL for logging
    */
   private sanitizeSQL(sql: string): string {
-    return sql
-      .replace(/\?\d+/g, '?')
-      .replace(/\d+/g, 'N')
-      .substring(0, 200) + (sql.length > 200 ? '...' : '');
+    return (
+      sql.replace(/\?\d+/g, '?').replace(/\d+/g, 'N').substring(0, 200) +
+      (sql.length > 200 ? '...' : '')
+    );
   }
 }

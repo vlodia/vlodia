@@ -112,18 +112,18 @@ const advancedConfig = {
     username: 'postgres',
     password: 'password',
     database: 'vlodia_advanced',
-    ssl: false
+    ssl: false,
   },
   entities: [User, Post, Comment],
   logging: {
     level: 'debug' as const,
     format: 'json' as const,
-    queries: true
+    queries: true,
   },
   cache: {
     enabled: true,
     type: 'memory' as const,
-    ttl: 3600
+    ttl: 3600,
   },
   // Real-time features
   realtime: {
@@ -132,12 +132,12 @@ const advancedConfig = {
     path: '/ws',
     cors: {
       origin: ['http://localhost:3000'],
-      credentials: true
+      credentials: true,
     },
     heartbeat: {
       interval: 30000,
-      timeout: 10000
-    }
+      timeout: 10000,
+    },
   },
   // GraphQL features
   graphql: {
@@ -148,14 +148,14 @@ const advancedConfig = {
     subscriptions: true,
     cors: {
       origin: ['http://localhost:3000'],
-      credentials: true
-    }
+      credentials: true,
+    },
   },
   // Multi-tenancy
   tenancy: {
     enabled: true,
-    defaultTenant: 'default'
-  }
+    defaultTenant: 'default',
+  },
 };
 
 // ===== BASIC USAGE EXAMPLES =====
@@ -219,7 +219,7 @@ async function basicUsageExample() {
     console.log('✅ Published posts:', posts);
 
     // Transaction example
-    await orm.transaction(async (manager) => {
+    await orm.transaction(async manager => {
       const user = new User();
       user.name = 'Jane Doe';
       user.email = 'jane@example.com';
@@ -263,7 +263,7 @@ async function basicUsageExample() {
     const userToUpdate = await orm.manager.findOne(User, {
       where: { email: 'john@example.com' },
     });
-    
+
     if (userToUpdate) {
       userToUpdate.name = 'John Updated';
       userToUpdate.updatedAt = new Date();
@@ -276,18 +276,14 @@ async function basicUsageExample() {
       where: {
         $and: [
           { published: true },
-          { $or: [
-            { title: { $like: '%first%' } },
-            { content: { $like: '%content%' } }
-          ]}
-        ]
+          { $or: [{ title: { $like: '%first%' } }, { content: { $like: '%content%' } }] },
+        ],
       },
       relations: ['author', 'comments'],
       orderBy: { createdAt: 'DESC' },
       limit: 5,
     });
     console.log('✅ Complex query results:', complexQuery);
-
   } finally {
     await orm.close();
     console.log('🔒 Basic ORM closed');
@@ -334,7 +330,7 @@ async function advancedUsageExample() {
       // Simulate some queries
       await orm.manager.find(User, {});
       await orm.manager.find(Post, {});
-      
+
       const metrics = orm.getPerformanceMetrics();
       console.log('✅ Query Analyzer active');
       console.log(`   - Total Queries: ${metrics.totalQueries}`);
@@ -351,7 +347,7 @@ async function advancedUsageExample() {
       console.log(`   - Nodes: ${diagram.nodes.length}`);
       console.log(`   - Edges: ${diagram.edges.length}`);
       console.log(`   - Layout: hierarchical`);
-      
+
       // Generate SVG
       const svg = schemaDesigner.generateSVG(diagram);
       console.log(`   - SVG generated (${svg.length} characters)`);
@@ -362,7 +358,7 @@ async function advancedUsageExample() {
     const tenantManager = orm.getTenantManager();
     if (tenantManager) {
       console.log('✅ Tenant Manager active');
-      
+
       // Create a tenant
       const tenant = await tenantManager.createTenant({
         name: 'demo-tenant',
@@ -374,20 +370,20 @@ async function advancedUsageExample() {
           limits: {
             maxUsers: 1000,
             maxStorage: 10000000,
-            maxRequests: 100000
+            maxRequests: 100000,
           },
           settings: {
             timezone: 'UTC',
-            language: 'en'
+            language: 'en',
           },
           security: {
             encryption: true,
             auditLogging: true,
-            dataRetention: 365
-          }
-        }
+            dataRetention: 365,
+          },
+        },
       });
-      
+
       console.log(`   - Tenant created: ${tenant.name} (${tenant.id})`);
       console.log(`   - Database: ${tenant.database}`);
       console.log(`   - Schema: ${tenant.schema}`);
@@ -395,7 +391,7 @@ async function advancedUsageExample() {
 
     // ===== ENTITY OPERATIONS WITH NEW FEATURES =====
     console.log('\n💾 Entity Operations:');
-    
+
     // Create user with real-time events
     const user = new User();
     user.name = 'John Doe';
@@ -419,7 +415,7 @@ async function advancedUsageExample() {
 
     // Query with performance analysis
     const users = await orm.manager.find(User, {
-      relations: ['posts']
+      relations: ['posts'],
     });
     console.log(`✅ Users with posts loaded: ${users.length}`);
 
@@ -450,7 +446,6 @@ async function advancedUsageExample() {
     console.log('   - vlodia schema:visualize --format svg');
     console.log('   - vlodia performance:analyze');
     console.log('   - vlodia tenant:create --name demo --domain demo.com');
-
   } catch (error) {
     console.error('❌ Error demonstrating advanced features:', error);
   } finally {
@@ -479,7 +474,7 @@ async function repositoryPatternExample() {
   try {
     // Repository pattern
     const userRepository = orm.manager.getRepository(User);
-    
+
     // Find users with pagination
     const paginatedUsers = await userRepository.find({ limit: 10, offset: 0 });
     console.log('✅ Paginated users:', paginatedUsers);
@@ -503,8 +498,8 @@ async function repositoryPatternExample() {
     // Find users with date range
     const startDate = new Date('2023-01-01');
     const endDate = new Date('2023-12-31');
-    const usersByDateRange = await userRepository.find({ 
-      where: { createdAt: { between: [startDate, endDate] } } 
+    const usersByDateRange = await userRepository.find({
+      where: { createdAt: { between: [startDate, endDate] } },
     });
     console.log('✅ Users by date range:', usersByDateRange);
 
@@ -529,24 +524,20 @@ async function repositoryPatternExample() {
     console.log('✅ Last 5 users:', lastUsers);
 
     // Batch operations
-    const users = [
-      new User(),
-      new User(),
-      new User(),
-    ];
-    
+    const users = [new User(), new User(), new User()];
+
     users[0]!.name = 'User 1';
     users[0]!.email = 'user1@example.com';
     users[0]!.password = 'password1';
     users[0]!.createdAt = new Date();
     users[0]!.updatedAt = new Date();
-    
+
     users[1]!.name = 'User 2';
     users[1]!.email = 'user2@example.com';
     users[1]!.password = 'password2';
     users[1]!.createdAt = new Date();
     users[1]!.updatedAt = new Date();
-    
+
     users[2]!.name = 'User 3';
     users[2]!.email = 'user3@example.com';
     users[2]!.password = 'password3';
@@ -557,15 +548,15 @@ async function repositoryPatternExample() {
     console.log('✅ Batch saved users:', savedUsers);
 
     // Event handling
-    orm.events.on('transaction:start', (data) => {
+    orm.events.on('transaction:start', data => {
       console.log('✅ Transaction started:', data.transactionId);
     });
 
-    orm.events.on('transaction:commit', (data) => {
+    orm.events.on('transaction:commit', data => {
       console.log('✅ Transaction committed:', data.transactionId);
     });
 
-    orm.events.on('transaction:rollback', (data) => {
+    orm.events.on('transaction:rollback', data => {
       console.log('✅ Transaction rolled back:', data.transactionId);
     });
 
@@ -575,7 +566,6 @@ async function repositoryPatternExample() {
       const cachedValue = await orm.cacheInstance.get('test-key');
       console.log('✅ Cached value:', cachedValue);
     }
-
   } finally {
     await orm.close();
     console.log('🔒 Repository ORM closed');
@@ -594,7 +584,7 @@ async function runAllExamples() {
     await basicUsageExample();
     await advancedUsageExample();
     await repositoryPatternExample();
-    
+
     console.log('\n🎉 All examples completed successfully!');
     console.log('\n📚 Summary of demonstrated features:');
     console.log('   ✅ Basic CRUD operations');
@@ -611,7 +601,6 @@ async function runAllExamples() {
     console.log('   ✅ Schema visualization');
     console.log('   ✅ Multi-tenancy support');
     console.log('\n🚀 Vlodia ORM is production-ready!');
-    
   } catch (error) {
     console.error('❌ Error running examples:', error);
     process.exit(1);

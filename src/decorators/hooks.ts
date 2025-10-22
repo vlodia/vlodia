@@ -8,7 +8,13 @@ import 'reflect-metadata';
 import { MetadataRegistry } from '../core/metadata-registry';
 import { HookMetadata } from '../types';
 
-export type HookType = 'beforeInsert' | 'afterInsert' | 'beforeUpdate' | 'afterUpdate' | 'beforeRemove' | 'afterRemove';
+export type HookType =
+  | 'beforeInsert'
+  | 'afterInsert'
+  | 'beforeUpdate'
+  | 'afterUpdate'
+  | 'beforeRemove'
+  | 'afterRemove';
 
 const METADATA_KEY = Symbol('nythera:hook');
 
@@ -66,7 +72,7 @@ export function AfterRemove(): MethodDecorator {
 function createHookDecorator(type: HookType): MethodDecorator {
   return function (target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
     const registry = MetadataRegistry.getInstance();
-    
+
     const metadata: HookMetadata = {
       name: String(propertyKey),
       propertyName: String(propertyKey),
@@ -76,12 +82,12 @@ function createHookDecorator(type: HookType): MethodDecorator {
 
     // Store metadata in reflection
     Reflect.defineMetadata(METADATA_KEY, metadata, target, propertyKey);
-    
+
     // Register with metadata registry
     // Method decorators receive the prototype, but we need the constructor
     const constructor = target.constructor;
     registry.registerHook(constructor, String(propertyKey), metadata);
-    
+
     return descriptor;
   };
 }
@@ -89,7 +95,10 @@ function createHookDecorator(type: HookType): MethodDecorator {
 /**
  * Get hook metadata from a method
  */
-export function getHookMetadata(target: any, propertyKey: string | symbol): HookMetadata | undefined {
+export function getHookMetadata(
+  target: any,
+  propertyKey: string | symbol
+): HookMetadata | undefined {
   return Reflect.getMetadata(METADATA_KEY, target, propertyKey);
 }
 

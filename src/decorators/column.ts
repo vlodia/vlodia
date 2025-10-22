@@ -31,13 +31,16 @@ const METADATA_KEY = Symbol('nythera:column');
 export function Column(options: ColumnOptions = {}): PropertyDecorator {
   return function (target: any, propertyKey: string | symbol) {
     const registry = MetadataRegistry.getInstance();
-    
+
     // Get existing metadata if any (from previous decorators)
-    const existingMetadata = Reflect.getMetadata(METADATA_KEY, target, propertyKey) as ColumnMetadata | undefined;
-    
+    const existingMetadata = Reflect.getMetadata(METADATA_KEY, target, propertyKey) as
+      | ColumnMetadata
+      | undefined;
+
     // Infer column type from TypeScript type if not specified
-    const columnType = options.type || existingMetadata?.type || inferColumnType(target, propertyKey);
-    
+    const columnType =
+      options.type || existingMetadata?.type || inferColumnType(target, propertyKey);
+
     const metadata: ColumnMetadata = {
       name: options.name || existingMetadata?.name || String(propertyKey),
       propertyName: String(propertyKey),
@@ -54,7 +57,7 @@ export function Column(options: ColumnOptions = {}): PropertyDecorator {
 
     // Store metadata in reflection
     Reflect.defineMetadata(METADATA_KEY, metadata, target, propertyKey);
-    
+
     // Register with metadata registry
     // Property decorators receive the prototype, but we need the constructor
     const constructor = target.constructor;
@@ -99,7 +102,7 @@ export function NotNull(options: Omit<ColumnOptions, 'nullable'> = {}): Property
  */
 function inferColumnType(target: any, propertyKey: string | symbol): ColumnType {
   const designType = Reflect.getMetadata('design:type', target, propertyKey);
-  
+
   switch (designType) {
     case String:
       return 'string';
@@ -119,7 +122,10 @@ function inferColumnType(target: any, propertyKey: string | symbol): ColumnType 
 /**
  * Get column metadata from a property
  */
-export function getColumnMetadata(target: any, propertyKey: string | symbol): ColumnMetadata | undefined {
+export function getColumnMetadata(
+  target: any,
+  propertyKey: string | symbol
+): ColumnMetadata | undefined {
   return Reflect.getMetadata(METADATA_KEY, target, propertyKey);
 }
 

@@ -238,7 +238,7 @@ export class QueryBuilder {
    */
   private buildSelect(): string {
     let sql = `SELECT ${this.ast.columns.join(', ')} FROM ${this.ast.table}`;
-    
+
     if (this.ast.alias) {
       sql += ` AS ${this.ast.alias}`;
     }
@@ -271,8 +271,9 @@ export class QueryBuilder {
 
     // Add ORDER BY clause
     if (this.ast.orderBy) {
-      const orderByClauses = Object.entries(this.ast.orderBy)
-        .map(([column, direction]) => `${column} ${direction}`);
+      const orderByClauses = Object.entries(this.ast.orderBy).map(
+        ([column, direction]) => `${column} ${direction}`
+      );
       sql += ` ORDER BY ${orderByClauses.join(', ')}`;
     }
 
@@ -311,8 +312,9 @@ export class QueryBuilder {
       throw new Error('UPDATE query requires set values');
     }
 
-    const setClauses = Object.entries(this.ast.set)
-      .map(([column, value]) => `${column} = ${this.addParameter(value)}`);
+    const setClauses = Object.entries(this.ast.set).map(
+      ([column, value]) => `${column} = ${this.addParameter(value)}`
+    );
 
     let sql = `UPDATE ${this.ast.table} SET ${setClauses.join(', ')}`;
 
@@ -366,10 +368,14 @@ export class QueryBuilder {
             clauses.push(`${key} NOT LIKE ${this.addParameter(opValue)}`);
           } else if (operator === '$between') {
             const [start, end] = opValue as [any, any];
-            clauses.push(`${key} BETWEEN ${this.addParameter(start)} AND ${this.addParameter(end)}`);
+            clauses.push(
+              `${key} BETWEEN ${this.addParameter(start)} AND ${this.addParameter(end)}`
+            );
           } else if (operator === '$notBetween') {
             const [start, end] = opValue as [any, any];
-            clauses.push(`${key} NOT BETWEEN ${this.addParameter(start)} AND ${this.addParameter(end)}`);
+            clauses.push(
+              `${key} NOT BETWEEN ${this.addParameter(start)} AND ${this.addParameter(end)}`
+            );
           } else if (operator === '$isNull') {
             clauses.push(`${key} IS ${opValue ? '' : 'NOT '}NULL`);
           } else if (operator === '$isNotNull') {

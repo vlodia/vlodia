@@ -46,7 +46,7 @@ export class GraphQLSchemaGenerator {
     return {
       typeDefs,
       resolvers,
-      subscriptions
+      subscriptions,
     };
   }
 
@@ -313,13 +313,13 @@ export class GraphQLSchemaGenerator {
       Date: {
         serialize: (value: Date) => value.toISOString(),
         parseValue: (value: string) => new Date(value),
-        parseLiteral: (ast: any) => new Date(ast.value)
+        parseLiteral: (ast: any) => new Date(ast.value),
       },
       JSON: {
         serialize: (value: any) => value,
         parseValue: (value: any) => value,
-        parseLiteral: (ast: any) => ast.value
-      }
+        parseLiteral: (ast: any) => ast.value,
+      },
     };
 
     if (this.config.subscriptions) {
@@ -329,7 +329,7 @@ export class GraphQLSchemaGenerator {
     // Generate entity resolvers
     for (const entity of entities) {
       const entityName = entity.name.toLowerCase();
-      
+
       // Query resolvers
       resolvers.Query[`${entityName}s`] = this.generateListResolver(entity);
       resolvers.Query[entityName] = this.generateSingleResolver(entity);
@@ -341,9 +341,18 @@ export class GraphQLSchemaGenerator {
 
       // Subscription resolvers
       if (this.config.subscriptions) {
-        resolvers.Subscription[`${entityName}Created`] = this.generateSubscriptionResolver(entity, 'created');
-        resolvers.Subscription[`${entityName}Updated`] = this.generateSubscriptionResolver(entity, 'updated');
-        resolvers.Subscription[`${entityName}Deleted`] = this.generateSubscriptionResolver(entity, 'deleted');
+        resolvers.Subscription[`${entityName}Created`] = this.generateSubscriptionResolver(
+          entity,
+          'created'
+        );
+        resolvers.Subscription[`${entityName}Updated`] = this.generateSubscriptionResolver(
+          entity,
+          'updated'
+        );
+        resolvers.Subscription[`${entityName}Deleted`] = this.generateSubscriptionResolver(
+          entity,
+          'deleted'
+        );
       }
     }
 
@@ -360,7 +369,7 @@ export class GraphQLSchemaGenerator {
         where: args.where,
         orderBy: args.orderBy,
         limit: args.limit,
-        offset: args.offset
+        offset: args.offset,
       });
     };
   }
@@ -382,10 +391,10 @@ export class GraphQLSchemaGenerator {
     return async (_parent: any, args: any, context: any) => {
       const { entityManager } = context;
       const entityInstance = new (entity.target as any)();
-      
+
       // Set properties from input
       Object.assign(entityInstance, args.input);
-      
+
       return await entityManager.save(entityInstance);
     };
   }
@@ -397,12 +406,12 @@ export class GraphQLSchemaGenerator {
     return async (_parent: any, args: any, context: any) => {
       const { entityManager } = context;
       const { id, ...updateData } = args.input;
-      
+
       const entityInstance = await entityManager.findOne(entity.target, { where: { id } });
       if (!entityInstance) {
         throw new Error(`${entity.name} not found`);
       }
-      
+
       Object.assign(entityInstance, updateData);
       return await entityManager.save(entityInstance);
     };
@@ -418,7 +427,7 @@ export class GraphQLSchemaGenerator {
       if (!entityInstance) {
         throw new Error(`${entity.name} not found`);
       }
-      
+
       await entityManager.remove(entityInstance);
       return true;
     };
@@ -432,7 +441,7 @@ export class GraphQLSchemaGenerator {
       subscribe: async (_parent: any, _args: any, context: any) => {
         const { pubsub } = context;
         return pubsub.asyncIterator(`${entity.name.toLowerCase()}_${event}`);
-      }
+      },
     };
   }
 
@@ -485,26 +494,26 @@ export class GraphQLSchemaGenerator {
 
     for (const entity of entities) {
       const entityName = entity.name.toLowerCase();
-      
+
       subscriptions[`${entityName}Created`] = {
         subscribe: async (_parent: any, _args: any, context: any) => {
           const { pubsub } = context;
           return pubsub.asyncIterator(`${entityName}_created`);
-        }
+        },
       };
 
       subscriptions[`${entityName}Updated`] = {
         subscribe: async (_parent: any, _args: any, context: any) => {
           const { pubsub } = context;
           return pubsub.asyncIterator(`${entityName}_updated`);
-        }
+        },
       };
 
       subscriptions[`${entityName}Deleted`] = {
         subscribe: async (_parent: any, _args: any, context: any) => {
           const { pubsub } = context;
           return pubsub.asyncIterator(`${entityName}_deleted`);
-        }
+        },
       };
     }
 

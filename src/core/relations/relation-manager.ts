@@ -45,13 +45,13 @@ export class RelationManager {
 
     const entityClass = entities[0]!.constructor as new () => T;
     const entityMetadata = this.metadataRegistry.getEntity(entityClass);
-    
+
     if (!entityMetadata) {
       throw new Error(`Entity ${entityClass.name} not registered`);
     }
 
     const relationMetadatas = this.getRelationMetadatas(entityClass, relations);
-    
+
     for (const relationMetadata of relationMetadatas) {
       await this.loadRelation(entities, relationMetadata, options);
     }
@@ -79,13 +79,13 @@ export class RelationManager {
     _options: RelationLoadOptions
   ): Promise<void> {
     const entityClass = entities[0]!.constructor as new () => T;
-    
+
     // Validate relation exists for this entity
     const entityMetadata = this.metadataRegistry.getEntity(entityClass);
     if (!entityMetadata) {
       throw new Error(`Entity ${entityClass.name} not registered`);
     }
-    
+
     switch (relationMetadata.type) {
       case 'OneToOne':
         await this.loadOneToOneRelation(entities, relationMetadata, _options);
@@ -112,20 +112,20 @@ export class RelationManager {
   ): Promise<void> {
     const entityClass = entities[0]!.constructor as new () => T;
     const primaryKey = this.metadataRegistry.getPrimaryKey(entityClass);
-    
+
     if (!primaryKey) {
       throw new Error(`Entity ${entityClass.name} has no primary key`);
     }
 
     const joinColumn = relationMetadata.joinColumn || `${relationMetadata.name}Id`;
     const entityIds = entities.map(entity => (entity as any)[primaryKey.propertyName]);
-    
+
     if (entityIds.length === 0) {
       return;
     }
 
     const relatedEntities = await this.entityManager.find(relationMetadata.target as any, {
-      where: { [joinColumn]: { $in: entityIds } }
+      where: { [joinColumn]: { $in: entityIds } },
     });
 
     // Group related entities by foreign key
@@ -153,20 +153,20 @@ export class RelationManager {
   ): Promise<void> {
     const entityClass = entities[0]!.constructor as new () => T;
     const primaryKey = this.metadataRegistry.getPrimaryKey(entityClass);
-    
+
     if (!primaryKey) {
       throw new Error(`Entity ${entityClass.name} has no primary key`);
     }
 
     const joinColumn = relationMetadata.joinColumn || `${entityClass.name.toLowerCase()}Id`;
     const entityIds = entities.map(entity => (entity as any)[primaryKey.propertyName]);
-    
+
     if (entityIds.length === 0) {
       return;
     }
 
     const relatedEntities = await this.entityManager.find(relationMetadata.target as any, {
-      where: { [joinColumn]: { $in: entityIds } }
+      where: { [joinColumn]: { $in: entityIds } },
     });
 
     // Group related entities by foreign key
@@ -199,13 +199,13 @@ export class RelationManager {
     const foreignKeyValues = entities
       .map(entity => (entity as any)[joinColumn])
       .filter(value => value !== undefined && value !== null);
-    
+
     if (foreignKeyValues.length === 0) {
       return;
     }
 
     const relatedEntities = await this.entityManager.find(relationMetadata.target as any, {
-      where: { id: { $in: foreignKeyValues } }
+      where: { id: { $in: foreignKeyValues } },
     });
 
     // Group related entities by ID
@@ -233,28 +233,31 @@ export class RelationManager {
   ): Promise<void> {
     const entityClass = entities[0]!.constructor as new () => T;
     const primaryKey = this.metadataRegistry.getPrimaryKey(entityClass);
-    
+
     if (!primaryKey) {
       throw new Error(`Entity ${entityClass.name} has no primary key`);
     }
 
-    const joinTable = relationMetadata.joinTable || `${entityClass.name.toLowerCase()}_${relationMetadata.name}`;
+    const joinTable =
+      relationMetadata.joinTable || `${entityClass.name.toLowerCase()}_${relationMetadata.name}`;
     const joinColumn = relationMetadata.joinColumn || `${entityClass.name.toLowerCase()}Id`;
     const inverseJoinColumn = relationMetadata.inverseJoinColumn || `${relationMetadata.name}Id`;
-    
+
     const entityIds = entities.map(entity => (entity as any)[primaryKey.propertyName]);
-    
+
     if (entityIds.length === 0) {
       return;
     }
 
     // Get join table data - for ManyToMany we need to query the join table
     const joinTableData = await this.entityManager.find(relationMetadata.target as any, {
-      where: { [joinColumn]: { $in: entityIds } }
+      where: { [joinColumn]: { $in: entityIds } },
     });
-    
+
     // Log join table usage for debugging
-    this.logger?.debug(`ManyToMany relation using join table: ${joinTable}, inverse column: ${inverseJoinColumn}`);
+    this.logger?.debug(
+      `ManyToMany relation using join table: ${joinTable}, inverse column: ${inverseJoinColumn}`
+    );
 
     // Group by foreign key
     const relatedEntitiesMap = new Map();

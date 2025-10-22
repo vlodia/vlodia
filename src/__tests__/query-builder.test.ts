@@ -47,10 +47,7 @@ describe('QueryBuilder', () => {
       const builder = new QueryBuilder({
         tableName: 'users',
         where: {
-          $and: [
-            { name: 'John Doe' },
-            { age: { $gt: 18 } }
-          ]
+          $and: [{ name: 'John Doe' }, { age: { $gt: 18 } }],
         },
       });
 
@@ -64,10 +61,7 @@ describe('QueryBuilder', () => {
       const builder = new QueryBuilder({
         tableName: 'users',
         where: {
-          $or: [
-            { name: 'John Doe' },
-            { name: 'Jane Doe' }
-          ]
+          $or: [{ name: 'John Doe' }, { name: 'Jane Doe' }],
         },
       });
 
@@ -268,11 +262,13 @@ describe('QueryBuilder', () => {
         tableName: 'users',
       });
 
-      const { sql, parameters } = builder.insert({
-        name: 'John Doe',
-        email: 'john@example.com',
-        age: 30,
-      }).build();
+      const { sql, parameters } = builder
+        .insert({
+          name: 'John Doe',
+          email: 'john@example.com',
+          age: 30,
+        })
+        .build();
 
       expect(sql).toBe('INSERT INTO users (name, email, age) VALUES ($1, $2, $3)');
       expect(parameters).toEqual(['John Doe', 'john@example.com', 30]);
@@ -301,10 +297,7 @@ describe('QueryBuilder', () => {
         tableName: 'users',
       });
 
-      const { sql, parameters } = builder
-        .delete()
-        .where({ id: 1 })
-        .build();
+      const { sql, parameters } = builder.delete().where({ id: 1 }).build();
 
       expect(sql).toBe('DELETE FROM users WHERE id = $1');
       expect(parameters).toEqual([1]);
@@ -347,10 +340,7 @@ describe('QueryBuilder', () => {
         tableName: 'users',
       });
 
-      const { sql, parameters } = builder
-        .where({ name: 'John' })
-        .orWhere({ name: 'Jane' })
-        .build();
+      const { sql, parameters } = builder.where({ name: 'John' }).orWhere({ name: 'Jane' }).build();
 
       expect(sql).toBe('SELECT * FROM users WHERE (name = $1 OR name = $2)');
       expect(parameters).toEqual(['John', 'Jane']);
@@ -363,13 +353,7 @@ describe('QueryBuilder', () => {
         tableName: 'users',
         select: ['id', 'name', 'email'],
         where: {
-          $and: [
-            { age: { $gte: 18 } },
-            { $or: [
-              { status: 'active' },
-              { status: 'pending' }
-            ]}
-          ]
+          $and: [{ age: { $gte: 18 } }, { $or: [{ status: 'active' }, { status: 'pending' }] }],
         },
         orderBy: { name: 'ASC' },
         limit: 10,
@@ -378,7 +362,9 @@ describe('QueryBuilder', () => {
 
       const { sql, parameters } = builder.build();
 
-      expect(sql).toBe('SELECT id, name, email FROM users WHERE (age >= $1 AND (status = $2 OR status = $3)) ORDER BY name ASC LIMIT 10 OFFSET 20');
+      expect(sql).toBe(
+        'SELECT id, name, email FROM users WHERE (age >= $1 AND (status = $2 OR status = $3)) ORDER BY name ASC LIMIT 10 OFFSET 20'
+      );
       expect(parameters).toEqual([18, 'active', 'pending']);
     });
   });

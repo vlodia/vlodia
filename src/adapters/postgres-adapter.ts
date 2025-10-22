@@ -69,7 +69,7 @@ export class PostgresAdapter extends BaseAdapter {
     const client = await this.pool.connect();
     try {
       const result = await client.query(sql, params);
-      
+
       return {
         rows: result.rows,
         rowCount: result.rowCount || 0,
@@ -101,7 +101,7 @@ export class PostgresAdapter extends BaseAdapter {
 
     this.currentTransaction = transaction;
     await this.query('BEGIN');
-    
+
     return transaction;
   }
 
@@ -154,7 +154,7 @@ export class PostgresAdapter extends BaseAdapter {
     }
 
     await this.query(`ROLLBACK TO SAVEPOINT ${name}`);
-    
+
     // Remove savepoints after this one
     const index = transaction.savepoints.indexOf(name);
     transaction.savepoints = transaction.savepoints.slice(0, index);
@@ -173,7 +173,7 @@ export class PostgresAdapter extends BaseAdapter {
     }
 
     await this.query(`RELEASE SAVEPOINT ${name}`);
-    
+
     const index = transaction.savepoints.indexOf(name);
     transaction.savepoints.splice(index, 1);
   }
@@ -192,7 +192,7 @@ export class PostgresAdapter extends BaseAdapter {
       text: 'TEXT',
       blob: 'BYTEA',
     };
-    
+
     return typeMap[columnType] || 'VARCHAR';
   }
 
@@ -210,8 +210,9 @@ export class PostgresAdapter extends BaseAdapter {
    * Get PostgreSQL-specific order by syntax
    */
   protected override getOrderBySyntax(orderBy: Record<string, 'ASC' | 'DESC'>): string {
-    const clauses = Object.entries(orderBy)
-      .map(([column, direction]) => `"${column}" ${direction}`);
+    const clauses = Object.entries(orderBy).map(
+      ([column, direction]) => `"${column}" ${direction}`
+    );
     return `ORDER BY ${clauses.join(', ')}`;
   }
 
@@ -229,15 +230,15 @@ export class PostgresAdapter extends BaseAdapter {
     if (value === null || value === undefined) {
       return null;
     }
-    
+
     if (value instanceof Date) {
       return value.toISOString();
     }
-    
+
     if (typeof value === 'object') {
       return JSON.stringify(value);
     }
-    
+
     return value;
   }
 
@@ -248,7 +249,7 @@ export class PostgresAdapter extends BaseAdapter {
     if (value === null || value === undefined) {
       return null;
     }
-    
+
     switch (type.toLowerCase()) {
       case 'timestamp':
       case 'timestamptz':

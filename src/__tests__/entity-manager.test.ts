@@ -16,16 +16,16 @@ class MockAdapter implements Adapter {
 
   async connect(): Promise<void> {}
   async disconnect(): Promise<void> {}
-  
+
   async query<T>(sql: string, params?: any[]): Promise<QueryResult<T>> {
     this.queries.push({ sql, params: params || [] });
     return this.results.shift() || { rows: [], rowCount: 0, fields: [] };
   }
-  
+
   async begin(): Promise<any> {
     return { id: 'test-tx', level: 'READ_COMMITTED', savepoints: [], isActive: true };
   }
-  
+
   async commit(_transaction: any): Promise<void> {}
   async rollback(_transaction: any): Promise<void> {}
   async savepoint(_transaction: any, _name: string): Promise<void> {}
@@ -36,11 +36,11 @@ class MockAdapter implements Adapter {
   setQueryResult(result: QueryResult): void {
     this.results.push(result);
   }
-  
+
   getQueries(): Array<{ sql: string; params?: any[] }> {
     return this.queries;
   }
-  
+
   clearQueries(): void {
     this.queries = [];
     this.results = [];
@@ -85,7 +85,7 @@ if (!userMetadata) {
         length: 0,
         precision: 0,
         scale: 0,
-        defaultValue: undefined
+        defaultValue: undefined,
       },
       {
         name: 'name',
@@ -98,7 +98,7 @@ if (!userMetadata) {
         length: 0,
         precision: 0,
         scale: 0,
-        defaultValue: undefined
+        defaultValue: undefined,
       },
       {
         name: 'email',
@@ -111,7 +111,7 @@ if (!userMetadata) {
         length: 0,
         precision: 0,
         scale: 0,
-        defaultValue: undefined
+        defaultValue: undefined,
       },
       {
         name: 'createdAt',
@@ -124,12 +124,12 @@ if (!userMetadata) {
         length: 0,
         precision: 0,
         scale: 0,
-        defaultValue: undefined
-      }
+        defaultValue: undefined,
+      },
     ],
     relations: [],
     hooks: [],
-    indexes: []
+    indexes: [],
   });
 }
 
@@ -158,7 +158,7 @@ describe.skip('EntityManager', () => {
     entityManager = new EntityManager({ adapter: mockAdapter });
     metadataRegistry = MetadataRegistry.getInstance();
     metadataRegistry.clear();
-    
+
     // Register test entities
     metadataRegistry.registerEntity(User, {
       name: 'User',
@@ -169,7 +169,7 @@ describe.skip('EntityManager', () => {
       hooks: [],
       indexes: [],
     });
-    
+
     metadataRegistry.registerEntity(Post, {
       name: 'Post',
       tableName: 'posts',
@@ -195,7 +195,7 @@ describe.skip('EntityManager', () => {
         rowCount: 2,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const users = await entityManager.find(User);
@@ -212,7 +212,7 @@ describe.skip('EntityManager', () => {
         rowCount: 1,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const users = await entityManager.find(User, {
@@ -229,7 +229,7 @@ describe.skip('EntityManager', () => {
         rowCount: 1,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const users = await entityManager.find(User, {
@@ -248,7 +248,7 @@ describe.skip('EntityManager', () => {
         rowCount: 1,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const user = await entityManager.findOne(User, {
@@ -265,7 +265,7 @@ describe.skip('EntityManager', () => {
         rowCount: 0,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const user = await entityManager.findOne(User, {
@@ -283,7 +283,7 @@ describe.skip('EntityManager', () => {
         rowCount: 1,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const user = await entityManager.findById(User, 1);
@@ -305,7 +305,7 @@ describe.skip('EntityManager', () => {
         rowCount: 1,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const savedUser = await entityManager.save(user);
@@ -326,7 +326,7 @@ describe.skip('EntityManager', () => {
         rowCount: 1,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const savedUser = await entityManager.save(user);
@@ -349,7 +349,7 @@ describe.skip('EntityManager', () => {
         rowCount: 1,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       await entityManager.remove(user);
@@ -366,7 +366,7 @@ describe.skip('EntityManager', () => {
         rowCount: 1,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const count = await entityManager.count(User);
@@ -382,7 +382,7 @@ describe.skip('EntityManager', () => {
         rowCount: 1,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const exists = await entityManager.exists(User, {
@@ -400,7 +400,7 @@ describe.skip('EntityManager', () => {
         rowCount: 1,
         fields: [],
       };
-      
+
       mockAdapter.setQueryResult(mockResult);
 
       const user1 = await entityManager.findById(User, 1);

@@ -71,10 +71,10 @@ export class MigrationManager {
   async generateMigration(name: string): Promise<Migration> {
     const entities = this.metadataRegistry.getAllEntities();
     const schemaDiff = await this.generateSchemaDiff(entities);
-    
+
     const upSQL = this.generateUpSQL(schemaDiff);
     const downSQL = this.generateDownSQL(schemaDiff);
-    
+
     const migration: Migration = {
       id: this.generateMigrationId(name),
       name,
@@ -92,10 +92,10 @@ export class MigrationManager {
    */
   async migrate(): Promise<MigrationResult> {
     await this.initialize();
-    
+
     await this.getAppliedMigrations();
     const pendingMigrations = await this.getPendingMigrations();
-    
+
     const result: MigrationResult = {
       applied: [],
       failed: [],
@@ -133,13 +133,13 @@ export class MigrationManager {
   async rollbackTo(migrationId: string): Promise<void> {
     const migrations = await this.getAppliedMigrations();
     const targetIndex = migrations.findIndex(m => m.id === migrationId);
-    
+
     if (targetIndex === -1) {
       throw new Error(`Migration ${migrationId} not found`);
     }
 
     const migrationsToRollback = migrations.slice(targetIndex + 1).reverse();
-    
+
     for (const migration of migrationsToRollback) {
       await this.rollbackMigration(migration);
     }
@@ -200,7 +200,7 @@ export class MigrationManager {
    */
   private findAddedTables(current: any[], target: any[]): TableDiff[] {
     const diffs: TableDiff[] = [];
-    
+
     for (const table of target) {
       if (!current.find(t => t.name === table.name)) {
         diffs.push({
@@ -220,7 +220,7 @@ export class MigrationManager {
    */
   private findModifiedTables(current: any[], target: any[]): TableDiff[] {
     const diffs: TableDiff[] = [];
-    
+
     for (const table of target) {
       const currentTable = current.find(t => t.name === table.name);
       if (currentTable) {
@@ -237,7 +237,7 @@ export class MigrationManager {
    */
   private findRemovedTables(current: any[], target: any[]): TableDiff[] {
     const diffs: TableDiff[] = [];
-    
+
     for (const table of current) {
       if (!target.find(t => t.name === table.name)) {
         diffs.push({
@@ -256,7 +256,7 @@ export class MigrationManager {
    */
   private findColumnDiffs(currentColumns: any[], targetColumns: any[]): TableDiff[] {
     const diffs: TableDiff[] = [];
-    
+
     for (const column of targetColumns) {
       const currentColumn = currentColumns.find(c => c.name === column.name);
       if (!currentColumn) {
@@ -299,20 +299,20 @@ export class MigrationManager {
     const columns = table.columns.map((col: any) => this.generateColumnSQL(col));
     const primaryKey = table.columns.find((col: any) => col.primary);
     const indexes = table.indexes.map((idx: any) => this.generateIndexSQL(idx));
-    
+
     let sql = `CREATE TABLE ${table.name} (\n`;
     sql += `  ${columns.join(',\n  ')}`;
-    
+
     if (primaryKey) {
       sql += `,\n  PRIMARY KEY (${primaryKey.name})`;
     }
-    
+
     sql += `\n)`;
-    
+
     if (indexes.length > 0) {
       sql += `;\n${indexes.join(';\n')}`;
     }
-    
+
     return sql;
   }
 
@@ -321,23 +321,23 @@ export class MigrationManager {
    */
   private generateColumnSQL(column: any): string {
     let sql = `${column.name} ${this.getDatabaseType(column.type)}`;
-    
+
     if (column.length) {
       sql += `(${column.length})`;
     }
-    
+
     if (!column.nullable) {
       sql += ' NOT NULL';
     }
-    
+
     if (column.unique) {
       sql += ' UNIQUE';
     }
-    
+
     if (column.defaultValue !== undefined) {
       sql += ` DEFAULT ${this.escapeValue(column.defaultValue)}`;
     }
-    
+
     return sql;
   }
 
@@ -354,11 +354,11 @@ export class MigrationManager {
    */
   private generateUpSQL(diff: SchemaDiff): string {
     const statements: string[] = [];
-    
+
     for (const added of diff.added) {
       statements.push(added.definition || '');
     }
-    
+
     for (const modified of diff.modified) {
       if (modified.action === 'add') {
         statements.push(`ALTER TABLE ${modified.name} ADD COLUMN ${modified.definition}`);
@@ -366,7 +366,7 @@ export class MigrationManager {
         statements.push(`ALTER TABLE ${modified.name} MODIFY COLUMN ${modified.definition}`);
       }
     }
-    
+
     for (const removed of diff.removed) {
       if (removed.type === 'table') {
         statements.push(`DROP TABLE ${removed.name}`);
@@ -374,7 +374,7 @@ export class MigrationManager {
         statements.push(`ALTER TABLE ${removed.name} DROP COLUMN ${removed.name}`);
       }
     }
-    
+
     return statements.join(';\n') + ';';
   }
 
@@ -383,11 +383,11 @@ export class MigrationManager {
    */
   private generateDownSQL(diff: SchemaDiff): string {
     const statements: string[] = [];
-    
+
     for (const removed of diff.removed) {
       statements.push(removed.definition || '');
     }
-    
+
     for (const modified of diff.modified) {
       if (modified.action === 'add') {
         statements.push(`ALTER TABLE ${modified.name} DROP COLUMN ${modified.name}`);
@@ -395,7 +395,7 @@ export class MigrationManager {
         statements.push(`ALTER TABLE ${modified.name} MODIFY COLUMN ${modified.oldDefinition}`);
       }
     }
-    
+
     for (const added of diff.added) {
       if (added.type === 'table') {
         statements.push(`DROP TABLE ${added.name}`);
@@ -403,7 +403,7 @@ export class MigrationManager {
         statements.push(`ALTER TABLE ${added.name} DROP COLUMN ${added.name}`);
       }
     }
-    
+
     return statements.join(';\n') + ';';
   }
 
@@ -431,7 +431,7 @@ export class MigrationManager {
       INSERT INTO ${this.migrationsTable} (id, name, up, down, timestamp, checksum)
       VALUES (?, ?, ?, ?, ?, ?)
     `;
-    
+
     await this.adapter.query(sql, [
       migration.id,
       migration.name,
@@ -494,7 +494,7 @@ export class MigrationManager {
     let hash = 0;
     for (let i = 0; i < content.length; i++) {
       const char = content.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
     return hash.toString(36);
@@ -514,7 +514,7 @@ export class MigrationManager {
       text: 'TEXT',
       blob: 'BLOB',
     };
-    
+
     return typeMap[type] || 'VARCHAR';
   }
 
@@ -525,15 +525,15 @@ export class MigrationManager {
     if (value === null || value === undefined) {
       return 'NULL';
     }
-    
+
     if (typeof value === 'string') {
       return `'${value.replace(/'/g, "''")}'`;
     }
-    
+
     if (typeof value === 'boolean') {
       return value ? 'TRUE' : 'FALSE';
     }
-    
+
     return String(value);
   }
 }

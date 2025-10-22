@@ -33,10 +33,7 @@ export class EntityManager {
   /**
    * Find entities by criteria
    */
-  async find<T>(
-    entityClass: new () => T,
-    options: QueryOptions = {}
-  ): Promise<T[]> {
+  async find<T>(entityClass: new () => T, options: QueryOptions = {}): Promise<T[]> {
     const metadata = this.metadataRegistry.getEntity(entityClass);
     if (!metadata) {
       throw new Error(`Entity ${entityClass.name} not registered`);
@@ -60,10 +57,7 @@ export class EntityManager {
   /**
    * Find a single entity by criteria
    */
-  async findOne<T>(
-    entityClass: new () => T,
-    options: QueryOptions = {}
-  ): Promise<T | null> {
+  async findOne<T>(entityClass: new () => T, options: QueryOptions = {}): Promise<T | null> {
     const results = await this.find(entityClass, { ...options, limit: 1 });
     return results[0] || null;
   }
@@ -71,10 +65,7 @@ export class EntityManager {
   /**
    * Find entity by primary key
    */
-  async findById<T>(
-    entityClass: new () => T,
-    id: any
-  ): Promise<T | null> {
+  async findById<T>(entityClass: new () => T, id: any): Promise<T | null> {
     const metadata = this.metadataRegistry.getEntity(entityClass);
     if (!metadata) {
       throw new Error(`Entity ${entityClass.name} not registered`);
@@ -86,7 +77,7 @@ export class EntityManager {
     }
 
     return this.findOne(entityClass, {
-      where: { [primaryKey.name]: id }
+      where: { [primaryKey.name]: id },
     });
   }
 
@@ -152,7 +143,8 @@ export class EntityManager {
     // Set generated primary key
     const primaryKey = this.metadataRegistry.getPrimaryKey(entityClass);
     if (primaryKey && primaryKey.generated) {
-      (entity as any)[primaryKey.propertyName] = (result.rows[0] as any)?.id || (result.rows[0] as any)?.[primaryKey.name];
+      (entity as any)[primaryKey.propertyName] =
+        (result.rows[0] as any)?.id || (result.rows[0] as any)?.[primaryKey.name];
     }
 
     // Add to identity map
@@ -287,10 +279,7 @@ export class EntityManager {
   /**
    * Count entities by criteria
    */
-  async count<T>(
-    entityClass: new () => T,
-    options: QueryOptions = {}
-  ): Promise<number> {
+  async count<T>(entityClass: new () => T, options: QueryOptions = {}): Promise<number> {
     const metadata = this.metadataRegistry.getEntity(entityClass);
     if (!metadata) {
       throw new Error(`Entity ${entityClass.name} not registered`);
@@ -311,10 +300,7 @@ export class EntityManager {
   /**
    * Check if entity exists
    */
-  async exists<T>(
-    entityClass: new () => T,
-    options: QueryOptions = {}
-  ): Promise<boolean> {
+  async exists<T>(entityClass: new () => T, options: QueryOptions = {}): Promise<boolean> {
     const count = await this.count(entityClass, options);
     return count > 0;
   }

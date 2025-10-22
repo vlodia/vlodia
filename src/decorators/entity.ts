@@ -24,10 +24,12 @@ const METADATA_KEY = Symbol('nythera:entity');
 export function Entity(options: EntityOptions = {}): ClassDecorator {
   return function (target: any) {
     const registry = MetadataRegistry.getInstance();
-    
+
     // Get existing metadata or create new
-    const existingMetadata = Reflect.getMetadata(METADATA_KEY, target) as EntityMetadata | undefined;
-    
+    const existingMetadata = Reflect.getMetadata(METADATA_KEY, target) as
+      | EntityMetadata
+      | undefined;
+
     const metadata: EntityMetadata = {
       name: options.name || target.name,
       tableName: options.tableName || target.name.toLowerCase(),
@@ -40,10 +42,10 @@ export function Entity(options: EntityOptions = {}): ClassDecorator {
 
     // Store metadata in reflection
     Reflect.defineMetadata(METADATA_KEY, metadata, target);
-    
+
     // Register with metadata registry
     registry.registerEntity(target, metadata);
-    
+
     return target;
   };
 }

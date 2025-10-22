@@ -34,10 +34,7 @@ export class CLICommands {
   private setupCommands(): void {
     const program = new Command();
 
-    program
-      .name('vlodia')
-      .description('Vlodia ORM CLI')
-      .version('0.1.0');
+    program.name('vlodia').description('Vlodia ORM CLI').version('0.1.0');
 
     // Init command (like prisma init)
     program
@@ -126,10 +123,7 @@ export class CLICommands {
       .action(this.resetDatabase.bind(this));
 
     // Cache commands
-    program
-      .command('cache:clear')
-      .description('Clear cache')
-      .action(this.clearCache.bind(this));
+    program.command('cache:clear').description('Clear cache').action(this.clearCache.bind(this));
 
     program
       .command('cache:stats')
@@ -164,10 +158,7 @@ export class CLICommands {
       .description('Show usage examples')
       .action(this.showExamples.bind(this));
 
-    program
-      .command('help:docs')
-      .description('Open documentation')
-      .action(this.openDocs.bind(this));
+    program.command('help:docs').description('Open documentation').action(this.openDocs.bind(this));
 
     program.parse();
   }
@@ -177,7 +168,7 @@ export class CLICommands {
    */
   private async generateEntity(options: any): Promise<void> {
     const spinner = ora('Generating entity from table').start();
-    
+
     try {
       if (!this.orm) {
         await this.initializeORM();
@@ -196,7 +187,7 @@ export class CLICommands {
 
       // Generate entity code
       const entityCode = this.generateEntityFromSchema({ name: tableName });
-      
+
       // Write to file
       const outputPath = options.output || `src/entities/${this.toPascalCase(tableName)}.ts`;
       await fs.ensureDir(path.dirname(outputPath));
@@ -214,7 +205,7 @@ export class CLICommands {
    */
   private async createEntity(options: any): Promise<void> {
     const spinner = ora('Creating new entity').start();
-    
+
     try {
       const entityName = options.name;
       if (!entityName) {
@@ -223,13 +214,13 @@ export class CLICommands {
 
       const entityTemplate = this.generateEntityTemplate(entityName, options.table);
       const outputPath = options.output || `src/entities/${this.toPascalCase(entityName)}.ts`;
-      
+
       // Ensure directory exists
       await fs.ensureDir(path.dirname(outputPath));
-      
+
       // Write entity file
       await fs.writeFile(outputPath, entityTemplate);
-      
+
       spinner.succeed(chalk.green(`Entity created successfully: ${outputPath}`));
     } catch (error) {
       spinner.fail(chalk.red(`Error creating entity: ${error}`));
@@ -242,7 +233,7 @@ export class CLICommands {
    */
   private async generateMigration(options: any): Promise<void> {
     const spinner = ora('Generating migration').start();
-    
+
     try {
       if (!this.orm) {
         await this.initializeORM();
@@ -250,22 +241,22 @@ export class CLICommands {
 
       const migrationName = options.name || `migration_${Date.now()}`;
       const outputPath = options.output || `src/migrations/${migrationName}.ts`;
-      
+
       // Get current database schema
       const currentSchema = await this.getCurrentDatabaseSchema();
-      
+
       // Get entity schema
       const entitySchema = await this.getEntitySchema();
-      
+
       // Generate migration SQL
       const migrationSQL = this.generateMigrationSQL(currentSchema, entitySchema);
-      
+
       // Create migration file
       const migrationContent = this.generateMigrationTemplate(migrationName, migrationSQL);
-      
+
       await fs.ensureDir(path.dirname(outputPath));
       await fs.writeFile(outputPath, migrationContent);
-      
+
       spinner.succeed(chalk.green(`Migration generated successfully: ${outputPath}`));
     } catch (error) {
       spinner.fail(chalk.red(`Error generating migration: ${error}`));
@@ -278,7 +269,7 @@ export class CLICommands {
    */
   private async runMigrations(_options: any): Promise<void> {
     const spinner = ora('Running migrations').start();
-    
+
     try {
       if (!this.orm) {
         await this.initializeORM();
@@ -286,7 +277,7 @@ export class CLICommands {
 
       // Get pending migrations
       const pendingMigrations = await this.getPendingMigrations();
-      
+
       if (pendingMigrations.length === 0) {
         spinner.succeed(chalk.green('No pending migrations'));
         return;
@@ -297,7 +288,7 @@ export class CLICommands {
         spinner.text = `Running migration: ${migration.name}`;
         await this.executeMigration(migration);
       }
-      
+
       spinner.succeed(chalk.green(`Successfully ran ${pendingMigrations.length} migrations`));
     } catch (error) {
       spinner.fail(chalk.red(`Error running migrations: ${error}`));
@@ -311,12 +302,12 @@ export class CLICommands {
   private async rollbackMigration(_options: any): Promise<void> {
     try {
       console.log('Rolling back migration...');
-      
+
       // Implementation would:
       // 1. Get last applied migration
       // 2. Execute rollback
       // 3. Update migration status
-      
+
       console.log('Migration rolled back successfully');
     } catch (error) {
       console.error('Error rolling back migration:', error);
@@ -331,12 +322,12 @@ export class CLICommands {
     try {
       console.log('Migration Status:');
       console.log('================');
-      
+
       // Implementation would:
       // 1. Get applied migrations
       // 2. Get pending migrations
       // 3. Display status
-      
+
       console.log('No migrations found');
     } catch (error) {
       console.error('Error getting migration status:', error);
@@ -349,7 +340,7 @@ export class CLICommands {
    */
   private async syncSchema(options: any): Promise<void> {
     const spinner = ora('Syncing schema').start();
-    
+
     try {
       if (!this.orm) {
         await this.initializeORM();
@@ -362,13 +353,13 @@ export class CLICommands {
 
       // Get current database schema
       const currentSchema = await this.getCurrentDatabaseSchema();
-      
+
       // Get entity schema
       const entitySchema = await this.getEntitySchema();
-      
+
       // Generate and apply schema changes
       const changes = this.generateSchemaChanges(currentSchema, entitySchema);
-      
+
       if (changes.length === 0) {
         spinner.succeed(chalk.green('Schema is already in sync'));
         return;
@@ -378,8 +369,10 @@ export class CLICommands {
       for (const change of changes) {
         await this.orm!.adapter.query(change.sql);
       }
-      
-      spinner.succeed(chalk.green(`Schema synced successfully (${changes.length} changes applied)`));
+
+      spinner.succeed(
+        chalk.green(`Schema synced successfully (${changes.length} changes applied)`)
+      );
     } catch (error) {
       spinner.fail(chalk.red(`Error syncing schema: ${error}`));
       process.exit(1);
@@ -392,16 +385,16 @@ export class CLICommands {
   private async dropSchema(options: any): Promise<void> {
     try {
       console.log('Dropping schema...');
-      
+
       if (!options.force) {
         console.log('Use --force flag to confirm schema drop');
         return;
       }
-      
+
       // Implementation would:
       // 1. Drop all tables
       // 2. Clear migration history
-      
+
       console.log('Schema dropped successfully');
     } catch (error) {
       console.error('Error dropping schema:', error);
@@ -415,12 +408,12 @@ export class CLICommands {
   private async createSchema(): Promise<void> {
     try {
       console.log('Creating schema...');
-      
+
       // Implementation would:
       // 1. Generate schema from entities
       // 2. Create tables
       // 3. Create indexes
-      
+
       console.log('Schema created successfully');
     } catch (error) {
       console.error('Error creating schema:', error);
@@ -434,12 +427,12 @@ export class CLICommands {
   private async seedDatabase(_options: any): Promise<void> {
     try {
       console.log('Seeding database...');
-      
+
       // Implementation would:
       // 1. Load seed data
       // 2. Insert data
       // 3. Verify data
-      
+
       console.log('Database seeded successfully');
     } catch (error) {
       console.error('Error seeding database:', error);
@@ -453,17 +446,17 @@ export class CLICommands {
   private async resetDatabase(options: any): Promise<void> {
     try {
       console.log('Resetting database...');
-      
+
       if (!options.force) {
         console.log('Use --force flag to confirm database reset');
         return;
       }
-      
+
       // Implementation would:
       // 1. Drop all tables
       // 2. Run migrations
       // 3. Seed data
-      
+
       console.log('Database reset successfully');
     } catch (error) {
       console.error('Error resetting database:', error);
@@ -477,11 +470,11 @@ export class CLICommands {
   private async clearCache(): Promise<void> {
     try {
       console.log('Clearing cache...');
-      
+
       // Implementation would:
       // 1. Clear L1 cache
       // 2. Clear L2 cache
-      
+
       console.log('Cache cleared successfully');
     } catch (error) {
       console.error('Error clearing cache:', error);
@@ -496,11 +489,11 @@ export class CLICommands {
     try {
       console.log('Cache Statistics:');
       console.log('=================');
-      
+
       // Implementation would:
       // 1. Get cache stats
       // 2. Display metrics
-      
+
       console.log('Cache not available');
     } catch (error) {
       console.error('Error getting cache stats:', error);
@@ -513,61 +506,61 @@ export class CLICommands {
    */
   private async validateEntities(): Promise<void> {
     const spinner = ora('Validating entities').start();
-    
+
     try {
       const registry = MetadataRegistry.getInstance();
       const entities = registry.getAllEntities();
-      
+
       if (entities.length === 0) {
         spinner.warn('No entities found');
         return;
       }
 
       const errors: string[] = [];
-      
+
       for (const entity of entities) {
         // Validate entity metadata
         if (!entity.name) {
           errors.push(`Entity ${entity.name} has no name`);
         }
-        
+
         if (!entity.tableName) {
           errors.push(`Entity ${entity.name} has no table name`);
         }
-        
+
         if (!entity.columns || entity.columns.length === 0) {
           errors.push(`Entity ${entity.name} has no columns`);
         }
-        
+
         // Validate columns
         for (const column of entity.columns) {
           if (!column.name) {
             errors.push(`Entity ${entity.name} has column with no name`);
           }
-          
+
           if (!column.type) {
             errors.push(`Entity ${entity.name} column ${column.name} has no type`);
           }
         }
-        
+
         // Validate relationships
         for (const relation of entity.relations) {
           if (!relation.name) {
             errors.push(`Entity ${entity.name} has relation with no name`);
           }
-          
+
           if (!relation.target) {
             errors.push(`Entity ${entity.name} relation ${relation.name} has no target`);
           }
         }
       }
-      
+
       if (errors.length > 0) {
         spinner.fail(chalk.red('Validation failed:'));
         errors.forEach(error => console.log(chalk.red(`  - ${error}`)));
         process.exit(1);
       }
-      
+
       spinner.succeed(chalk.green(`All ${entities.length} entities are valid`));
     } catch (error) {
       spinner.fail(chalk.red(`Error validating entities: ${error}`));
@@ -580,7 +573,7 @@ export class CLICommands {
    */
   private async validateSchema(): Promise<void> {
     const spinner = ora('Validating schema').start();
-    
+
     try {
       if (!this.orm) {
         await this.initializeORM();
@@ -588,13 +581,13 @@ export class CLICommands {
 
       // Get current database schema
       const currentSchema = await this.getCurrentDatabaseSchema();
-      
+
       // Get entity schema
       const entitySchema = await this.getEntitySchema();
-      
+
       // Compare schemas
       const inconsistencies = this.findSchemaInconsistencies(currentSchema, entitySchema);
-      
+
       /**
        * Handle any schema inconsistencies by reporting all issues, failing the spinner,
        * and exiting the process. Otherwise, mark validation as successful.
@@ -621,42 +614,41 @@ export class CLICommands {
    */
   private async watchChanges(): Promise<void> {
     const spinner = ora('Starting file watcher').start();
-    
+
     try {
       const chokidar = require('chokidar');
       const entityPath = 'src/entities/**/*.ts';
-      
+
       const watcher = chokidar.watch(entityPath, {
         ignored: /node_modules/,
-        persistent: true
+        persistent: true,
       });
-      
+
       watcher.on('change', (filePath: string) => {
         console.log(chalk.yellow(`File changed: ${filePath}`));
         // Auto-reload entities
         this.reloadEntities();
       });
-      
+
       watcher.on('add', (filePath: string) => {
         console.log(chalk.green(`File added: ${filePath}`));
         this.reloadEntities();
       });
-      
+
       watcher.on('unlink', (filePath: string) => {
         console.log(chalk.red(`File removed: ${filePath}`));
         this.reloadEntities();
       });
-      
+
       spinner.succeed(chalk.green('File watcher started'));
       console.log(chalk.blue('Watching for changes in entity files...'));
       console.log(chalk.gray('Press Ctrl+C to stop'));
-      
+
       // Keep the process alive
       process.on('SIGINT', () => {
         watcher.close();
         process.exit(0);
       });
-      
     } catch (error) {
       spinner.fail(chalk.red(`Error starting file watcher: ${error}`));
       process.exit(1);
@@ -669,12 +661,12 @@ export class CLICommands {
   private async openConsole(): Promise<void> {
     try {
       console.log('Opening development console...');
-      
+
       // Implementation would:
       // 1. Start REPL
       // 2. Load ORM context
       // 3. Provide helpers
-      
+
       console.log('Development console opened');
     } catch (error) {
       console.error('Error opening console:', error);
@@ -689,7 +681,7 @@ export class CLICommands {
     console.log(chalk.blue.bold('Vlodia ORM Examples:'));
     console.log(chalk.blue('===================='));
     console.log('');
-    
+
     console.log(chalk.green('1. Basic Entity:'));
     console.log(chalk.gray('   @Entity()'));
     console.log(chalk.gray('   class User {'));
@@ -699,18 +691,18 @@ export class CLICommands {
     console.log(chalk.gray('     name!: string;'));
     console.log(chalk.gray('   }'));
     console.log('');
-    
+
     console.log(chalk.green('2. Relationships:'));
     console.log(chalk.gray('   @OneToMany(() => Post)'));
     console.log(chalk.gray('   posts!: Post[];'));
     console.log('');
-    
+
     console.log(chalk.green('3. Queries:'));
     console.log(chalk.gray('   const users = await orm.manager.find(User, {'));
     console.log(chalk.gray('     where: { name: "John" }'));
     console.log(chalk.gray('   });'));
     console.log('');
-    
+
     console.log(chalk.green('4. CLI Commands:'));
     console.log(chalk.gray('   vlodia entity:create --name User'));
     console.log(chalk.gray('   vlodia migration:generate --name add_users_table'));
@@ -770,7 +762,7 @@ export class ${className} {
    */
   private async loadConfig(): Promise<VlodiaConfig> {
     const configPath = process.env['VLODIA_CONFIG'] || 'vlodia.config.js';
-    
+
     if (await fs.pathExists(configPath)) {
       return require(path.resolve(configPath));
     }
@@ -779,10 +771,10 @@ export class ${className} {
     return {
       database: {
         type: 'sqlite',
-        database: 'vlodia.db'
+        database: 'vlodia.db',
       },
-      entities: [] // Required by VlodiaConfig; empty by default for minimal safe config.
-    }
+      entities: [], // Required by VlodiaConfig; empty by default for minimal safe config.
+    };
   }
 
   /**
@@ -795,7 +787,7 @@ export class ${className} {
     /**
      * Securely retrieves schema details for a given table.
      * Uses only exposed public ORM APIs. Avoids direct access to private members.
-     * 
+     *
      * Ensures: Fully parameterized, backend-agnostic, extensible.
      */
     if (!this.orm) {
@@ -815,10 +807,9 @@ export class ${className} {
       `,
       [tableName]
     );
-    
+
     return result.rows;
   }
-
 
   /**
    * Get current database schema
@@ -827,13 +818,13 @@ export class ${className} {
     if (!this.orm) {
       throw new Error('ORM not initialized');
     }
-    
+
     const result = await this.orm!.adapter.query(`
       SELECT table_name, column_name, data_type, is_nullable
       FROM information_schema.columns
       ORDER BY table_name, ordinal_position
     `);
-    
+
     return result.rows;
   }
 
@@ -843,11 +834,11 @@ export class ${className} {
   private async getEntitySchema(): Promise<any> {
     const registry = MetadataRegistry.getInstance();
     const entities = registry.getAllEntities();
-    
+
     return entities.map(entity => ({
       name: entity.name,
       tableName: entity.tableName,
-      columns: entity.columns
+      columns: entity.columns,
     }));
   }
 
@@ -857,11 +848,11 @@ export class ${className} {
   private generateMigrationSQL(_currentSchema: any, _entitySchema: any): string {
     // Compare schemas and generate SQL
     let sql = '';
-    
+
     // This is a simplified implementation
     // In a real implementation, you would compare the schemas
     // and generate appropriate CREATE/ALTER/DROP statements
-    
+
     return sql;
   }
 
@@ -891,15 +882,15 @@ export class ${this.toPascalCase(name)} implements Migration {
    */
   private async getPendingMigrations(): Promise<any[]> {
     const migrationsPath = 'src/migrations';
-    
-    if (!await fs.pathExists(migrationsPath)) {
+
+    if (!(await fs.pathExists(migrationsPath))) {
       return [];
     }
-    
+
     const files = await glob.glob('*.ts', { cwd: migrationsPath });
     return files.map(file => ({
       name: path.basename(file, '.ts'),
-      path: path.join(migrationsPath, file)
+      path: path.join(migrationsPath, file),
     }));
   }
 
@@ -909,7 +900,7 @@ export class ${this.toPascalCase(name)} implements Migration {
   private async executeMigration(migration: any): Promise<void> {
     const migrationModule = require(path.resolve(migration.path));
     const migrationInstance = new migrationModule.default();
-    
+
     await migrationInstance.up();
   }
 
@@ -920,17 +911,16 @@ export class ${this.toPascalCase(name)} implements Migration {
     return str.replace(/(?:^|_)([a-z])/g, (_, letter) => letter.toUpperCase());
   }
 
-
   /**
    * Generate schema changes
    */
   private generateSchemaChanges(_currentSchema: any, _entitySchema: any): any[] {
     const changes: any[] = [];
-    
+
     // This is a simplified implementation
     // In a real implementation, you would compare the schemas
     // and generate appropriate CREATE/ALTER/DROP statements
-    
+
     return changes;
   }
 
@@ -939,11 +929,11 @@ export class ${this.toPascalCase(name)} implements Migration {
    */
   private findSchemaInconsistencies(_currentSchema: any, _entitySchema: any): string[] {
     const inconsistencies: string[] = [];
-    
+
     // This is a simplified implementation
     // In a real implementation, you would compare the schemas
     // and find actual inconsistencies
-    
+
     return inconsistencies;
   }
 
@@ -957,16 +947,16 @@ export class ${this.toPascalCase(name)} implements Migration {
       entityFiles.forEach(file => {
         delete require.cache[require.resolve(path.resolve(file))];
       });
-      
+
       // Re-register entities
       const registry = MetadataRegistry.getInstance();
       registry.clear();
-      
+
       // Re-require entity files
       entityFiles.forEach(file => {
         require(path.resolve(file));
       });
-      
+
       console.log(chalk.green('Entities reloaded successfully'));
     } catch (error) {
       console.log(chalk.red(`Error reloading entities: ${error}`));
@@ -981,13 +971,15 @@ export class ${this.toPascalCase(name)} implements Migration {
   private async startRealtime(options: any): Promise<void> {
     const spinner = ora('Starting real-time server').start();
     try {
-      if (!this.orm) { await this.initializeORM(); }
-      
+      if (!this.orm) {
+        await this.initializeORM();
+      }
+
       const webSocketManager = this.orm!.getWebSocketManager();
       if (!webSocketManager) {
         throw new Error('Real-time features not enabled');
       }
-      
+
       spinner.succeed(chalk.green('Real-time server started successfully'));
       console.log(chalk.blue(`WebSocket server running on port ${options.port}`));
     } catch (error) {
@@ -1002,16 +994,18 @@ export class ${this.toPascalCase(name)} implements Migration {
   private async generateGraphQL(options: any): Promise<void> {
     const spinner = ora('Generating GraphQL schema').start();
     try {
-      if (!this.orm) { await this.initializeORM(); }
-      
+      if (!this.orm) {
+        await this.initializeORM();
+      }
+
       const graphqlGenerator = this.orm!.getGraphQLGenerator();
       if (!graphqlGenerator) {
         throw new Error('GraphQL features not enabled');
       }
-      
+
       const schema = graphqlGenerator.generateSchema();
       const outputPath = options.output || 'schema.graphql';
-      
+
       await fs.writeFile(outputPath, schema.typeDefs);
       spinner.succeed(chalk.green(`GraphQL schema generated: ${outputPath}`));
     } catch (error) {
@@ -1026,16 +1020,18 @@ export class ${this.toPascalCase(name)} implements Migration {
   private async visualizeSchema(options: any): Promise<void> {
     const spinner = ora('Generating schema visualization').start();
     try {
-      if (!this.orm) { await this.initializeORM(); }
-      
+      if (!this.orm) {
+        await this.initializeORM();
+      }
+
       const schemaDesigner = this.orm!.getSchemaDesigner();
       if (!schemaDesigner) {
         throw new Error('Schema Designer not initialized');
       }
-      
+
       const diagram = schemaDesigner.generateSchemaDiagram();
       const outputPath = options.output || 'schema-diagram';
-      
+
       if (options.format === 'svg') {
         const svg = schemaDesigner.generateSVG(diagram);
         await fs.writeFile(`${outputPath}.svg`, svg);
@@ -1057,36 +1053,38 @@ export class ${this.toPascalCase(name)} implements Migration {
   private async analyzePerformance(_options: any): Promise<void> {
     const spinner = ora('Analyzing query performance').start();
     try {
-      if (!this.orm) { await this.initializeORM(); }
-      
+      if (!this.orm) {
+        await this.initializeORM();
+      }
+
       const queryAnalyzer = this.orm!.getQueryAnalyzer();
       if (!queryAnalyzer) {
         throw new Error('Query Analyzer not initialized');
       }
-      
+
       const metrics = queryAnalyzer.getPerformanceMetrics();
       const recommendations = queryAnalyzer.getOptimizationRecommendations();
-      
+
       console.log(chalk.blue('\n📊 Performance Metrics:'));
       console.log(`Total Queries: ${metrics.totalQueries}`);
       console.log(`N+1 Queries: ${metrics.n1Queries}`);
       console.log(`Average Execution Time: ${metrics.averageExecutionTime}ms`);
       console.log(`Performance Score: ${metrics.performanceScore}/100`);
-      
+
       if (recommendations.critical.length > 0) {
         console.log(chalk.red('\n🚨 Critical Issues:'));
         recommendations.critical.forEach(issue => {
           console.log(`- ${issue.pattern} (${issue.count} occurrences)`);
         });
       }
-      
+
       if (recommendations.high.length > 0) {
         console.log(chalk.yellow('\n⚠️ High Priority Issues:'));
         recommendations.high.forEach(issue => {
           console.log(`- ${issue.pattern} (${issue.count} occurrences)`);
         });
       }
-      
+
       spinner.succeed(chalk.green('Performance analysis completed'));
     } catch (error) {
       spinner.fail(chalk.red(`Error analyzing performance: ${error}`));
@@ -1100,13 +1098,15 @@ export class ${this.toPascalCase(name)} implements Migration {
   private async createTenant(options: any): Promise<void> {
     const spinner = ora('Creating tenant').start();
     try {
-      if (!this.orm) { await this.initializeORM(); }
-      
+      if (!this.orm) {
+        await this.initializeORM();
+      }
+
       const tenantManager = this.orm!.getTenantManager();
       if (!tenantManager) {
         throw new Error('Tenant Manager not initialized');
       }
-      
+
       const tenant = await tenantManager.createTenant({
         name: options.name,
         domain: options.domain,
@@ -1117,20 +1117,20 @@ export class ${this.toPascalCase(name)} implements Migration {
           limits: {
             maxUsers: 100,
             maxStorage: 1000000,
-            maxRequests: 10000
+            maxRequests: 10000,
           },
           settings: {
             timezone: 'UTC',
-            language: 'en'
+            language: 'en',
           },
           security: {
             encryption: true,
             auditLogging: true,
-            dataRetention: 365
-          }
-        }
+            dataRetention: 365,
+          },
+        },
       });
-      
+
       spinner.succeed(chalk.green(`Tenant created: ${tenant.name} (${tenant.id})`));
     } catch (error) {
       spinner.fail(chalk.red(`Error creating tenant: ${error}`));
@@ -1143,50 +1143,50 @@ export class ${this.toPascalCase(name)} implements Migration {
    */
   private async initProject(options: any): Promise<void> {
     const spinner = ora('Initializing Vlodia ORM project').start();
-    
+
     try {
       // Create vlodia directory
       await fs.ensureDir('vlodia');
-      
+
       // Determine database port based on type
       // const defaultPorts = {
       //   postgres: 5432,
       //   mysql: 3306,
       //   sqlite: null
       // };
-      
+
       // Create schema.vlodia file
       const schemaContent = this.generateSchemaFile(options);
       await fs.writeFile('vlodia/schema.vlodia', schemaContent);
-      
+
       // Create config.ts file
       const configContent = this.generateConfigFile(options);
       await fs.writeFile('vlodia/config.ts', configContent);
-      
+
       // Create src/entities directory
       await fs.ensureDir('src/entities');
-      
+
       // Create example entity
       const exampleEntity = this.generateExampleEntity();
       await fs.writeFile('src/entities/User.ts', exampleEntity);
-      
+
       // Create migrations directory
       await fs.ensureDir('src/migrations');
-      
+
       // Create .env file
       const envContent = this.generateEnvFile(options);
       await fs.writeFile('.env', envContent);
-      
+
       // Create .env.example file
       const envExampleContent = this.generateEnvExampleFile();
       await fs.writeFile('.env.example', envExampleContent);
-      
+
       // Create example app.ts
       const appContent = this.generateAppFile();
       await fs.writeFile('src/app.ts', appContent);
-      
+
       spinner.succeed(chalk.green('Vlodia ORM project initialized successfully!'));
-      
+
       console.log(chalk.blue('\n📁 Project structure created:'));
       console.log('├── vlodia/');
       console.log('│   ├── schema.vlodia');
@@ -1198,13 +1198,12 @@ export class ${this.toPascalCase(name)} implements Migration {
       console.log('│   └── app.ts');
       console.log('├── .env');
       console.log('└── .env.example');
-      
+
       console.log(chalk.yellow('\n🚀 Next steps:'));
       console.log('1. Update your database credentials in .env');
       console.log('2. Run: vlodia generate');
       console.log('3. Run: vlodia migrate:run');
       console.log('4. Start coding: npm run dev');
-      
     } catch (error) {
       spinner.fail(chalk.red(`Error initializing project: ${error}`));
       process.exit(1);
@@ -1216,7 +1215,7 @@ export class ${this.toPascalCase(name)} implements Migration {
    */
   private generateSchemaFile(options: any): string {
     const port = options.port || (options.database === 'mysql' ? 3306 : 5432);
-    
+
     return `// Vlodia Schema Definition
 // This file defines your database schema and ORM configuration
 
@@ -1314,7 +1313,7 @@ hook User {
    */
   private generateConfigFile(options: any): string {
     const port = options.port || (options.database === 'mysql' ? 3306 : 5432);
-    
+
     return `/**
  * Vlodia Configuration
  * Auto-generated from schema.vlodia
@@ -1411,7 +1410,7 @@ export class User {
    */
   private generateEnvFile(options: any): string {
     const port = options.port || (options.database === 'mysql' ? 3306 : 5432);
-    
+
     return `# Database
 DATABASE_URL="${options.database}://${options.username}:${options.password}@${options.host}:${port}/${options.name}"
 
@@ -1505,32 +1504,31 @@ main();`;
    */
   private async generateFromSchema(): Promise<void> {
     const spinner = ora('Generating TypeScript types from schema.vlodia').start();
-    
+
     try {
       // Check if schema.vlodia exists
-      if (!await fs.pathExists('vlodia/schema.vlodia')) {
-        throw new Error('schema.vlodia file not found. Run \'vlodia init\' first.');
+      if (!(await fs.pathExists('vlodia/schema.vlodia'))) {
+        throw new Error("schema.vlodia file not found. Run 'vlodia init' first.");
       }
-      
+
       // Read schema.vlodia
       const schemaContent = await fs.readFile('vlodia/schema.vlodia', 'utf8');
-      
+
       // Parse schema and generate config
       const config = this.parseSchemaFile(schemaContent);
       const configContent = this.generateConfigFromSchema(config);
-      
+
       // Update config.ts
       await fs.writeFile('vlodia/config.ts', configContent);
-      
+
       // Generate entities from schema
       await this.generateEntitiesFromSchema(config);
-      
+
       spinner.succeed(chalk.green('TypeScript types generated successfully!'));
-      
+
       console.log(chalk.blue('\n📁 Generated files:'));
       console.log('├── vlodia/config.ts (updated)');
       console.log('└── src/entities/ (generated)');
-      
     } catch (error) {
       spinner.fail(chalk.red(`Error generating types: ${error}`));
       process.exit(1);
@@ -1548,9 +1546,9 @@ main();`;
       realtime: {},
       graphql: {},
       tenancy: {},
-      entities: []
+      entities: [],
     };
-    
+
     // Parse database config
     const dbMatch = content.match(/database\s*\{([^}]+)\}/s);
     if (dbMatch && dbMatch[1]) {
@@ -1565,7 +1563,7 @@ main();`;
       config.database.database = this.extractValue(dbContent, 'database') || 'myapp';
       config.database.ssl = this.extractValue(dbContent, 'ssl') === 'true';
     }
-    
+
     // Parse entities
     const entityMatches = content.match(/entity\s+(\w+)\s*\{([^}]+)\}/g);
     if (entityMatches) {
@@ -1574,12 +1572,12 @@ main();`;
         if (nameMatch) {
           config.entities.push({
             name: nameMatch[1],
-            content: entityMatch
+            content: entityMatch,
           });
         }
       }
     }
-    
+
     return config;
   }
 
@@ -1589,7 +1587,7 @@ main();`;
   private extractValue(content: string, key: string): string {
     const regex = new RegExp(`${key}\\s*=\\s*"([^"]+)"`);
     const match = content.match(regex);
-    return match ? (match[1] || '') : '';
+    return match ? match[1] || '' : '';
   }
 
   /**
@@ -1688,10 +1686,7 @@ export class ${entity.name} {
   public setupNewCommands(): void {
     const program = new Command();
 
-    program
-      .name('vlodia')
-      .description('Vlodia ORM CLI with new features')
-      .version('0.1.0');
+    program.name('vlodia').description('Vlodia ORM CLI with new features').version('0.1.0');
 
     // Generate command (like prisma generate)
     program

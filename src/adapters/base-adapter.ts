@@ -128,15 +128,15 @@ export abstract class BaseAdapter implements Adapter {
     if (value === null || value === undefined) {
       return null;
     }
-    
+
     if (value instanceof Date) {
       return value.toISOString();
     }
-    
+
     if (typeof value === 'object') {
       return JSON.stringify(value);
     }
-    
+
     return value;
   }
 
@@ -147,7 +147,7 @@ export abstract class BaseAdapter implements Adapter {
     if (value === null || value === undefined) {
       return null;
     }
-    
+
     switch (type.toLowerCase()) {
       case 'date':
       case 'timestamp':
@@ -181,7 +181,7 @@ export abstract class BaseAdapter implements Adapter {
       text: 'TEXT',
       blob: 'BLOB',
     };
-    
+
     return typeMap[columnType] || 'VARCHAR';
   }
 
@@ -199,8 +199,9 @@ export abstract class BaseAdapter implements Adapter {
    * Get database-specific order by syntax
    */
   protected getOrderBySyntax(orderBy: Record<string, 'ASC' | 'DESC'>): string {
-    const clauses = Object.entries(orderBy)
-      .map(([column, direction]) => `${this.escapeIdentifier(column)} ${direction}`);
+    const clauses = Object.entries(orderBy).map(
+      ([column, direction]) => `${this.escapeIdentifier(column)} ${direction}`
+    );
     return `ORDER BY ${clauses.join(', ')}`;
   }
 }

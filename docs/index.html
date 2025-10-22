@@ -1,127 +1,540 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Vlodia ORM - v0.1.0</title><meta name="description" content="Documentation for Vlodia ORM"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">Vlodia ORM - v0.1.0</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>Vlodia ORM - v0.1.0</h2></div><div class="tsd-panel tsd-typography"><a id="md:vlodia-orm" class="tsd-anchor"></a><h1><a href="#md:vlodia-orm">Vlodia ORM</a></h1><p><a href="https://badge.fury.io/js/vlodia"><img src="https://badge.fury.io/js/vlodia.svg" alt="npm version"></a>
-<a href="https://github.com/vlodia/vlodia/actions"><img src="https://github.com/vlodia/vlodia/workflows/CI/badge.svg" alt="Build Status"></a>
-<a href="https://coveralls.io/github/vlodia/vlodia?branch=main"><img src="https://coveralls.io/repos/github/vlodia/vlodia/badge.svg?branch=main" alt="Coverage Status"></a>
-<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a></p>
-<p><strong>Vlodia</strong> is a next-generation TypeScript ORM that combines the best features of modern ORMs with enterprise-grade performance and developer experience. Built for TypeScript-first development with reflection-driven metadata, database-agnostic architecture, and production-ready features.</p>
-<a id="md:key-features" class="tsd-anchor"></a><h2><a href="#md:key-features">Key Features</a></h2><a id="md:reflection-driven-architecture" class="tsd-anchor"></a><h3><a href="#md:reflection-driven-architecture"><strong>Reflection-Driven Architecture</strong></a></h3><ul>
-<li><strong>Decorator-based metadata</strong> using <code>@Entity</code>, <code>@Column</code>, <code>@Relation</code></li>
-<li><strong>Runtime type safety</strong> with TypeScript generics</li>
-<li><strong>Automatic schema inference</strong> from entity definitions</li>
-<li><strong>Zero configuration</strong> setup with sensible defaults</li>
-</ul>
-<a id="md:database-agnostic" class="tsd-anchor"></a><h3><a href="#md:database-agnostic"><strong>Database Agnostic</strong></a></h3><ul>
-<li><strong>PostgreSQL</strong> with advanced features support</li>
-<li><strong>MySQL</strong> with full compatibility</li>
-<li><strong>SQLite</strong> for development and testing</li>
-<li><strong>Unified query interface</strong> across all databases</li>
-<li><strong>Database-specific optimizations</strong> when needed</li>
-</ul>
-<a id="md:advanced-query-builder" class="tsd-anchor"></a><h3><a href="#md:advanced-query-builder"><strong>Advanced Query Builder</strong></a></h3><ul>
-<li><strong>Fluent API</strong> with method chaining</li>
-<li><strong>Type-safe queries</strong> with IntelliSense support</li>
-<li><strong>Complex joins</strong> and subqueries</li>
-<li><strong>Raw SQL support</strong> when needed</li>
-<li><strong>Query optimization</strong> and performance monitoring</li>
-</ul>
-<a id="md:enterprise-features" class="tsd-anchor"></a><h3><a href="#md:enterprise-features"><strong>Enterprise Features</strong></a></h3><ul>
-<li><strong>Multi-level caching</strong> (L1 Identity Map + L2 Redis)</li>
-<li><strong>Transaction management</strong> with savepoints</li>
-<li><strong>Migration system</strong> with version control</li>
-<li><strong>Schema synchronization</strong> and validation</li>
-<li><strong>Comprehensive logging</strong> and diagnostics</li>
-</ul>
-<a id="md:installation" class="tsd-anchor"></a><h2><a href="#md:installation">Installation</a></h2><pre><code class="language-bash"><span class="hl-0"># Core ORM</span><br/><span class="hl-1">npm</span><span class="hl-2"> </span><span class="hl-3">install</span><span class="hl-2"> </span><span class="hl-3">vlodia</span><br/><br/><span class="hl-0"># Database drivers (choose one or more)</span><br/><span class="hl-1">npm</span><span class="hl-2"> </span><span class="hl-3">install</span><span class="hl-2"> </span><span class="hl-3">pg</span><span class="hl-2"> </span><span class="hl-3">mysql</span><span class="hl-2"> </span><span class="hl-3">sqlite</span><span class="hl-2"> </span><span class="hl-3">redis</span><br/><br/><span class="hl-0"># TypeScript types</span><br/><span class="hl-1">npm</span><span class="hl-2"> </span><span class="hl-3">install</span><span class="hl-2"> </span><span class="hl-4">-D</span><span class="hl-2"> </span><span class="hl-3">@types/pg</span><span class="hl-2"> </span><span class="hl-3">@types/mysql</span>
+<!doctype html>
+<html class="default" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <title>Vlodia ORM - v0.1.0</title>
+    <meta name="description" content="Documentation for Vlodia ORM" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="assets/highlight.css" />
+    <script defer src="assets/main.js"></script>
+    <script async src="assets/icons.js" id="tsd-icons-script"></script>
+    <script async src="assets/search.js" id="tsd-search-script"></script>
+    <script async src="assets/navigation.js" id="tsd-nav-script"></script>
+  </head>
+  <body>
+    <script>
+      document.documentElement.dataset.theme = localStorage.getItem('tsd-theme') || 'os';
+      document.body.style.display = 'none';
+      setTimeout(() => (app ? app.showPage() : document.body.style.removeProperty('display')), 500);
+    </script>
+    <header class="tsd-page-toolbar">
+      <div class="tsd-toolbar-contents container">
+        <div class="table-cell" id="tsd-search" data-base=".">
+          <div class="field">
+            <label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"
+              ><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <use href="assets/icons.svg#icon-search"></use></svg></label
+            ><input type="text" id="tsd-search-field" aria-label="Search" />
+          </div>
+          <div class="field"><div id="tsd-toolbar-links"></div></div>
+          <ul class="results">
+            <li class="state loading">Preparing search index...</li>
+            <li class="state failure">The search index is not available</li>
+          </ul>
+          <a href="index.html" class="title">Vlodia ORM - v0.1.0</a>
+        </div>
+        <div class="table-cell" id="tsd-widgets">
+          <a
+            href="#"
+            class="tsd-widget tsd-toolbar-icon menu no-caption"
+            data-toggle="menu"
+            aria-label="Menu"
+            ><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <use href="assets/icons.svg#icon-menu"></use></svg
+          ></a>
+        </div>
+      </div>
+    </header>
+    <div class="container container-main">
+      <div class="col-content">
+        <div class="tsd-page-title"><h2>Vlodia ORM - v0.1.0</h2></div>
+        <div class="tsd-panel tsd-typography">
+          <a id="md:vlodia-orm" class="tsd-anchor"></a>
+          <h1><a href="#md:vlodia-orm">Vlodia ORM</a></h1>
+          <p>
+            <a href="https://badge.fury.io/js/vlodia"
+              ><img src="https://badge.fury.io/js/vlodia.svg" alt="npm version"
+            /></a>
+            <a href="https://github.com/vlodia/vlodia/actions"
+              ><img
+                src="https://github.com/vlodia/vlodia/workflows/CI/badge.svg"
+                alt="Build Status"
+            /></a>
+            <a href="https://coveralls.io/github/vlodia/vlodia?branch=main"
+              ><img
+                src="https://coveralls.io/repos/github/vlodia/vlodia/badge.svg?branch=main"
+                alt="Coverage Status"
+            /></a>
+            <a href="https://opensource.org/licenses/MIT"
+              ><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"
+            /></a>
+          </p>
+          <p>
+            <strong>Vlodia</strong> is a next-generation TypeScript ORM that combines the best
+            features of modern ORMs with enterprise-grade performance and developer experience.
+            Built for TypeScript-first development with reflection-driven metadata,
+            database-agnostic architecture, and production-ready features.
+          </p>
+          <a id="md:key-features" class="tsd-anchor"></a>
+          <h2><a href="#md:key-features">Key Features</a></h2>
+          <a id="md:reflection-driven-architecture" class="tsd-anchor"></a>
+          <h3>
+            <a href="#md:reflection-driven-architecture"
+              ><strong>Reflection-Driven Architecture</strong></a
+            >
+          </h3>
+          <ul>
+            <li>
+              <strong>Decorator-based metadata</strong> using <code>@Entity</code>,
+              <code>@Column</code>, <code>@Relation</code>
+            </li>
+            <li><strong>Runtime type safety</strong> with TypeScript generics</li>
+            <li><strong>Automatic schema inference</strong> from entity definitions</li>
+            <li><strong>Zero configuration</strong> setup with sensible defaults</li>
+          </ul>
+          <a id="md:database-agnostic" class="tsd-anchor"></a>
+          <h3>
+            <a href="#md:database-agnostic"><strong>Database Agnostic</strong></a>
+          </h3>
+          <ul>
+            <li><strong>PostgreSQL</strong> with advanced features support</li>
+            <li><strong>MySQL</strong> with full compatibility</li>
+            <li><strong>SQLite</strong> for development and testing</li>
+            <li><strong>Unified query interface</strong> across all databases</li>
+            <li><strong>Database-specific optimizations</strong> when needed</li>
+          </ul>
+          <a id="md:advanced-query-builder" class="tsd-anchor"></a>
+          <h3>
+            <a href="#md:advanced-query-builder"><strong>Advanced Query Builder</strong></a>
+          </h3>
+          <ul>
+            <li><strong>Fluent API</strong> with method chaining</li>
+            <li><strong>Type-safe queries</strong> with IntelliSense support</li>
+            <li><strong>Complex joins</strong> and subqueries</li>
+            <li><strong>Raw SQL support</strong> when needed</li>
+            <li><strong>Query optimization</strong> and performance monitoring</li>
+          </ul>
+          <a id="md:enterprise-features" class="tsd-anchor"></a>
+          <h3>
+            <a href="#md:enterprise-features"><strong>Enterprise Features</strong></a>
+          </h3>
+          <ul>
+            <li><strong>Multi-level caching</strong> (L1 Identity Map + L2 Redis)</li>
+            <li><strong>Transaction management</strong> with savepoints</li>
+            <li><strong>Migration system</strong> with version control</li>
+            <li><strong>Schema synchronization</strong> and validation</li>
+            <li><strong>Comprehensive logging</strong> and diagnostics</li>
+          </ul>
+          <a id="md:installation" class="tsd-anchor"></a>
+          <h2><a href="#md:installation">Installation</a></h2>
+          <pre><code class="language-bash"><span class="hl-0"># Core ORM</span><br/><span class="hl-1">npm</span><span class="hl-2"> </span><span class="hl-3">install</span><span class="hl-2"> </span><span class="hl-3">vlodia</span><br/><br/><span class="hl-0"># Database drivers (choose one or more)</span><br/><span class="hl-1">npm</span><span class="hl-2"> </span><span class="hl-3">install</span><span class="hl-2"> </span><span class="hl-3">pg</span><span class="hl-2"> </span><span class="hl-3">mysql</span><span class="hl-2"> </span><span class="hl-3">sqlite</span><span class="hl-2"> </span><span class="hl-3">redis</span><br/><br/><span class="hl-0"># TypeScript types</span><br/><span class="hl-1">npm</span><span class="hl-2"> </span><span class="hl-3">install</span><span class="hl-2"> </span><span class="hl-4">-D</span><span class="hl-2"> </span><span class="hl-3">@types/pg</span><span class="hl-2"> </span><span class="hl-3">@types/mysql</span>
 </code><button>Copy</button></pre>
-<a id="md:quick-start" class="tsd-anchor"></a><h2><a href="#md:quick-start">Quick Start</a></h2><a id="md:basic-entity-definition" class="tsd-anchor"></a><h3><a href="#md:basic-entity-definition">Basic Entity Definition</a></h3><pre><code class="language-typescript"><span class="hl-5">import</span><span class="hl-2"> { </span><span class="hl-6">Entity</span><span class="hl-2">, </span><span class="hl-6">Column</span><span class="hl-2">, </span><span class="hl-6">PrimaryKey</span><span class="hl-2">, </span><span class="hl-6">OneToMany</span><span class="hl-2">, </span><span class="hl-6">ManyToOne</span><span class="hl-2"> } </span><span class="hl-5">from</span><span class="hl-2"> </span><span class="hl-3">&#39;vlodia&#39;</span><span class="hl-2">;</span><br/><br/><span class="hl-2">@</span><span class="hl-1">Entity</span><span class="hl-2">({ </span><span class="hl-6">tableName:</span><span class="hl-2"> </span><span class="hl-3">&#39;users&#39;</span><span class="hl-2"> })</span><br/><span class="hl-5">export</span><span class="hl-2"> </span><span class="hl-4">class</span><span class="hl-2"> </span><span class="hl-7">User</span><span class="hl-2"> {</span><br/><span class="hl-2">  @</span><span class="hl-1">PrimaryKey</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">id</span><span class="hl-2">!: </span><span class="hl-7">number</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">({ </span><span class="hl-6">unique:</span><span class="hl-2"> </span><span class="hl-4">true</span><span class="hl-2"> })</span><br/><span class="hl-2">  </span><span class="hl-6">email</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">name</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">({ </span><span class="hl-6">nullable:</span><span class="hl-2"> </span><span class="hl-4">true</span><span class="hl-2"> })</span><br/><span class="hl-2">  </span><span class="hl-6">age</span><span class="hl-2">?: </span><span class="hl-7">number</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">OneToMany</span><span class="hl-2">(() </span><span class="hl-4">=&gt;</span><span class="hl-2"> </span><span class="hl-6">Post</span><span class="hl-2">, </span><span class="hl-3">&#39;authorId&#39;</span><span class="hl-2">)</span><br/><span class="hl-2">  </span><span class="hl-6">posts</span><span class="hl-2">!: </span><span class="hl-7">Post</span><span class="hl-2">[];</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">({ </span><span class="hl-1">default</span><span class="hl-6">:</span><span class="hl-2"> () </span><span class="hl-4">=&gt;</span><span class="hl-2"> </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">Date</span><span class="hl-2">() })</span><br/><span class="hl-2">  </span><span class="hl-6">createdAt</span><span class="hl-2">!: </span><span class="hl-7">Date</span><span class="hl-2">;</span><br/><span class="hl-2">}</span><br/><br/><span class="hl-2">@</span><span class="hl-1">Entity</span><span class="hl-2">({ </span><span class="hl-6">tableName:</span><span class="hl-2"> </span><span class="hl-3">&#39;posts&#39;</span><span class="hl-2"> })</span><br/><span class="hl-5">export</span><span class="hl-2"> </span><span class="hl-4">class</span><span class="hl-2"> </span><span class="hl-7">Post</span><span class="hl-2"> {</span><br/><span class="hl-2">  @</span><span class="hl-1">PrimaryKey</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">id</span><span class="hl-2">!: </span><span class="hl-7">number</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">title</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">({ </span><span class="hl-6">type:</span><span class="hl-2"> </span><span class="hl-3">&#39;text&#39;</span><span class="hl-2"> })</span><br/><span class="hl-2">  </span><span class="hl-6">content</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">authorId</span><span class="hl-2">!: </span><span class="hl-7">number</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">ManyToOne</span><span class="hl-2">(() </span><span class="hl-4">=&gt;</span><span class="hl-2"> </span><span class="hl-6">User</span><span class="hl-2">, </span><span class="hl-3">&#39;authorId&#39;</span><span class="hl-2">)</span><br/><span class="hl-2">  </span><span class="hl-6">author</span><span class="hl-2">!: </span><span class="hl-7">User</span><span class="hl-2">;</span><br/><span class="hl-2">}</span>
+          <a id="md:quick-start" class="tsd-anchor"></a>
+          <h2><a href="#md:quick-start">Quick Start</a></h2>
+          <a id="md:basic-entity-definition" class="tsd-anchor"></a>
+          <h3><a href="#md:basic-entity-definition">Basic Entity Definition</a></h3>
+          <pre><code class="language-typescript"><span class="hl-5">import</span><span class="hl-2"> { </span><span class="hl-6">Entity</span><span class="hl-2">, </span><span class="hl-6">Column</span><span class="hl-2">, </span><span class="hl-6">PrimaryKey</span><span class="hl-2">, </span><span class="hl-6">OneToMany</span><span class="hl-2">, </span><span class="hl-6">ManyToOne</span><span class="hl-2"> } </span><span class="hl-5">from</span><span class="hl-2"> </span><span class="hl-3">&#39;vlodia&#39;</span><span class="hl-2">;</span><br/><br/><span class="hl-2">@</span><span class="hl-1">Entity</span><span class="hl-2">({ </span><span class="hl-6">tableName:</span><span class="hl-2"> </span><span class="hl-3">&#39;users&#39;</span><span class="hl-2"> })</span><br/><span class="hl-5">export</span><span class="hl-2"> </span><span class="hl-4">class</span><span class="hl-2"> </span><span class="hl-7">User</span><span class="hl-2"> {</span><br/><span class="hl-2">  @</span><span class="hl-1">PrimaryKey</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">id</span><span class="hl-2">!: </span><span class="hl-7">number</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">({ </span><span class="hl-6">unique:</span><span class="hl-2"> </span><span class="hl-4">true</span><span class="hl-2"> })</span><br/><span class="hl-2">  </span><span class="hl-6">email</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">name</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">({ </span><span class="hl-6">nullable:</span><span class="hl-2"> </span><span class="hl-4">true</span><span class="hl-2"> })</span><br/><span class="hl-2">  </span><span class="hl-6">age</span><span class="hl-2">?: </span><span class="hl-7">number</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">OneToMany</span><span class="hl-2">(() </span><span class="hl-4">=&gt;</span><span class="hl-2"> </span><span class="hl-6">Post</span><span class="hl-2">, </span><span class="hl-3">&#39;authorId&#39;</span><span class="hl-2">)</span><br/><span class="hl-2">  </span><span class="hl-6">posts</span><span class="hl-2">!: </span><span class="hl-7">Post</span><span class="hl-2">[];</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">({ </span><span class="hl-1">default</span><span class="hl-6">:</span><span class="hl-2"> () </span><span class="hl-4">=&gt;</span><span class="hl-2"> </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">Date</span><span class="hl-2">() })</span><br/><span class="hl-2">  </span><span class="hl-6">createdAt</span><span class="hl-2">!: </span><span class="hl-7">Date</span><span class="hl-2">;</span><br/><span class="hl-2">}</span><br/><br/><span class="hl-2">@</span><span class="hl-1">Entity</span><span class="hl-2">({ </span><span class="hl-6">tableName:</span><span class="hl-2"> </span><span class="hl-3">&#39;posts&#39;</span><span class="hl-2"> })</span><br/><span class="hl-5">export</span><span class="hl-2"> </span><span class="hl-4">class</span><span class="hl-2"> </span><span class="hl-7">Post</span><span class="hl-2"> {</span><br/><span class="hl-2">  @</span><span class="hl-1">PrimaryKey</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">id</span><span class="hl-2">!: </span><span class="hl-7">number</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">title</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">({ </span><span class="hl-6">type:</span><span class="hl-2"> </span><span class="hl-3">&#39;text&#39;</span><span class="hl-2"> })</span><br/><span class="hl-2">  </span><span class="hl-6">content</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">authorId</span><span class="hl-2">!: </span><span class="hl-7">number</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">ManyToOne</span><span class="hl-2">(() </span><span class="hl-4">=&gt;</span><span class="hl-2"> </span><span class="hl-6">User</span><span class="hl-2">, </span><span class="hl-3">&#39;authorId&#39;</span><span class="hl-2">)</span><br/><span class="hl-2">  </span><span class="hl-6">author</span><span class="hl-2">!: </span><span class="hl-7">User</span><span class="hl-2">;</span><br/><span class="hl-2">}</span>
 </code><button>Copy</button></pre>
-<a id="md:orm-configuration" class="tsd-anchor"></a><h3><a href="#md:orm-configuration">ORM Configuration</a></h3><pre><code class="language-typescript"><span class="hl-5">import</span><span class="hl-2"> { </span><span class="hl-6">Vlodia</span><span class="hl-2"> } </span><span class="hl-5">from</span><span class="hl-2"> </span><span class="hl-3">&#39;vlodia&#39;</span><span class="hl-2">;</span><br/><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">orm</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">Vlodia</span><span class="hl-2">({</span><br/><span class="hl-2">  </span><span class="hl-6">database:</span><span class="hl-2"> {</span><br/><span class="hl-2">    </span><span class="hl-6">type:</span><span class="hl-2"> </span><span class="hl-3">&#39;postgres&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">host:</span><span class="hl-2"> </span><span class="hl-3">&#39;localhost&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">port:</span><span class="hl-2"> </span><span class="hl-9">5432</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">database:</span><span class="hl-2"> </span><span class="hl-3">&#39;myapp&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">username:</span><span class="hl-2"> </span><span class="hl-3">&#39;user&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">password:</span><span class="hl-2"> </span><span class="hl-3">&#39;password&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">ssl:</span><span class="hl-2"> </span><span class="hl-4">false</span><br/><span class="hl-2">  },</span><br/><span class="hl-2">  </span><span class="hl-6">cache:</span><span class="hl-2"> {</span><br/><span class="hl-2">    </span><span class="hl-6">enabled:</span><span class="hl-2"> </span><span class="hl-4">true</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">type:</span><span class="hl-2"> </span><span class="hl-3">&#39;redis&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">ttl:</span><span class="hl-2"> </span><span class="hl-9">3600</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">maxSize:</span><span class="hl-2"> </span><span class="hl-9">10000</span><br/><span class="hl-2">  },</span><br/><span class="hl-2">  </span><span class="hl-6">logging:</span><span class="hl-2"> {</span><br/><span class="hl-2">    </span><span class="hl-6">level:</span><span class="hl-2"> </span><span class="hl-3">&#39;info&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">queries:</span><span class="hl-2"> </span><span class="hl-4">true</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">slowQueries:</span><span class="hl-2"> </span><span class="hl-9">1000</span><br/><span class="hl-2">  }</span><br/><span class="hl-2">});</span><br/><br/><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-1">connect</span><span class="hl-2">();</span>
+          <a id="md:orm-configuration" class="tsd-anchor"></a>
+          <h3><a href="#md:orm-configuration">ORM Configuration</a></h3>
+          <pre><code class="language-typescript"><span class="hl-5">import</span><span class="hl-2"> { </span><span class="hl-6">Vlodia</span><span class="hl-2"> } </span><span class="hl-5">from</span><span class="hl-2"> </span><span class="hl-3">&#39;vlodia&#39;</span><span class="hl-2">;</span><br/><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">orm</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">Vlodia</span><span class="hl-2">({</span><br/><span class="hl-2">  </span><span class="hl-6">database:</span><span class="hl-2"> {</span><br/><span class="hl-2">    </span><span class="hl-6">type:</span><span class="hl-2"> </span><span class="hl-3">&#39;postgres&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">host:</span><span class="hl-2"> </span><span class="hl-3">&#39;localhost&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">port:</span><span class="hl-2"> </span><span class="hl-9">5432</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">database:</span><span class="hl-2"> </span><span class="hl-3">&#39;myapp&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">username:</span><span class="hl-2"> </span><span class="hl-3">&#39;user&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">password:</span><span class="hl-2"> </span><span class="hl-3">&#39;password&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">ssl:</span><span class="hl-2"> </span><span class="hl-4">false</span><br/><span class="hl-2">  },</span><br/><span class="hl-2">  </span><span class="hl-6">cache:</span><span class="hl-2"> {</span><br/><span class="hl-2">    </span><span class="hl-6">enabled:</span><span class="hl-2"> </span><span class="hl-4">true</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">type:</span><span class="hl-2"> </span><span class="hl-3">&#39;redis&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">ttl:</span><span class="hl-2"> </span><span class="hl-9">3600</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">maxSize:</span><span class="hl-2"> </span><span class="hl-9">10000</span><br/><span class="hl-2">  },</span><br/><span class="hl-2">  </span><span class="hl-6">logging:</span><span class="hl-2"> {</span><br/><span class="hl-2">    </span><span class="hl-6">level:</span><span class="hl-2"> </span><span class="hl-3">&#39;info&#39;</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">queries:</span><span class="hl-2"> </span><span class="hl-4">true</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">slowQueries:</span><span class="hl-2"> </span><span class="hl-9">1000</span><br/><span class="hl-2">  }</span><br/><span class="hl-2">});</span><br/><br/><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-1">connect</span><span class="hl-2">();</span>
 </code><button>Copy</button></pre>
-<a id="md:basic-operations" class="tsd-anchor"></a><h3><a href="#md:basic-operations">Basic Operations</a></h3><pre><code class="language-typescript"><span class="hl-0">// Create</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">user</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">User</span><span class="hl-2">();</span><br/><span class="hl-6">user</span><span class="hl-2">.</span><span class="hl-6">name</span><span class="hl-2"> = </span><span class="hl-3">&#39;John Doe&#39;</span><span class="hl-2">;</span><br/><span class="hl-6">user</span><span class="hl-2">.</span><span class="hl-6">email</span><span class="hl-2"> = </span><span class="hl-3">&#39;john@example.com&#39;</span><span class="hl-2">;</span><br/><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">save</span><span class="hl-2">(</span><span class="hl-6">user</span><span class="hl-2">);</span><br/><br/><span class="hl-0">// Read</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">users</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">find</span><span class="hl-2">(</span><span class="hl-6">User</span><span class="hl-2">, {</span><br/><span class="hl-2">  </span><span class="hl-6">where:</span><span class="hl-2"> { </span><span class="hl-6">age:</span><span class="hl-2"> { </span><span class="hl-6">$gte:</span><span class="hl-2"> </span><span class="hl-9">18</span><span class="hl-2"> } },</span><br/><span class="hl-2">  </span><span class="hl-6">orderBy:</span><span class="hl-2"> { </span><span class="hl-6">name:</span><span class="hl-2"> </span><span class="hl-3">&#39;ASC&#39;</span><span class="hl-2"> },</span><br/><span class="hl-2">  </span><span class="hl-6">limit:</span><span class="hl-2"> </span><span class="hl-9">10</span><br/><span class="hl-2">});</span><br/><br/><span class="hl-0">// Update</span><br/><span class="hl-6">user</span><span class="hl-2">.</span><span class="hl-6">name</span><span class="hl-2"> = </span><span class="hl-3">&#39;Jane Doe&#39;</span><span class="hl-2">;</span><br/><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">save</span><span class="hl-2">(</span><span class="hl-6">user</span><span class="hl-2">);</span><br/><br/><span class="hl-0">// Delete</span><br/><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">remove</span><span class="hl-2">(</span><span class="hl-6">user</span><span class="hl-2">);</span>
+          <a id="md:basic-operations" class="tsd-anchor"></a>
+          <h3><a href="#md:basic-operations">Basic Operations</a></h3>
+          <pre><code class="language-typescript"><span class="hl-0">// Create</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">user</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">User</span><span class="hl-2">();</span><br/><span class="hl-6">user</span><span class="hl-2">.</span><span class="hl-6">name</span><span class="hl-2"> = </span><span class="hl-3">&#39;John Doe&#39;</span><span class="hl-2">;</span><br/><span class="hl-6">user</span><span class="hl-2">.</span><span class="hl-6">email</span><span class="hl-2"> = </span><span class="hl-3">&#39;john@example.com&#39;</span><span class="hl-2">;</span><br/><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">save</span><span class="hl-2">(</span><span class="hl-6">user</span><span class="hl-2">);</span><br/><br/><span class="hl-0">// Read</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">users</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">find</span><span class="hl-2">(</span><span class="hl-6">User</span><span class="hl-2">, {</span><br/><span class="hl-2">  </span><span class="hl-6">where:</span><span class="hl-2"> { </span><span class="hl-6">age:</span><span class="hl-2"> { </span><span class="hl-6">$gte:</span><span class="hl-2"> </span><span class="hl-9">18</span><span class="hl-2"> } },</span><br/><span class="hl-2">  </span><span class="hl-6">orderBy:</span><span class="hl-2"> { </span><span class="hl-6">name:</span><span class="hl-2"> </span><span class="hl-3">&#39;ASC&#39;</span><span class="hl-2"> },</span><br/><span class="hl-2">  </span><span class="hl-6">limit:</span><span class="hl-2"> </span><span class="hl-9">10</span><br/><span class="hl-2">});</span><br/><br/><span class="hl-0">// Update</span><br/><span class="hl-6">user</span><span class="hl-2">.</span><span class="hl-6">name</span><span class="hl-2"> = </span><span class="hl-3">&#39;Jane Doe&#39;</span><span class="hl-2">;</span><br/><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">save</span><span class="hl-2">(</span><span class="hl-6">user</span><span class="hl-2">);</span><br/><br/><span class="hl-0">// Delete</span><br/><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">remove</span><span class="hl-2">(</span><span class="hl-6">user</span><span class="hl-2">);</span>
 </code><button>Copy</button></pre>
-<a id="md:advanced-queries" class="tsd-anchor"></a><h3><a href="#md:advanced-queries">Advanced Queries</a></h3><pre><code class="language-typescript"><span class="hl-0">// Complex queries with joins</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">posts</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">find</span><span class="hl-2">(</span><span class="hl-6">Post</span><span class="hl-2">, {</span><br/><span class="hl-2">  </span><span class="hl-6">where:</span><span class="hl-2"> {</span><br/><span class="hl-2">    </span><span class="hl-6">$and:</span><span class="hl-2"> [</span><br/><span class="hl-2">      { </span><span class="hl-6">title:</span><span class="hl-2"> { </span><span class="hl-6">$like:</span><span class="hl-2"> </span><span class="hl-3">&#39;%TypeScript%&#39;</span><span class="hl-2"> } },</span><br/><span class="hl-2">      { </span><span class="hl-6">author:</span><span class="hl-2"> { </span><span class="hl-6">name:</span><span class="hl-2"> { </span><span class="hl-6">$like:</span><span class="hl-2"> </span><span class="hl-3">&#39;John%&#39;</span><span class="hl-2"> } } }</span><br/><span class="hl-2">    ]</span><br/><span class="hl-2">  },</span><br/><span class="hl-2">  </span><span class="hl-6">relations:</span><span class="hl-2"> [</span><span class="hl-3">&#39;author&#39;</span><span class="hl-2">],</span><br/><span class="hl-2">  </span><span class="hl-6">orderBy:</span><span class="hl-2"> { </span><span class="hl-6">createdAt:</span><span class="hl-2"> </span><span class="hl-3">&#39;DESC&#39;</span><span class="hl-2"> },</span><br/><span class="hl-2">  </span><span class="hl-6">limit:</span><span class="hl-2"> </span><span class="hl-9">20</span><br/><span class="hl-2">});</span><br/><br/><span class="hl-0">// Raw SQL when needed</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">results</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">query</span><span class="hl-2">(</span><span class="hl-3">`</span><br/><span class="hl-3">  SELECT u.name, COUNT(p.id) as post_count</span><br/><span class="hl-3">  FROM users u</span><br/><span class="hl-3">  LEFT JOIN posts p ON u.id = p.author_id</span><br/><span class="hl-3">  GROUP BY u.id, u.name</span><br/><span class="hl-3">  HAVING COUNT(p.id) &gt; 5</span><br/><span class="hl-3">`</span><span class="hl-2">);</span>
+          <a id="md:advanced-queries" class="tsd-anchor"></a>
+          <h3><a href="#md:advanced-queries">Advanced Queries</a></h3>
+          <pre><code class="language-typescript"><span class="hl-0">// Complex queries with joins</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">posts</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">find</span><span class="hl-2">(</span><span class="hl-6">Post</span><span class="hl-2">, {</span><br/><span class="hl-2">  </span><span class="hl-6">where:</span><span class="hl-2"> {</span><br/><span class="hl-2">    </span><span class="hl-6">$and:</span><span class="hl-2"> [</span><br/><span class="hl-2">      { </span><span class="hl-6">title:</span><span class="hl-2"> { </span><span class="hl-6">$like:</span><span class="hl-2"> </span><span class="hl-3">&#39;%TypeScript%&#39;</span><span class="hl-2"> } },</span><br/><span class="hl-2">      { </span><span class="hl-6">author:</span><span class="hl-2"> { </span><span class="hl-6">name:</span><span class="hl-2"> { </span><span class="hl-6">$like:</span><span class="hl-2"> </span><span class="hl-3">&#39;John%&#39;</span><span class="hl-2"> } } }</span><br/><span class="hl-2">    ]</span><br/><span class="hl-2">  },</span><br/><span class="hl-2">  </span><span class="hl-6">relations:</span><span class="hl-2"> [</span><span class="hl-3">&#39;author&#39;</span><span class="hl-2">],</span><br/><span class="hl-2">  </span><span class="hl-6">orderBy:</span><span class="hl-2"> { </span><span class="hl-6">createdAt:</span><span class="hl-2"> </span><span class="hl-3">&#39;DESC&#39;</span><span class="hl-2"> },</span><br/><span class="hl-2">  </span><span class="hl-6">limit:</span><span class="hl-2"> </span><span class="hl-9">20</span><br/><span class="hl-2">});</span><br/><br/><span class="hl-0">// Raw SQL when needed</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">results</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">query</span><span class="hl-2">(</span><span class="hl-3">`</span><br/><span class="hl-3">  SELECT u.name, COUNT(p.id) as post_count</span><br/><span class="hl-3">  FROM users u</span><br/><span class="hl-3">  LEFT JOIN posts p ON u.id = p.author_id</span><br/><span class="hl-3">  GROUP BY u.id, u.name</span><br/><span class="hl-3">  HAVING COUNT(p.id) &gt; 5</span><br/><span class="hl-3">`</span><span class="hl-2">);</span>
 </code><button>Copy</button></pre>
-<a id="md:transactions" class="tsd-anchor"></a><h3><a href="#md:transactions">Transactions</a></h3><pre><code class="language-typescript"><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-1">transaction</span><span class="hl-2">(</span><span class="hl-4">async</span><span class="hl-2"> (</span><span class="hl-6">manager</span><span class="hl-2">) </span><span class="hl-4">=&gt;</span><span class="hl-2"> {</span><br/><span class="hl-2">  </span><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">user</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">User</span><span class="hl-2">();</span><br/><span class="hl-2">  </span><span class="hl-6">user</span><span class="hl-2">.</span><span class="hl-6">name</span><span class="hl-2"> = </span><span class="hl-3">&#39;Transaction User&#39;</span><span class="hl-2">;</span><br/><span class="hl-2">  </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">save</span><span class="hl-2">(</span><span class="hl-6">user</span><span class="hl-2">);</span><br/><br/><span class="hl-2">  </span><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">post</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">Post</span><span class="hl-2">();</span><br/><span class="hl-2">  </span><span class="hl-6">post</span><span class="hl-2">.</span><span class="hl-6">title</span><span class="hl-2"> = </span><span class="hl-3">&#39;My Post&#39;</span><span class="hl-2">;</span><br/><span class="hl-2">  </span><span class="hl-6">post</span><span class="hl-2">.</span><span class="hl-6">authorId</span><span class="hl-2"> = </span><span class="hl-6">user</span><span class="hl-2">.</span><span class="hl-6">id</span><span class="hl-2">;</span><br/><span class="hl-2">  </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">save</span><span class="hl-2">(</span><span class="hl-6">post</span><span class="hl-2">);</span><br/><br/><span class="hl-2">  </span><span class="hl-0">// Automatic rollback on error</span><br/><span class="hl-2">});</span>
+          <a id="md:transactions" class="tsd-anchor"></a>
+          <h3><a href="#md:transactions">Transactions</a></h3>
+          <pre><code class="language-typescript"><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-1">transaction</span><span class="hl-2">(</span><span class="hl-4">async</span><span class="hl-2"> (</span><span class="hl-6">manager</span><span class="hl-2">) </span><span class="hl-4">=&gt;</span><span class="hl-2"> {</span><br/><span class="hl-2">  </span><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">user</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">User</span><span class="hl-2">();</span><br/><span class="hl-2">  </span><span class="hl-6">user</span><span class="hl-2">.</span><span class="hl-6">name</span><span class="hl-2"> = </span><span class="hl-3">&#39;Transaction User&#39;</span><span class="hl-2">;</span><br/><span class="hl-2">  </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">save</span><span class="hl-2">(</span><span class="hl-6">user</span><span class="hl-2">);</span><br/><br/><span class="hl-2">  </span><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">post</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">Post</span><span class="hl-2">();</span><br/><span class="hl-2">  </span><span class="hl-6">post</span><span class="hl-2">.</span><span class="hl-6">title</span><span class="hl-2"> = </span><span class="hl-3">&#39;My Post&#39;</span><span class="hl-2">;</span><br/><span class="hl-2">  </span><span class="hl-6">post</span><span class="hl-2">.</span><span class="hl-6">authorId</span><span class="hl-2"> = </span><span class="hl-6">user</span><span class="hl-2">.</span><span class="hl-6">id</span><span class="hl-2">;</span><br/><span class="hl-2">  </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">save</span><span class="hl-2">(</span><span class="hl-6">post</span><span class="hl-2">);</span><br/><br/><span class="hl-2">  </span><span class="hl-0">// Automatic rollback on error</span><br/><span class="hl-2">});</span>
 </code><button>Copy</button></pre>
-<a id="md:architecture" class="tsd-anchor"></a><h2><a href="#md:architecture">Architecture</a></h2><a id="md:core-components" class="tsd-anchor"></a><h3><a href="#md:core-components">Core Components</a></h3><pre><code><span class="hl-2">┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐</span><br/><span class="hl-2">│   </span><span class="hl-6">Entity</span><span class="hl-2"> </span><span class="hl-6">Layer</span><span class="hl-2">  │    │  </span><span class="hl-6">Query</span><span class="hl-2"> </span><span class="hl-6">Builder</span><span class="hl-2">  │    │  </span><span class="hl-6">Cache</span><span class="hl-2"> </span><span class="hl-6">Layer</span><span class="hl-2">    │</span><br/><span class="hl-2">│                 │    │                 │    │                 │</span><br/><span class="hl-2">│ • </span><span class="hl-6">Decorators</span><span class="hl-2">    │    │ • </span><span class="hl-6">Fluent</span><span class="hl-2"> </span><span class="hl-8">API</span><span class="hl-2">    │    │ • </span><span class="hl-8">L1</span><span class="hl-2"> </span><span class="hl-6">Identity</span><span class="hl-2">   │</span><br/><span class="hl-2">│ • </span><span class="hl-6">Metadata</span><span class="hl-2">      │    │ • </span><span class="hl-6">Type</span><span class="hl-2"> </span><span class="hl-6">Safety</span><span class="hl-2">   │    │ • </span><span class="hl-8">L2</span><span class="hl-2"> </span><span class="hl-6">Redis</span><span class="hl-2">      │</span><br/><span class="hl-2">│ • </span><span class="hl-6">Validation</span><span class="hl-2">    │    │ • </span><span class="hl-6">Optimization</span><span class="hl-2">  │    │ • </span><span class="hl-6">Invalidation</span><span class="hl-2">   │</span><br/><span class="hl-2">└─────────────────┘    └─────────────────┘    └─────────────────┘</span><br/><span class="hl-2">         │                       │                       │</span><br/><span class="hl-2">         └───────────────────────┼───────────────────────┘</span><br/><span class="hl-2">                                 │</span><br/><span class="hl-2">                    ┌─────────────────┐</span><br/><span class="hl-2">                    │  </span><span class="hl-6">Adapter</span><span class="hl-2"> </span><span class="hl-6">Layer</span><span class="hl-2">  │</span><br/><span class="hl-2">                    │                 │</span><br/><span class="hl-2">                    │ • </span><span class="hl-6">PostgreSQL</span><span class="hl-2">    │</span><br/><span class="hl-2">                    │ • </span><span class="hl-6">MySQL</span><span class="hl-2">         │</span><br/><span class="hl-2">                    │ • </span><span class="hl-6">SQLite</span><span class="hl-2">        │</span><br/><span class="hl-2">                    └─────────────────┘</span>
+          <a id="md:architecture" class="tsd-anchor"></a>
+          <h2><a href="#md:architecture">Architecture</a></h2>
+          <a id="md:core-components" class="tsd-anchor"></a>
+          <h3><a href="#md:core-components">Core Components</a></h3>
+          <pre><code><span class="hl-2">┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐</span><br/><span class="hl-2">│   </span><span class="hl-6">Entity</span><span class="hl-2"> </span><span class="hl-6">Layer</span><span class="hl-2">  │    │  </span><span class="hl-6">Query</span><span class="hl-2"> </span><span class="hl-6">Builder</span><span class="hl-2">  │    │  </span><span class="hl-6">Cache</span><span class="hl-2"> </span><span class="hl-6">Layer</span><span class="hl-2">    │</span><br/><span class="hl-2">│                 │    │                 │    │                 │</span><br/><span class="hl-2">│ • </span><span class="hl-6">Decorators</span><span class="hl-2">    │    │ • </span><span class="hl-6">Fluent</span><span class="hl-2"> </span><span class="hl-8">API</span><span class="hl-2">    │    │ • </span><span class="hl-8">L1</span><span class="hl-2"> </span><span class="hl-6">Identity</span><span class="hl-2">   │</span><br/><span class="hl-2">│ • </span><span class="hl-6">Metadata</span><span class="hl-2">      │    │ • </span><span class="hl-6">Type</span><span class="hl-2"> </span><span class="hl-6">Safety</span><span class="hl-2">   │    │ • </span><span class="hl-8">L2</span><span class="hl-2"> </span><span class="hl-6">Redis</span><span class="hl-2">      │</span><br/><span class="hl-2">│ • </span><span class="hl-6">Validation</span><span class="hl-2">    │    │ • </span><span class="hl-6">Optimization</span><span class="hl-2">  │    │ • </span><span class="hl-6">Invalidation</span><span class="hl-2">   │</span><br/><span class="hl-2">└─────────────────┘    └─────────────────┘    └─────────────────┘</span><br/><span class="hl-2">         │                       │                       │</span><br/><span class="hl-2">         └───────────────────────┼───────────────────────┘</span><br/><span class="hl-2">                                 │</span><br/><span class="hl-2">                    ┌─────────────────┐</span><br/><span class="hl-2">                    │  </span><span class="hl-6">Adapter</span><span class="hl-2"> </span><span class="hl-6">Layer</span><span class="hl-2">  │</span><br/><span class="hl-2">                    │                 │</span><br/><span class="hl-2">                    │ • </span><span class="hl-6">PostgreSQL</span><span class="hl-2">    │</span><br/><span class="hl-2">                    │ • </span><span class="hl-6">MySQL</span><span class="hl-2">         │</span><br/><span class="hl-2">                    │ • </span><span class="hl-6">SQLite</span><span class="hl-2">        │</span><br/><span class="hl-2">                    └─────────────────┘</span>
 </code><button>Copy</button></pre>
-<a id="md:design-patterns" class="tsd-anchor"></a><h3><a href="#md:design-patterns">Design Patterns</a></h3><ul>
-<li><strong>Repository Pattern</strong>: Type-safe data access</li>
-<li><strong>Unit of Work</strong>: Transaction management</li>
-<li><strong>Identity Map</strong>: Object identity tracking</li>
-<li><strong>Data Mapper</strong>: Object-relational mapping</li>
-<li><strong>Query Object</strong>: Complex query building</li>
-</ul>
-<a id="md:cli-tools" class="tsd-anchor"></a><h2><a href="#md:cli-tools">CLI Tools</a></h2><p>Vlodia includes a powerful CLI for development:</p>
-<pre><code class="language-bash"><span class="hl-0"># Generate entity from existing table</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">generate:entity</span><span class="hl-2"> </span><span class="hl-4">--table</span><span class="hl-2"> </span><span class="hl-3">users</span><span class="hl-2"> </span><span class="hl-4">--output</span><span class="hl-2"> </span><span class="hl-3">src/entities/User.ts</span><br/><br/><span class="hl-0"># Create new entity</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">create:entity</span><span class="hl-2"> </span><span class="hl-4">--name</span><span class="hl-2"> </span><span class="hl-3">Product</span><span class="hl-2"> </span><span class="hl-4">--table</span><span class="hl-2"> </span><span class="hl-3">products</span><br/><br/><span class="hl-0"># Generate migration</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">generate:migration</span><span class="hl-2"> </span><span class="hl-4">--name</span><span class="hl-2"> </span><span class="hl-3">add_user_roles</span><br/><br/><span class="hl-0"># Run migrations</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">migrate:run</span><br/><br/><span class="hl-0"># Schema synchronization</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">schema:sync</span><span class="hl-2"> </span><span class="hl-4">--force</span><br/><br/><span class="hl-0"># Watch for changes</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">watch</span>
+          <a id="md:design-patterns" class="tsd-anchor"></a>
+          <h3><a href="#md:design-patterns">Design Patterns</a></h3>
+          <ul>
+            <li><strong>Repository Pattern</strong>: Type-safe data access</li>
+            <li><strong>Unit of Work</strong>: Transaction management</li>
+            <li><strong>Identity Map</strong>: Object identity tracking</li>
+            <li><strong>Data Mapper</strong>: Object-relational mapping</li>
+            <li><strong>Query Object</strong>: Complex query building</li>
+          </ul>
+          <a id="md:cli-tools" class="tsd-anchor"></a>
+          <h2><a href="#md:cli-tools">CLI Tools</a></h2>
+          <p>Vlodia includes a powerful CLI for development:</p>
+          <pre><code class="language-bash"><span class="hl-0"># Generate entity from existing table</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">generate:entity</span><span class="hl-2"> </span><span class="hl-4">--table</span><span class="hl-2"> </span><span class="hl-3">users</span><span class="hl-2"> </span><span class="hl-4">--output</span><span class="hl-2"> </span><span class="hl-3">src/entities/User.ts</span><br/><br/><span class="hl-0"># Create new entity</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">create:entity</span><span class="hl-2"> </span><span class="hl-4">--name</span><span class="hl-2"> </span><span class="hl-3">Product</span><span class="hl-2"> </span><span class="hl-4">--table</span><span class="hl-2"> </span><span class="hl-3">products</span><br/><br/><span class="hl-0"># Generate migration</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">generate:migration</span><span class="hl-2"> </span><span class="hl-4">--name</span><span class="hl-2"> </span><span class="hl-3">add_user_roles</span><br/><br/><span class="hl-0"># Run migrations</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">migrate:run</span><br/><br/><span class="hl-0"># Schema synchronization</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">schema:sync</span><span class="hl-2"> </span><span class="hl-4">--force</span><br/><br/><span class="hl-0"># Watch for changes</span><br/><span class="hl-1">vlodia</span><span class="hl-2"> </span><span class="hl-3">watch</span>
 </code><button>Copy</button></pre>
-<a id="md:performance" class="tsd-anchor"></a><h2><a href="#md:performance">Performance</a></h2><a id="md:benchmark-results" class="tsd-anchor"></a><h3><a href="#md:benchmark-results">Benchmark Results</a></h3><table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>Vlodia</th>
-<th>TypeORM</th>
-<th>Prisma</th>
-<th>Sequelize</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Simple Select</td>
-<td>1.2ms</td>
-<td>2.1ms</td>
-<td>1.8ms</td>
-<td>2.5ms</td>
-</tr>
-<tr>
-<td>Complex Join</td>
-<td>3.4ms</td>
-<td>5.2ms</td>
-<td>4.1ms</td>
-<td>6.8ms</td>
-</tr>
-<tr>
-<td>Bulk Insert</td>
-<td>15ms</td>
-<td>28ms</td>
-<td>22ms</td>
-<td>35ms</td>
-</tr>
-<tr>
-<td>Transaction</td>
-<td>2.1ms</td>
-<td>3.8ms</td>
-<td>2.9ms</td>
-<td>4.2ms</td>
-</tr>
-</tbody></table>
-<a id="md:optimization-features" class="tsd-anchor"></a><h3><a href="#md:optimization-features">Optimization Features</a></h3><ul>
-<li><strong>Query optimization</strong> with intelligent caching</li>
-<li><strong>Connection pooling</strong> for high concurrency</li>
-<li><strong>Lazy loading</strong> for relations</li>
-<li><strong>Batch operations</strong> for bulk data</li>
-<li><strong>Query analysis</strong> and performance monitoring</li>
-</ul>
-<a id="md:type-safety" class="tsd-anchor"></a><h2><a href="#md:type-safety">Type Safety</a></h2><a id="md:full-typescript-support" class="tsd-anchor"></a><h3><a href="#md:full-typescript-support">Full TypeScript Support</a></h3><pre><code class="language-typescript"><span class="hl-0">// Type-safe entity operations</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">user</span><span class="hl-2">: </span><span class="hl-7">User</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">findOne</span><span class="hl-2">(</span><span class="hl-6">User</span><span class="hl-2">, { </span><span class="hl-6">where:</span><span class="hl-2"> { </span><span class="hl-6">id:</span><span class="hl-2"> </span><span class="hl-9">1</span><span class="hl-2"> } });</span><br/><br/><span class="hl-0">// Type-safe query building</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">query</span><span class="hl-2"> = </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><br/><span class="hl-2">  .</span><span class="hl-1">createQueryBuilder</span><span class="hl-2">(</span><span class="hl-6">User</span><span class="hl-2">, </span><span class="hl-3">&#39;u&#39;</span><span class="hl-2">)</span><br/><span class="hl-2">  .</span><span class="hl-1">where</span><span class="hl-2">(</span><span class="hl-3">&#39;u.age &gt; :age&#39;</span><span class="hl-2">, { </span><span class="hl-6">age:</span><span class="hl-2"> </span><span class="hl-9">18</span><span class="hl-2"> })</span><br/><span class="hl-2">  .</span><span class="hl-1">orderBy</span><span class="hl-2">(</span><span class="hl-3">&#39;u.name&#39;</span><span class="hl-2">, </span><span class="hl-3">&#39;ASC&#39;</span><span class="hl-2">)</span><br/><span class="hl-2">  .</span><span class="hl-1">getMany</span><span class="hl-2">(); </span><span class="hl-0">// Returns Promise&lt;User[]&gt;</span><br/><br/><span class="hl-0">// Type-safe relations</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">userWithPosts</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">findOne</span><span class="hl-2">(</span><span class="hl-6">User</span><span class="hl-2">, {</span><br/><span class="hl-2">  </span><span class="hl-6">where:</span><span class="hl-2"> { </span><span class="hl-6">id:</span><span class="hl-2"> </span><span class="hl-9">1</span><span class="hl-2"> },</span><br/><span class="hl-2">  </span><span class="hl-6">relations:</span><span class="hl-2"> [</span><span class="hl-3">&#39;posts&#39;</span><span class="hl-2">] </span><span class="hl-0">// TypeScript validates relation names</span><br/><span class="hl-2">});</span>
+          <a id="md:performance" class="tsd-anchor"></a>
+          <h2><a href="#md:performance">Performance</a></h2>
+          <a id="md:benchmark-results" class="tsd-anchor"></a>
+          <h3><a href="#md:benchmark-results">Benchmark Results</a></h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Vlodia</th>
+                <th>TypeORM</th>
+                <th>Prisma</th>
+                <th>Sequelize</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Simple Select</td>
+                <td>1.2ms</td>
+                <td>2.1ms</td>
+                <td>1.8ms</td>
+                <td>2.5ms</td>
+              </tr>
+              <tr>
+                <td>Complex Join</td>
+                <td>3.4ms</td>
+                <td>5.2ms</td>
+                <td>4.1ms</td>
+                <td>6.8ms</td>
+              </tr>
+              <tr>
+                <td>Bulk Insert</td>
+                <td>15ms</td>
+                <td>28ms</td>
+                <td>22ms</td>
+                <td>35ms</td>
+              </tr>
+              <tr>
+                <td>Transaction</td>
+                <td>2.1ms</td>
+                <td>3.8ms</td>
+                <td>2.9ms</td>
+                <td>4.2ms</td>
+              </tr>
+            </tbody>
+          </table>
+          <a id="md:optimization-features" class="tsd-anchor"></a>
+          <h3><a href="#md:optimization-features">Optimization Features</a></h3>
+          <ul>
+            <li><strong>Query optimization</strong> with intelligent caching</li>
+            <li><strong>Connection pooling</strong> for high concurrency</li>
+            <li><strong>Lazy loading</strong> for relations</li>
+            <li><strong>Batch operations</strong> for bulk data</li>
+            <li><strong>Query analysis</strong> and performance monitoring</li>
+          </ul>
+          <a id="md:type-safety" class="tsd-anchor"></a>
+          <h2><a href="#md:type-safety">Type Safety</a></h2>
+          <a id="md:full-typescript-support" class="tsd-anchor"></a>
+          <h3><a href="#md:full-typescript-support">Full TypeScript Support</a></h3>
+          <pre><code class="language-typescript"><span class="hl-0">// Type-safe entity operations</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">user</span><span class="hl-2">: </span><span class="hl-7">User</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">findOne</span><span class="hl-2">(</span><span class="hl-6">User</span><span class="hl-2">, { </span><span class="hl-6">where:</span><span class="hl-2"> { </span><span class="hl-6">id:</span><span class="hl-2"> </span><span class="hl-9">1</span><span class="hl-2"> } });</span><br/><br/><span class="hl-0">// Type-safe query building</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">query</span><span class="hl-2"> = </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><br/><span class="hl-2">  .</span><span class="hl-1">createQueryBuilder</span><span class="hl-2">(</span><span class="hl-6">User</span><span class="hl-2">, </span><span class="hl-3">&#39;u&#39;</span><span class="hl-2">)</span><br/><span class="hl-2">  .</span><span class="hl-1">where</span><span class="hl-2">(</span><span class="hl-3">&#39;u.age &gt; :age&#39;</span><span class="hl-2">, { </span><span class="hl-6">age:</span><span class="hl-2"> </span><span class="hl-9">18</span><span class="hl-2"> })</span><br/><span class="hl-2">  .</span><span class="hl-1">orderBy</span><span class="hl-2">(</span><span class="hl-3">&#39;u.name&#39;</span><span class="hl-2">, </span><span class="hl-3">&#39;ASC&#39;</span><span class="hl-2">)</span><br/><span class="hl-2">  .</span><span class="hl-1">getMany</span><span class="hl-2">(); </span><span class="hl-0">// Returns Promise&lt;User[]&gt;</span><br/><br/><span class="hl-0">// Type-safe relations</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">userWithPosts</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">findOne</span><span class="hl-2">(</span><span class="hl-6">User</span><span class="hl-2">, {</span><br/><span class="hl-2">  </span><span class="hl-6">where:</span><span class="hl-2"> { </span><span class="hl-6">id:</span><span class="hl-2"> </span><span class="hl-9">1</span><span class="hl-2"> },</span><br/><span class="hl-2">  </span><span class="hl-6">relations:</span><span class="hl-2"> [</span><span class="hl-3">&#39;posts&#39;</span><span class="hl-2">] </span><span class="hl-0">// TypeScript validates relation names</span><br/><span class="hl-2">});</span>
 </code><button>Copy</button></pre>
-<a id="md:migration-system" class="tsd-anchor"></a><h2><a href="#md:migration-system">Migration System</a></h2><a id="md:automatic-migrations" class="tsd-anchor"></a><h3><a href="#md:automatic-migrations">Automatic Migrations</a></h3><pre><code class="language-typescript"><span class="hl-0">// Generate migration from entity changes</span><br/><span class="hl-6">vlodia</span><span class="hl-2"> </span><span class="hl-10">generate</span><span class="hl-2">:</span><span class="hl-6">migration</span><span class="hl-2"> --</span><span class="hl-6">name</span><span class="hl-2"> </span><span class="hl-6">add_user_roles</span><br/><br/><span class="hl-0">// Migration file</span><br/><span class="hl-5">export</span><span class="hl-2"> </span><span class="hl-4">class</span><span class="hl-2"> </span><span class="hl-7">AddUserRoles1234567890</span><span class="hl-2"> </span><span class="hl-4">implements</span><span class="hl-2"> </span><span class="hl-7">Migration</span><span class="hl-2"> {</span><br/><span class="hl-2">  </span><span class="hl-4">async</span><span class="hl-2"> </span><span class="hl-1">up</span><span class="hl-2">(</span><span class="hl-6">queryRunner</span><span class="hl-2">: </span><span class="hl-7">QueryRunner</span><span class="hl-2">): </span><span class="hl-7">Promise</span><span class="hl-2">&lt;</span><span class="hl-7">void</span><span class="hl-2">&gt; {</span><br/><span class="hl-2">    </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">queryRunner</span><span class="hl-2">.</span><span class="hl-1">query</span><span class="hl-2">(</span><span class="hl-3">`</span><br/><span class="hl-3">      ALTER TABLE users </span><br/><span class="hl-3">      ADD COLUMN role VARCHAR(50) DEFAULT &#39;user&#39;</span><br/><span class="hl-3">    `</span><span class="hl-2">);</span><br/><span class="hl-2">  }</span><br/><br/><span class="hl-2">  </span><span class="hl-4">async</span><span class="hl-2"> </span><span class="hl-1">down</span><span class="hl-2">(</span><span class="hl-6">queryRunner</span><span class="hl-2">: </span><span class="hl-7">QueryRunner</span><span class="hl-2">): </span><span class="hl-7">Promise</span><span class="hl-2">&lt;</span><span class="hl-7">void</span><span class="hl-2">&gt; {</span><br/><span class="hl-2">    </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">queryRunner</span><span class="hl-2">.</span><span class="hl-1">query</span><span class="hl-2">(</span><span class="hl-3">`</span><br/><span class="hl-3">      ALTER TABLE users </span><br/><span class="hl-3">      DROP COLUMN role</span><br/><span class="hl-3">    `</span><span class="hl-2">);</span><br/><span class="hl-2">  }</span><br/><span class="hl-2">}</span>
+          <a id="md:migration-system" class="tsd-anchor"></a>
+          <h2><a href="#md:migration-system">Migration System</a></h2>
+          <a id="md:automatic-migrations" class="tsd-anchor"></a>
+          <h3><a href="#md:automatic-migrations">Automatic Migrations</a></h3>
+          <pre><code class="language-typescript"><span class="hl-0">// Generate migration from entity changes</span><br/><span class="hl-6">vlodia</span><span class="hl-2"> </span><span class="hl-10">generate</span><span class="hl-2">:</span><span class="hl-6">migration</span><span class="hl-2"> --</span><span class="hl-6">name</span><span class="hl-2"> </span><span class="hl-6">add_user_roles</span><br/><br/><span class="hl-0">// Migration file</span><br/><span class="hl-5">export</span><span class="hl-2"> </span><span class="hl-4">class</span><span class="hl-2"> </span><span class="hl-7">AddUserRoles1234567890</span><span class="hl-2"> </span><span class="hl-4">implements</span><span class="hl-2"> </span><span class="hl-7">Migration</span><span class="hl-2"> {</span><br/><span class="hl-2">  </span><span class="hl-4">async</span><span class="hl-2"> </span><span class="hl-1">up</span><span class="hl-2">(</span><span class="hl-6">queryRunner</span><span class="hl-2">: </span><span class="hl-7">QueryRunner</span><span class="hl-2">): </span><span class="hl-7">Promise</span><span class="hl-2">&lt;</span><span class="hl-7">void</span><span class="hl-2">&gt; {</span><br/><span class="hl-2">    </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">queryRunner</span><span class="hl-2">.</span><span class="hl-1">query</span><span class="hl-2">(</span><span class="hl-3">`</span><br/><span class="hl-3">      ALTER TABLE users </span><br/><span class="hl-3">      ADD COLUMN role VARCHAR(50) DEFAULT &#39;user&#39;</span><br/><span class="hl-3">    `</span><span class="hl-2">);</span><br/><span class="hl-2">  }</span><br/><br/><span class="hl-2">  </span><span class="hl-4">async</span><span class="hl-2"> </span><span class="hl-1">down</span><span class="hl-2">(</span><span class="hl-6">queryRunner</span><span class="hl-2">: </span><span class="hl-7">QueryRunner</span><span class="hl-2">): </span><span class="hl-7">Promise</span><span class="hl-2">&lt;</span><span class="hl-7">void</span><span class="hl-2">&gt; {</span><br/><span class="hl-2">    </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">queryRunner</span><span class="hl-2">.</span><span class="hl-1">query</span><span class="hl-2">(</span><span class="hl-3">`</span><br/><span class="hl-3">      ALTER TABLE users </span><br/><span class="hl-3">      DROP COLUMN role</span><br/><span class="hl-3">    `</span><span class="hl-2">);</span><br/><span class="hl-2">  }</span><br/><span class="hl-2">}</span>
 </code><button>Copy</button></pre>
-<a id="md:advanced-features" class="tsd-anchor"></a><h2><a href="#md:advanced-features">Advanced Features</a></h2><a id="md:caching-system" class="tsd-anchor"></a><h3><a href="#md:caching-system">Caching System</a></h3><pre><code class="language-typescript"><span class="hl-0">// Multi-level caching</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">user</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">findOne</span><span class="hl-2">(</span><span class="hl-6">User</span><span class="hl-2">, { </span><br/><span class="hl-2">  </span><span class="hl-6">where:</span><span class="hl-2"> { </span><span class="hl-6">id:</span><span class="hl-2"> </span><span class="hl-9">1</span><span class="hl-2"> },</span><br/><span class="hl-2">  </span><span class="hl-6">cache:</span><span class="hl-2"> {</span><br/><span class="hl-2">    </span><span class="hl-6">ttl:</span><span class="hl-2"> </span><span class="hl-9">3600</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">tags:</span><span class="hl-2"> [</span><span class="hl-3">&#39;user&#39;</span><span class="hl-2">, </span><span class="hl-3">&#39;profile&#39;</span><span class="hl-2">]</span><br/><span class="hl-2">  }</span><br/><span class="hl-2">});</span><br/><br/><span class="hl-0">// Cache invalidation</span><br/><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">cache</span><span class="hl-2">.</span><span class="hl-1">invalidateByTags</span><span class="hl-2">([</span><span class="hl-3">&#39;user&#39;</span><span class="hl-2">]);</span>
+          <a id="md:advanced-features" class="tsd-anchor"></a>
+          <h2><a href="#md:advanced-features">Advanced Features</a></h2>
+          <a id="md:caching-system" class="tsd-anchor"></a>
+          <h3><a href="#md:caching-system">Caching System</a></h3>
+          <pre><code class="language-typescript"><span class="hl-0">// Multi-level caching</span><br/><span class="hl-4">const</span><span class="hl-2"> </span><span class="hl-8">user</span><span class="hl-2"> = </span><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">manager</span><span class="hl-2">.</span><span class="hl-1">findOne</span><span class="hl-2">(</span><span class="hl-6">User</span><span class="hl-2">, { </span><br/><span class="hl-2">  </span><span class="hl-6">where:</span><span class="hl-2"> { </span><span class="hl-6">id:</span><span class="hl-2"> </span><span class="hl-9">1</span><span class="hl-2"> },</span><br/><span class="hl-2">  </span><span class="hl-6">cache:</span><span class="hl-2"> {</span><br/><span class="hl-2">    </span><span class="hl-6">ttl:</span><span class="hl-2"> </span><span class="hl-9">3600</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-6">tags:</span><span class="hl-2"> [</span><span class="hl-3">&#39;user&#39;</span><span class="hl-2">, </span><span class="hl-3">&#39;profile&#39;</span><span class="hl-2">]</span><br/><span class="hl-2">  }</span><br/><span class="hl-2">});</span><br/><br/><span class="hl-0">// Cache invalidation</span><br/><span class="hl-5">await</span><span class="hl-2"> </span><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">cache</span><span class="hl-2">.</span><span class="hl-1">invalidateByTags</span><span class="hl-2">([</span><span class="hl-3">&#39;user&#39;</span><span class="hl-2">]);</span>
 </code><button>Copy</button></pre>
-<a id="md:event-system" class="tsd-anchor"></a><h3><a href="#md:event-system">Event System</a></h3><pre><code class="language-typescript"><span class="hl-0">// Entity lifecycle hooks</span><br/><span class="hl-2">@</span><span class="hl-1">Entity</span><span class="hl-2">()</span><br/><span class="hl-5">export</span><span class="hl-2"> </span><span class="hl-4">class</span><span class="hl-2"> </span><span class="hl-7">User</span><span class="hl-2"> {</span><br/><span class="hl-2">  @</span><span class="hl-1">BeforeInsert</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-1">beforeInsert</span><span class="hl-2">() {</span><br/><span class="hl-2">    </span><span class="hl-4">this</span><span class="hl-2">.</span><span class="hl-6">createdAt</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">Date</span><span class="hl-2">();</span><br/><span class="hl-2">  }</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">AfterUpdate</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-1">afterUpdate</span><span class="hl-2">() {</span><br/><span class="hl-2">    </span><span class="hl-4">this</span><span class="hl-2">.</span><span class="hl-6">updatedAt</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">Date</span><span class="hl-2">();</span><br/><span class="hl-2">  }</span><br/><span class="hl-2">}</span><br/><br/><span class="hl-0">// Global events</span><br/><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">eventBus</span><span class="hl-2">.</span><span class="hl-1">on</span><span class="hl-2">(</span><span class="hl-3">&#39;query&#39;</span><span class="hl-2">, (</span><span class="hl-6">event</span><span class="hl-2">) </span><span class="hl-4">=&gt;</span><span class="hl-2"> {</span><br/><span class="hl-2">  </span><span class="hl-6">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-3">&#39;Query executed:&#39;</span><span class="hl-2">, </span><span class="hl-6">event</span><span class="hl-2">.</span><span class="hl-6">sql</span><span class="hl-2">);</span><br/><span class="hl-2">});</span>
+          <a id="md:event-system" class="tsd-anchor"></a>
+          <h3><a href="#md:event-system">Event System</a></h3>
+          <pre><code class="language-typescript"><span class="hl-0">// Entity lifecycle hooks</span><br/><span class="hl-2">@</span><span class="hl-1">Entity</span><span class="hl-2">()</span><br/><span class="hl-5">export</span><span class="hl-2"> </span><span class="hl-4">class</span><span class="hl-2"> </span><span class="hl-7">User</span><span class="hl-2"> {</span><br/><span class="hl-2">  @</span><span class="hl-1">BeforeInsert</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-1">beforeInsert</span><span class="hl-2">() {</span><br/><span class="hl-2">    </span><span class="hl-4">this</span><span class="hl-2">.</span><span class="hl-6">createdAt</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">Date</span><span class="hl-2">();</span><br/><span class="hl-2">  }</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">AfterUpdate</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-1">afterUpdate</span><span class="hl-2">() {</span><br/><span class="hl-2">    </span><span class="hl-4">this</span><span class="hl-2">.</span><span class="hl-6">updatedAt</span><span class="hl-2"> = </span><span class="hl-4">new</span><span class="hl-2"> </span><span class="hl-1">Date</span><span class="hl-2">();</span><br/><span class="hl-2">  }</span><br/><span class="hl-2">}</span><br/><br/><span class="hl-0">// Global events</span><br/><span class="hl-6">orm</span><span class="hl-2">.</span><span class="hl-6">eventBus</span><span class="hl-2">.</span><span class="hl-1">on</span><span class="hl-2">(</span><span class="hl-3">&#39;query&#39;</span><span class="hl-2">, (</span><span class="hl-6">event</span><span class="hl-2">) </span><span class="hl-4">=&gt;</span><span class="hl-2"> {</span><br/><span class="hl-2">  </span><span class="hl-6">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-3">&#39;Query executed:&#39;</span><span class="hl-2">, </span><span class="hl-6">event</span><span class="hl-2">.</span><span class="hl-6">sql</span><span class="hl-2">);</span><br/><span class="hl-2">});</span>
 </code><button>Copy</button></pre>
-<a id="md:validation" class="tsd-anchor"></a><h3><a href="#md:validation">Validation</a></h3><pre><code class="language-typescript"><span class="hl-5">import</span><span class="hl-2"> { </span><span class="hl-6">IsEmail</span><span class="hl-2">, </span><span class="hl-6">IsNotEmpty</span><span class="hl-2">, </span><span class="hl-6">MinLength</span><span class="hl-2"> } </span><span class="hl-5">from</span><span class="hl-2"> </span><span class="hl-3">&#39;class-validator&#39;</span><span class="hl-2">;</span><br/><br/><span class="hl-2">@</span><span class="hl-1">Entity</span><span class="hl-2">()</span><br/><span class="hl-5">export</span><span class="hl-2"> </span><span class="hl-4">class</span><span class="hl-2"> </span><span class="hl-7">User</span><span class="hl-2"> {</span><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">()</span><br/><span class="hl-2">  @</span><span class="hl-1">IsEmail</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">email</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">()</span><br/><span class="hl-2">  @</span><span class="hl-1">IsNotEmpty</span><span class="hl-2">()</span><br/><span class="hl-2">  @</span><span class="hl-1">MinLength</span><span class="hl-2">(</span><span class="hl-9">2</span><span class="hl-2">)</span><br/><span class="hl-2">  </span><span class="hl-6">name</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><span class="hl-2">}</span>
+          <a id="md:validation" class="tsd-anchor"></a>
+          <h3><a href="#md:validation">Validation</a></h3>
+          <pre><code class="language-typescript"><span class="hl-5">import</span><span class="hl-2"> { </span><span class="hl-6">IsEmail</span><span class="hl-2">, </span><span class="hl-6">IsNotEmpty</span><span class="hl-2">, </span><span class="hl-6">MinLength</span><span class="hl-2"> } </span><span class="hl-5">from</span><span class="hl-2"> </span><span class="hl-3">&#39;class-validator&#39;</span><span class="hl-2">;</span><br/><br/><span class="hl-2">@</span><span class="hl-1">Entity</span><span class="hl-2">()</span><br/><span class="hl-5">export</span><span class="hl-2"> </span><span class="hl-4">class</span><span class="hl-2"> </span><span class="hl-7">User</span><span class="hl-2"> {</span><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">()</span><br/><span class="hl-2">  @</span><span class="hl-1">IsEmail</span><span class="hl-2">()</span><br/><span class="hl-2">  </span><span class="hl-6">email</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><br/><span class="hl-2">  @</span><span class="hl-1">Column</span><span class="hl-2">()</span><br/><span class="hl-2">  @</span><span class="hl-1">IsNotEmpty</span><span class="hl-2">()</span><br/><span class="hl-2">  @</span><span class="hl-1">MinLength</span><span class="hl-2">(</span><span class="hl-9">2</span><span class="hl-2">)</span><br/><span class="hl-2">  </span><span class="hl-6">name</span><span class="hl-2">!: </span><span class="hl-7">string</span><span class="hl-2">;</span><br/><span class="hl-2">}</span>
 </code><button>Copy</button></pre>
-<a id="md:documentation" class="tsd-anchor"></a><h2><a href="#md:documentation">Documentation</a></h2><ul>
-<li><strong>GitHub Repository</strong>: <a href="https://github.com/vlodia/vlodia">github.com/vlodia/vlodia</a></li>
-<li><strong>API Documentation</strong>: Available in source code with JSDoc</li>
-<li><strong>Examples</strong>: See <code>/examples</code> directory</li>
-<li><strong>Migration Guide</strong>: See CHANGELOG.md</li>
-</ul>
-<a id="md:community" class="tsd-anchor"></a><h2><a href="#md:community">Community</a></h2><ul>
-<li><strong>GitHub</strong>: <a href="https://github.com/vlodia/vlodia">github.com/vlodia/vlodia</a></li>
-<li><strong>Issues</strong>: Report bugs and request features</li>
-<li><strong>Discussions</strong>: Community discussions and Q&amp;A</li>
-</ul>
-<a id="md:license" class="tsd-anchor"></a><h2><a href="#md:license">License</a></h2><p>MIT License - see <a href="LICENSE">LICENSE</a> file for details.</p>
-<hr>
-<p><strong>Vlodia ORM</strong> - The next generation of TypeScript ORMs</p>
-</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:vlodia-orm"><span>Vlodia ORM</span></a><ul><li><a href="#md:key-features"><span>Key <wbr/>Features</span></a></li><li><ul><li><a href="#md:reflection-driven-architecture"><span>Reflection-<wbr/>Driven <wbr/>Architecture</span></a></li><li><a href="#md:database-agnostic"><span>Database <wbr/>Agnostic</span></a></li><li><a href="#md:advanced-query-builder"><span>Advanced <wbr/>Query <wbr/>Builder</span></a></li><li><a href="#md:enterprise-features"><span>Enterprise <wbr/>Features</span></a></li></ul></li><li><a href="#md:installation"><span>Installation</span></a></li><li><a href="#md:quick-start"><span>Quick <wbr/>Start</span></a></li><li><ul><li><a href="#md:basic-entity-definition"><span>Basic <wbr/>Entity <wbr/>Definition</span></a></li><li><a href="#md:orm-configuration"><span>ORM <wbr/>Configuration</span></a></li><li><a href="#md:basic-operations"><span>Basic <wbr/>Operations</span></a></li><li><a href="#md:advanced-queries"><span>Advanced <wbr/>Queries</span></a></li><li><a href="#md:transactions"><span>Transactions</span></a></li></ul></li><li><a href="#md:architecture"><span>Architecture</span></a></li><li><ul><li><a href="#md:core-components"><span>Core <wbr/>Components</span></a></li><li><a href="#md:design-patterns"><span>Design <wbr/>Patterns</span></a></li></ul></li><li><a href="#md:cli-tools"><span>CLI <wbr/>Tools</span></a></li><li><a href="#md:performance"><span>Performance</span></a></li><li><ul><li><a href="#md:benchmark-results"><span>Benchmark <wbr/>Results</span></a></li><li><a href="#md:optimization-features"><span>Optimization <wbr/>Features</span></a></li></ul></li><li><a href="#md:type-safety"><span>Type <wbr/>Safety</span></a></li><li><ul><li><a href="#md:full-typescript-support"><span>Full <wbr/>Type<wbr/>Script <wbr/>Support</span></a></li></ul></li><li><a href="#md:migration-system"><span>Migration <wbr/>System</span></a></li><li><ul><li><a href="#md:automatic-migrations"><span>Automatic <wbr/>Migrations</span></a></li></ul></li><li><a href="#md:advanced-features"><span>Advanced <wbr/>Features</span></a></li><li><ul><li><a href="#md:caching-system"><span>Caching <wbr/>System</span></a></li><li><a href="#md:event-system"><span>Event <wbr/>System</span></a></li><li><a href="#md:validation"><span>Validation</span></a></li></ul></li><li><a href="#md:documentation"><span>Documentation</span></a></li><li><a href="#md:community"><span>Community</span></a></li><li><a href="#md:license"><span>License</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>Vlodia ORM - v0.1.0</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
+          <a id="md:documentation" class="tsd-anchor"></a>
+          <h2><a href="#md:documentation">Documentation</a></h2>
+          <ul>
+            <li>
+              <strong>GitHub Repository</strong>:
+              <a href="https://github.com/vlodia/vlodia">github.com/vlodia/vlodia</a>
+            </li>
+            <li><strong>API Documentation</strong>: Available in source code with JSDoc</li>
+            <li><strong>Examples</strong>: See <code>/examples</code> directory</li>
+            <li><strong>Migration Guide</strong>: See CHANGELOG.md</li>
+          </ul>
+          <a id="md:community" class="tsd-anchor"></a>
+          <h2><a href="#md:community">Community</a></h2>
+          <ul>
+            <li>
+              <strong>GitHub</strong>:
+              <a href="https://github.com/vlodia/vlodia">github.com/vlodia/vlodia</a>
+            </li>
+            <li><strong>Issues</strong>: Report bugs and request features</li>
+            <li><strong>Discussions</strong>: Community discussions and Q&amp;A</li>
+          </ul>
+          <a id="md:license" class="tsd-anchor"></a>
+          <h2><a href="#md:license">License</a></h2>
+          <p>MIT License - see <a href="LICENSE">LICENSE</a> file for details.</p>
+          <hr />
+          <p><strong>Vlodia ORM</strong> - The next generation of TypeScript ORMs</p>
+        </div>
+      </div>
+      <div class="col-sidebar">
+        <div class="page-menu">
+          <div class="tsd-navigation settings">
+            <details class="tsd-index-accordion">
+              <summary class="tsd-accordion-summary">
+                <h3>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <use href="assets/icons.svg#icon-chevronDown"></use></svg
+                  >Settings
+                </h3>
+              </summary>
+              <div class="tsd-accordion-details">
+                <div class="tsd-filter-visibility">
+                  <h4 class="uppercase">Member Visibility</h4>
+                  <form>
+                    <ul id="tsd-filter-options">
+                      <li class="tsd-filter-item">
+                        <label class="tsd-filter-input"
+                          ><input
+                            type="checkbox"
+                            id="tsd-filter-inherited"
+                            name="inherited"
+                            checked
+                          /><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+                            <rect
+                              class="tsd-checkbox-background"
+                              width="30"
+                              height="30"
+                              x="1"
+                              y="1"
+                              rx="6"
+                              fill="none"
+                            ></rect>
+                            <path
+                              class="tsd-checkbox-checkmark"
+                              d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
+                              stroke="none"
+                              stroke-width="3.5"
+                              stroke-linejoin="round"
+                              fill="none"
+                            ></path></svg
+                          ><span>Inherited</span></label
+                        >
+                      </li>
+                    </ul>
+                  </form>
+                </div>
+                <div class="tsd-theme-toggle">
+                  <h4 class="uppercase">Theme</h4>
+                  <select id="tsd-theme">
+                    <option value="os">OS</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                  </select>
+                </div>
+              </div>
+            </details>
+          </div>
+          <details open class="tsd-index-accordion tsd-page-navigation">
+            <summary class="tsd-accordion-summary">
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <use href="assets/icons.svg#icon-chevronDown"></use></svg
+                >On This Page
+              </h3>
+            </summary>
+            <div class="tsd-accordion-details">
+              <a href="#md:vlodia-orm"><span>Vlodia ORM</span></a>
+              <ul>
+                <li>
+                  <a href="#md:key-features"
+                    ><span>Key <wbr />Features</span></a
+                  >
+                </li>
+                <li>
+                  <ul>
+                    <li>
+                      <a href="#md:reflection-driven-architecture"
+                        ><span>Reflection-<wbr />Driven <wbr />Architecture</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:database-agnostic"
+                        ><span>Database <wbr />Agnostic</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:advanced-query-builder"
+                        ><span>Advanced <wbr />Query <wbr />Builder</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:enterprise-features"
+                        ><span>Enterprise <wbr />Features</span></a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#md:installation"><span>Installation</span></a>
+                </li>
+                <li>
+                  <a href="#md:quick-start"
+                    ><span>Quick <wbr />Start</span></a
+                  >
+                </li>
+                <li>
+                  <ul>
+                    <li>
+                      <a href="#md:basic-entity-definition"
+                        ><span>Basic <wbr />Entity <wbr />Definition</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:orm-configuration"
+                        ><span>ORM <wbr />Configuration</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:basic-operations"
+                        ><span>Basic <wbr />Operations</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:advanced-queries"
+                        ><span>Advanced <wbr />Queries</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:transactions"><span>Transactions</span></a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#md:architecture"><span>Architecture</span></a>
+                </li>
+                <li>
+                  <ul>
+                    <li>
+                      <a href="#md:core-components"
+                        ><span>Core <wbr />Components</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:design-patterns"
+                        ><span>Design <wbr />Patterns</span></a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#md:cli-tools"
+                    ><span>CLI <wbr />Tools</span></a
+                  >
+                </li>
+                <li>
+                  <a href="#md:performance"><span>Performance</span></a>
+                </li>
+                <li>
+                  <ul>
+                    <li>
+                      <a href="#md:benchmark-results"
+                        ><span>Benchmark <wbr />Results</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:optimization-features"
+                        ><span>Optimization <wbr />Features</span></a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#md:type-safety"
+                    ><span>Type <wbr />Safety</span></a
+                  >
+                </li>
+                <li>
+                  <ul>
+                    <li>
+                      <a href="#md:full-typescript-support"
+                        ><span>Full <wbr />Type<wbr />Script <wbr />Support</span></a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#md:migration-system"
+                    ><span>Migration <wbr />System</span></a
+                  >
+                </li>
+                <li>
+                  <ul>
+                    <li>
+                      <a href="#md:automatic-migrations"
+                        ><span>Automatic <wbr />Migrations</span></a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#md:advanced-features"
+                    ><span>Advanced <wbr />Features</span></a
+                  >
+                </li>
+                <li>
+                  <ul>
+                    <li>
+                      <a href="#md:caching-system"
+                        ><span>Caching <wbr />System</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:event-system"
+                        ><span>Event <wbr />System</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="#md:validation"><span>Validation</span></a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#md:documentation"><span>Documentation</span></a>
+                </li>
+                <li>
+                  <a href="#md:community"><span>Community</span></a>
+                </li>
+                <li>
+                  <a href="#md:license"><span>License</span></a>
+                </li>
+              </ul>
+            </div>
+          </details>
+        </div>
+        <div class="site-menu">
+          <nav class="tsd-navigation">
+            <a href="modules.html" class="current"
+              ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                <use href="assets/icons.svg#icon-1"></use></svg
+              ><span>Vlodia ORM - v0.1.0</span></a
+            >
+            <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base=".">
+              <li>Loading...</li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <p class="tsd-generator">
+        Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a>
+      </p>
+    </footer>
+    <div class="overlay"></div>
+  </body>
+</html>

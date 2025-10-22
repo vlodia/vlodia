@@ -75,7 +75,7 @@ export class SqliteAdapter extends BaseAdapter {
 
     this.currentTransaction = transaction;
     await this.db.run('BEGIN TRANSACTION');
-    
+
     return transaction;
   }
 
@@ -128,7 +128,7 @@ export class SqliteAdapter extends BaseAdapter {
     }
 
     await this.db!.run(`ROLLBACK TO SAVEPOINT ${name}`);
-    
+
     // Remove savepoints after this one
     const index = transaction.savepoints.indexOf(name);
     transaction.savepoints = transaction.savepoints.slice(0, index);
@@ -147,7 +147,7 @@ export class SqliteAdapter extends BaseAdapter {
     }
 
     await this.db!.run(`RELEASE SAVEPOINT ${name}`);
-    
+
     const index = transaction.savepoints.indexOf(name);
     transaction.savepoints.splice(index, 1);
   }
@@ -169,18 +169,18 @@ export class SqliteAdapter extends BaseAdapter {
     *   - Simplicity and maintainability; sacrificing lower-level type control.
     *   - Performance is unaffected at runtime (static config).
     */
-   protected override getDatabaseType(columnType: string): string {
-     const typeMap: Record<string, string> = {
-       string: 'TEXT',
-       number: 'INTEGER',
-       boolean: 'INTEGER',
+  protected override getDatabaseType(columnType: string): string {
+    const typeMap: Record<string, string> = {
+      string: 'TEXT',
+      number: 'INTEGER',
+      boolean: 'INTEGER',
       date: 'TEXT',
       json: 'TEXT',
       uuid: 'TEXT',
       text: 'TEXT',
       blob: 'BLOB',
     };
-    
+
     return typeMap[columnType] || 'TEXT';
   }
 
@@ -198,8 +198,9 @@ export class SqliteAdapter extends BaseAdapter {
    * Get SQLite-specific order by syntax
    */
   protected override getOrderBySyntax(orderBy: Record<string, 'ASC' | 'DESC'>): string {
-    const clauses = Object.entries(orderBy)
-      .map(([column, direction]) => `"${column}" ${direction}`);
+    const clauses = Object.entries(orderBy).map(
+      ([column, direction]) => `"${column}" ${direction}`
+    );
     return `ORDER BY ${clauses.join(', ')}`;
   }
 
@@ -217,19 +218,19 @@ export class SqliteAdapter extends BaseAdapter {
     if (value === null || value === undefined) {
       return null;
     }
-    
+
     if (value instanceof Date) {
       return value.toISOString();
     }
-    
+
     if (typeof value === 'object') {
       return JSON.stringify(value);
     }
-    
+
     if (typeof value === 'boolean') {
       return value ? 1 : 0;
     }
-    
+
     return value;
   }
 
@@ -240,7 +241,7 @@ export class SqliteAdapter extends BaseAdapter {
     if (value === null || value === undefined) {
       return null;
     }
-    
+
     switch (type.toLowerCase()) {
       case 'text':
         // Try to parse as date if it looks like an ISO string

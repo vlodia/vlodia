@@ -5,19 +5,23 @@
 
 export type DatabaseType = 'postgres' | 'mysql' | 'sqlite';
 
-export type ColumnType = 
-  | 'string' 
-  | 'number' 
-  | 'boolean' 
-  | 'date' 
-  | 'json' 
-  | 'uuid' 
-  | 'text' 
+export type ColumnType =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'date'
+  | 'json'
+  | 'uuid'
+  | 'text'
   | 'blob';
 
 export type RelationType = 'OneToOne' | 'OneToMany' | 'ManyToOne' | 'ManyToMany';
 
-export type IsolationLevel = 'READ_UNCOMMITTED' | 'READ_COMMITTED' | 'REPEATABLE_READ' | 'SERIALIZABLE';
+export type IsolationLevel =
+  | 'READ_UNCOMMITTED'
+  | 'READ_COMMITTED'
+  | 'REPEATABLE_READ'
+  | 'SERIALIZABLE';
 
 export interface DatabaseConfig {
   type: DatabaseType;
@@ -149,7 +153,13 @@ export interface RelationMetadata {
 export interface HookMetadata {
   name: string;
   propertyName: string;
-  type: 'beforeInsert' | 'afterInsert' | 'beforeUpdate' | 'afterUpdate' | 'beforeRemove' | 'afterRemove';
+  type:
+    | 'beforeInsert'
+    | 'afterInsert'
+    | 'beforeUpdate'
+    | 'afterUpdate'
+    | 'beforeRemove'
+    | 'afterRemove';
   method: string;
 }
 

@@ -64,13 +64,13 @@ export class DefaultEventBus implements EventBus {
     if (!this.handlers.has(event)) {
       this.handlers.set(event, new Set());
     }
-    
+
     this.handlers.get(event)!.add(handler);
 
     return {
       unsubscribe: () => {
         this.off(event, handler);
-      }
+      },
     };
   }
 
@@ -102,13 +102,13 @@ export class DefaultEventBus implements EventBus {
     if (!this.onceHandlers.has(event)) {
       this.onceHandlers.set(event, new Set());
     }
-    
+
     this.onceHandlers.get(event)!.add(handler);
 
     return {
       unsubscribe: () => {
         this.off(event, handler);
-      }
+      },
     };
   }
 
@@ -130,15 +130,15 @@ export class DefaultEventBus implements EventBus {
    */
   getEventNames(): string[] {
     const eventNames = new Set<string>();
-    
+
     for (const event of this.handlers.keys()) {
       eventNames.add(event);
     }
-    
+
     for (const event of this.onceHandlers.keys()) {
       eventNames.add(event);
     }
-    
+
     return Array.from(eventNames);
   }
 
@@ -163,17 +163,17 @@ export class DefaultEventBus implements EventBus {
    */
   getHandlers(event: string): EventHandler[] {
     const handlers: EventHandler[] = [];
-    
+
     const regularHandlers = this.handlers.get(event);
     if (regularHandlers) {
       handlers.push(...regularHandlers);
     }
-    
+
     const onceHandlers = this.onceHandlers.get(event);
     if (onceHandlers) {
       handlers.push(...onceHandlers);
     }
-    
+
     return handlers;
   }
 }
@@ -185,42 +185,42 @@ export const ORM_EVENTS = {
   // Initialization events
   INITIALIZED: 'initialized',
   CLOSED: 'closed',
-  
+
   // Transaction events
   TRANSACTION_START: 'transaction:start',
   TRANSACTION_COMMIT: 'transaction:commit',
   TRANSACTION_ROLLBACK: 'transaction:rollback',
-  
+
   // Savepoint events
   SAVEPOINT_START: 'savepoint:start',
   SAVEPOINT_RELEASE: 'savepoint:release',
   SAVEPOINT_ROLLBACK: 'savepoint:rollback',
-  
+
   // Query events
   QUERY_START: 'query:start',
   QUERY_END: 'query:end',
   QUERY_ERROR: 'query:error',
-  
+
   // Entity events
   ENTITY_CREATED: 'entity:created',
   ENTITY_UPDATED: 'entity:updated',
   ENTITY_DELETED: 'entity:deleted',
-  
+
   // Cache events
   CACHE_HIT: 'cache:hit',
   CACHE_MISS: 'cache:miss',
   CACHE_SET: 'cache:set',
   CACHE_DELETE: 'cache:delete',
   CACHE_CLEAR: 'cache:clear',
-  
+
   // Migration events
   MIGRATION_START: 'migration:start',
   MIGRATION_END: 'migration:end',
   MIGRATION_ERROR: 'migration:error',
-  
+
   // Error events
   ERROR: 'error',
   WARNING: 'warning',
 } as const;
 
-export type ORMEvent = typeof ORM_EVENTS[keyof typeof ORM_EVENTS];
+export type ORMEvent = (typeof ORM_EVENTS)[keyof typeof ORM_EVENTS];

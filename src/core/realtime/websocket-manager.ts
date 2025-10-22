@@ -68,11 +68,11 @@ export class WebSocketManager {
 
       const app = express();
       const server = http.createServer(app);
-      
+
       this.server = new WebSocket.Server({
         server,
         path: this.config.path,
-        cors: this.config.cors
+        cors: this.config.cors,
       });
 
       this.setupWebSocketHandlers();
@@ -80,12 +80,11 @@ export class WebSocketManager {
       this.startHeartbeat();
 
       server.listen(this.config.port, () => {
-        this.logger.info('WebSocket server started', { 
-          port: this.config.port, 
-          path: this.config.path 
+        this.logger.info('WebSocket server started', {
+          port: this.config.port,
+          path: this.config.path,
         });
       });
-
     } catch (error) {
       this.logger.error('Failed to initialize WebSocket server', { error });
       throw error;
@@ -105,14 +104,14 @@ export class WebSocketManager {
         id: connectionId,
         socket,
         subscriptions: new Set(),
-        lastActivity: new Date()
+        lastActivity: new Date(),
       };
 
       this.connections.set(connectionId, connection);
-      this.logger.debug('WebSocket connection established', { 
+      this.logger.debug('WebSocket connection established', {
         connectionId,
         clientIP,
-        userAgent
+        userAgent,
       });
 
       socket.on('message', (message: string) => {
@@ -131,7 +130,7 @@ export class WebSocketManager {
       this.sendMessage(connectionId, {
         type: 'connected',
         connectionId,
-        timestamp: new Date()
+        timestamp: new Date(),
       });
     });
   }
@@ -147,7 +146,7 @@ export class WebSocketManager {
         data: event.data,
         timestamp: new Date(),
         userId: event.userId,
-        tenantId: event.tenantId
+        tenantId: event.tenantId,
       });
     });
 
@@ -158,7 +157,7 @@ export class WebSocketManager {
         data: event.data,
         timestamp: new Date(),
         userId: event.userId,
-        tenantId: event.tenantId
+        tenantId: event.tenantId,
       });
     });
 
@@ -169,7 +168,7 @@ export class WebSocketManager {
         data: event.data,
         timestamp: new Date(),
         userId: event.userId,
-        tenantId: event.tenantId
+        tenantId: event.tenantId,
       });
     });
 
@@ -180,7 +179,7 @@ export class WebSocketManager {
         data: event.data,
         timestamp: new Date(),
         userId: event.userId,
-        tenantId: event.tenantId
+        tenantId: event.tenantId,
       });
     });
   }
@@ -192,7 +191,7 @@ export class WebSocketManager {
     try {
       const data = JSON.parse(message);
       const connection = this.connections.get(connectionId);
-      
+
       if (!connection) {
         return;
       }
@@ -228,22 +227,22 @@ export class WebSocketManager {
     const subscriptionKey = `${entity}:${userId || '*'}:${tenantId || '*'}`;
 
     connection.subscriptions.add(subscriptionKey);
-    
+
     if (!this.subscriptions.has(subscriptionKey)) {
       this.subscriptions.set(subscriptionKey, new Set());
     }
     this.subscriptions.get(subscriptionKey)!.add(connectionId);
 
-    this.logger.debug('Entity subscription added', { 
-      connectionId, 
-      entity, 
-      subscriptionKey 
+    this.logger.debug('Entity subscription added', {
+      connectionId,
+      entity,
+      subscriptionKey,
     });
 
     this.sendMessage(connectionId, {
       type: 'subscribed',
       entity,
-      timestamp: new Date()
+      timestamp: new Date(),
     });
   }
 
@@ -258,7 +257,7 @@ export class WebSocketManager {
     const subscriptionKey = `${entity}:${userId || '*'}:${tenantId || '*'}`;
 
     connection.subscriptions.delete(subscriptionKey);
-    
+
     const subscription = this.subscriptions.get(subscriptionKey);
     if (subscription) {
       subscription.delete(connectionId);
@@ -267,16 +266,16 @@ export class WebSocketManager {
       }
     }
 
-    this.logger.debug('Entity subscription removed', { 
-      connectionId, 
-      entity, 
-      subscriptionKey 
+    this.logger.debug('Entity subscription removed', {
+      connectionId,
+      entity,
+      subscriptionKey,
     });
 
     this.sendMessage(connectionId, {
       type: 'unsubscribed',
       entity,
-      timestamp: new Date()
+      timestamp: new Date(),
     });
   }
 
@@ -318,7 +317,7 @@ export class WebSocketManager {
     // Also broadcast to wildcard subscriptions
     const wildcardKey = `${event.entity}:*:*`;
     const wildcardConnections = this.subscriptions.get(wildcardKey);
-    
+
     if (wildcardConnections) {
       for (const connectionId of wildcardConnections) {
         this.sendMessage(connectionId, event);
@@ -352,7 +351,7 @@ export class WebSocketManager {
 
       for (const [connectionId, connection] of this.connections) {
         const timeSinceActivity = now.getTime() - connection.lastActivity.getTime();
-        
+
         if (timeSinceActivity > timeout) {
           this.logger.debug('Connection timeout, closing', { connectionId });
           connection.socket.close();
@@ -383,7 +382,7 @@ export class WebSocketManager {
     return {
       connections: this.connections.size,
       subscriptions: this.subscriptions.size,
-      uptime: process.uptime()
+      uptime: process.uptime(),
     };
   }
 
@@ -395,14 +394,14 @@ export class WebSocketManager {
       this.logger.debug('Closing WebSocket connection', { connectionId });
       connection.socket.close();
     }
-    
+
     this.connections.clear();
     this.subscriptions.clear();
-    
+
     if (this.server) {
       this.server.close();
     }
-    
+
     this.logger.info('WebSocket server closed');
   }
 }

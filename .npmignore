@@ -18,8 +18,7 @@ tsconfig.json
 typedoc.json
 
 # Build files
-dist/
-build/
+src/
 *.map
 
 # Documentation
@@ -79,4 +78,3 @@ temp/
 
 # Contributing files
 CONTRIBUTING.md
-src/

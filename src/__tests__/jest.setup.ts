@@ -27,7 +27,7 @@ export const testUtils = {
     email: 'test@example.com',
     age: 25,
     createdAt: new Date(),
-    ...overrides
+    ...overrides,
   }),
 
   /**
@@ -38,7 +38,7 @@ export const testUtils = {
     content: 'Test content',
     published: true,
     createdAt: new Date(),
-    ...overrides
+    ...overrides,
   }),
 
   /**
@@ -56,9 +56,9 @@ export const testUtils = {
         name: `Test User ${i}`,
         email: `test${i}@example.com`,
         age: Math.floor(Math.random() * 50) + 18,
-        createdAt: new Date()
+        createdAt: new Date(),
       });
     }
     return data;
-  }
+  },
 };

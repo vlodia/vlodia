@@ -117,7 +117,7 @@ export class BaseRepository<T extends object> implements Repository<T> {
     if (!entity) {
       throw new Error(`Entity with ID ${id} not found`);
     }
-    
+
     Object.assign(entity, data);
     return this.save(entity, options);
   }
@@ -148,20 +148,14 @@ export class BaseRepository<T extends object> implements Repository<T> {
   /**
    * Find entities with relations
    */
-  async findWithRelations(
-    relations: string[],
-    options: QueryOptions = {}
-  ): Promise<T[]> {
+  async findWithRelations(relations: string[], options: QueryOptions = {}): Promise<T[]> {
     return this.find({ ...options, relations });
   }
 
   /**
    * Find one entity with relations
    */
-  async findOneWithRelations(
-    relations: string[],
-    options: QueryOptions = {}
-  ): Promise<T | null> {
+  async findOneWithRelations(relations: string[], options: QueryOptions = {}): Promise<T | null> {
     return this.findOne({ ...options, relations });
   }
 

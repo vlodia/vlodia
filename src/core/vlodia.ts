@@ -24,7 +24,7 @@ export class Vlodia {
   private eventBus: EventBus;
   private cache: Cache | null = null;
   private isInitialized = false;
-  
+
   // New features
   private webSocketManager: WebSocketManager | null = null;
   private graphqlGenerator: GraphQLSchemaGenerator | null = null;
@@ -60,7 +60,7 @@ export class Vlodia {
     try {
       await this.adapter.connect();
       this.logger.info('Database connected successfully');
-      
+
       // Initialize new features
       await this.initializeNewFeatures();
 
@@ -90,7 +90,7 @@ export class Vlodia {
     if (this.config.realtime?.enabled) {
       /**
        * Ensure correct EventBus implementation is provided to WebSocketManager.
-       * Cast is required if config eventBus types diverge across modules. 
+       * Cast is required if config eventBus types diverge across modules.
        * All dependencies are explicitly passed.
        */
       this.webSocketManager = new WebSocketManager(
@@ -119,7 +119,7 @@ export class Vlodia {
       showTypes: true,
       showRelations: true,
       showConstraints: true,
-      autoLayout: true
+      autoLayout: true,
     });
     this.logger.info('Schema Designer initialized');
 
@@ -282,9 +282,7 @@ export class Vlodia {
   /**
    * Execute a transaction
    */
-  async transaction<T>(
-    callback: (manager: EntityManager) => Promise<T>
-  ): Promise<T> {
+  async transaction<T>(callback: (manager: EntityManager) => Promise<T>): Promise<T> {
     if (!this.isInitialized) {
       throw new Error('Vlodia ORM not initialized');
     }
@@ -297,12 +295,12 @@ export class Vlodia {
 
     try {
       this.eventBus.emit('transaction:start', { transactionId: transaction.id });
-      
+
       const result = await callback(transactionManager);
-      
+
       await this.adapter.commit(transaction);
       this.eventBus.emit('transaction:commit', { transactionId: transaction.id });
-      
+
       return result;
     } catch (error) {
       await this.adapter.rollback(transaction);
@@ -314,9 +312,7 @@ export class Vlodia {
   /**
    * Execute a nested transaction with savepoint
    */
-  async savepoint<T>(
-    callback: (manager: EntityManager) => Promise<T>
-  ): Promise<T> {
+  async savepoint<T>(callback: (manager: EntityManager) => Promise<T>): Promise<T> {
     if (!this.isInitialized) {
       throw new Error('Vlodia ORM not initialized');
     }
@@ -336,12 +332,12 @@ export class Vlodia {
 
     try {
       this.eventBus.emit('savepoint:start', { savepointName });
-      
+
       const result = await callback(transactionManager);
-      
+
       await this.adapter.releaseSavepoint(currentTransaction, savepointName);
       this.eventBus.emit('savepoint:release', { savepointName });
-      
+
       return result;
     } catch (error) {
       await this.adapter.rollbackToSavepoint(currentTransaction, savepointName);
@@ -387,12 +383,9 @@ export class Vlodia {
       get: async (_key: string) => {
         return null;
       },
-      set: async (_key: string, _value: any, _ttl?: number) => {
-      },
-      del: async (_key: string) => {
-      },
-      clear: async () => {
-      },
+      set: async (_key: string, _value: any, _ttl?: number) => {},
+      del: async (_key: string) => {},
+      clear: async () => {},
     };
   }
 

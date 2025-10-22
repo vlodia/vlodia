@@ -1,8 +1,8 @@
 /**
  * MySQL Adapter
  * Database adapter implementation for MySQL with connection pooling
-  * Provides optimized MySQL-specific features and syntax
-*/
+ * Provides optimized MySQL-specific features and syntax
+ */
 
 import { Pool } from 'mysql';
 import { BaseAdapter } from './base-adapter';
@@ -51,8 +51,8 @@ export class MysqlAdapter extends BaseAdapter {
           reject(err);
           return;
         }
-        
-        connection.ping((pingErr) => {
+
+        connection.ping(pingErr => {
           connection.release();
           if (pingErr) {
             reject(pingErr);
@@ -95,7 +95,7 @@ export class MysqlAdapter extends BaseAdapter {
 
         connection.query(sql, params, (queryErr, results, fields) => {
           connection.release();
-          
+
           if (queryErr) {
             reject(queryErr);
             return;
@@ -118,9 +118,9 @@ export class MysqlAdapter extends BaseAdapter {
               dataType:
                 typeof field.type === 'number'
                   ? String(field.type)
-                  : (typeof field.type === 'string'
-                      ? field.type
-                      : ''),
+                  : typeof field.type === 'string'
+                    ? field.type
+                    : '',
               // MySQL 'flags' field is a number (bitmask); lowest bit (1) = NOT_NULL flag.
               // If field.flags is not a number, default to true (nullable).
               nullable: typeof field.flags === 'number' ? !(field.flags & 1) : true,
@@ -147,7 +147,7 @@ export class MysqlAdapter extends BaseAdapter {
     };
 
     this.currentTransaction = transaction;
-    
+
     return new Promise((resolve, reject) => {
       this.pool!.getConnection((err, connection) => {
         if (err) {
@@ -155,14 +155,14 @@ export class MysqlAdapter extends BaseAdapter {
           return;
         }
 
-        connection.query('START TRANSACTION', (queryErr) => {
+        connection.query('START TRANSACTION', queryErr => {
           connection.release();
-          
+
           if (queryErr) {
             reject(queryErr);
             return;
           }
-          
+
           resolve(transaction);
         });
       });
@@ -184,14 +184,14 @@ export class MysqlAdapter extends BaseAdapter {
           return;
         }
 
-        connection.query('COMMIT', (queryErr) => {
+        connection.query('COMMIT', queryErr => {
           connection.release();
-          
+
           if (queryErr) {
             reject(queryErr);
             return;
           }
-          
+
           this.currentTransaction = null;
           resolve();
         });
@@ -214,14 +214,14 @@ export class MysqlAdapter extends BaseAdapter {
           return;
         }
 
-        connection.query('ROLLBACK', (queryErr) => {
+        connection.query('ROLLBACK', queryErr => {
           connection.release();
-          
+
           if (queryErr) {
             reject(queryErr);
             return;
           }
-          
+
           this.currentTransaction = null;
           resolve();
         });
@@ -244,14 +244,14 @@ export class MysqlAdapter extends BaseAdapter {
           return;
         }
 
-        connection.query(`SAVEPOINT ${name}`, (queryErr) => {
+        connection.query(`SAVEPOINT ${name}`, queryErr => {
           connection.release();
-          
+
           if (queryErr) {
             reject(queryErr);
             return;
           }
-          
+
           transaction.savepoints.push(name);
           resolve();
         });
@@ -278,14 +278,14 @@ export class MysqlAdapter extends BaseAdapter {
           return;
         }
 
-        connection.query(`ROLLBACK TO SAVEPOINT ${name}`, (queryErr) => {
+        connection.query(`ROLLBACK TO SAVEPOINT ${name}`, queryErr => {
           connection.release();
-          
+
           if (queryErr) {
             reject(queryErr);
             return;
           }
-          
+
           // Remove savepoints after this one
           const index = transaction.savepoints.indexOf(name);
           transaction.savepoints = transaction.savepoints.slice(0, index);
@@ -314,14 +314,14 @@ export class MysqlAdapter extends BaseAdapter {
           return;
         }
 
-        connection.query(`RELEASE SAVEPOINT ${name}`, (queryErr) => {
+        connection.query(`RELEASE SAVEPOINT ${name}`, queryErr => {
           connection.release();
-          
+
           if (queryErr) {
             reject(queryErr);
             return;
           }
-          
+
           const index = transaction.savepoints.indexOf(name);
           transaction.savepoints.splice(index, 1);
           resolve();
@@ -344,7 +344,7 @@ export class MysqlAdapter extends BaseAdapter {
       text: 'TEXT',
       blob: 'BLOB',
     };
-    
+
     return typeMap[columnType] || 'VARCHAR';
   }
 
@@ -362,8 +362,9 @@ export class MysqlAdapter extends BaseAdapter {
    * Get MySQL-specific order by syntax
    */
   protected override getOrderBySyntax(orderBy: Record<string, 'ASC' | 'DESC'>): string {
-    const clauses = Object.entries(orderBy)
-      .map(([column, direction]) => `\`${column}\` ${direction}`);
+    const clauses = Object.entries(orderBy).map(
+      ([column, direction]) => `\`${column}\` ${direction}`
+    );
     return `ORDER BY ${clauses.join(', ')}`;
   }
 
@@ -381,15 +382,15 @@ export class MysqlAdapter extends BaseAdapter {
     if (value === null || value === undefined) {
       return null;
     }
-    
+
     if (value instanceof Date) {
       return value.toISOString().slice(0, 19).replace('T', ' ');
     }
-    
+
     if (typeof value === 'object') {
       return JSON.stringify(value);
     }
-    
+
     return value;
   }
 
@@ -400,7 +401,7 @@ export class MysqlAdapter extends BaseAdapter {
     if (value === null || value === undefined) {
       return null;
     }
-    
+
     switch (type.toLowerCase()) {
       case 'datetime':
       case 'timestamp':
