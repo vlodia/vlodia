@@ -195,7 +195,7 @@ export class CLICommands {
       }
 
       // Generate entity code
-      const entityCode = this.generateEntityFromSchema(tableName, schema);
+      const entityCode = this.generateEntityFromSchema({ name: tableName });
       
       // Write to file
       const outputPath = options.output || `src/entities/${this.toPascalCase(tableName)}.ts`;
@@ -819,34 +819,6 @@ export class ${className} {
     return result.rows;
   }
 
-  /**
-   * Generate entity from schema
-   */
-  private generateEntityFromSchema(tableName: string, schema: any[]): string {
-    const className = this.toPascalCase(tableName);
-    const imports = ['Entity', 'Column', 'PrimaryKey'];
-    
-    let entityCode = `import { ${imports.join(', ')} } from 'vlodia';\n\n`;
-    entityCode += `@Entity({ tableName: '${tableName}' })\n`;
-    entityCode += `export class ${className} {\n`;
-    
-    schema.forEach(column => {
-      const propertyName = this.toCamelCase(column.column_name);
-      const isPrimary = column.column_name === 'id';
-      // const isNullable = column.is_nullable === 'YES';
-      
-      if (isPrimary) {
-        entityCode += `  @PrimaryKey()\n`;
-      } else {
-        entityCode += `  @Column()\n`;
-      }
-      
-      entityCode += `  ${propertyName}!: ${this.getTypeScriptType(column.data_type)};\n\n`;
-    });
-    
-    entityCode += '}';
-    return entityCode;
-  }
 
   /**
    * Get current database schema
@@ -948,30 +920,6 @@ export class ${this.toPascalCase(name)} implements Migration {
     return str.replace(/(?:^|_)([a-z])/g, (_, letter) => letter.toUpperCase());
   }
 
-  /**
-   * Utility: Convert to camelCase
-   */
-  private toCamelCase(str: string): string {
-    return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
-  }
-
-  /**
-   * Utility: Get TypeScript type from database type
-   */
-  private getTypeScriptType(dbType: string): string {
-    const typeMap: Record<string, string> = {
-      'varchar': 'string',
-      'text': 'string',
-      'int': 'number',
-      'bigint': 'number',
-      'boolean': 'boolean',
-      'datetime': 'Date',
-      'timestamp': 'Date',
-      'json': 'any'
-    };
-    
-    return typeMap[dbType.toLowerCase()] || 'any';
-  }
 
   /**
    * Generate schema changes
@@ -1201,13 +1149,11 @@ export class ${this.toPascalCase(name)} implements Migration {
       await fs.ensureDir('vlodia');
       
       // Determine database port based on type
-      const defaultPorts = {
-        postgres: 5432,
-        mysql: 3306,
-        sqlite: null
-      };
-      
-      const port = options.port || defaultPorts[options.database as keyof typeof defaultPorts];
+      // const defaultPorts = {
+      //   postgres: 5432,
+      //   mysql: 3306,
+      //   sqlite: null
+      // };
       
       // Create schema.vlodia file
       const schemaContent = this.generateSchemaFile(options);
@@ -1607,10 +1553,11 @@ main();`;
     
     // Parse database config
     const dbMatch = content.match(/database\s*\{([^}]+)\}/s);
-    if (dbMatch) {
+    if (dbMatch && dbMatch[1]) {
       const dbContent = dbMatch[1];
       config.database.provider = this.extractValue(dbContent, 'provider') || 'postgres';
-      config.database.url = this.extractValue(dbContent, 'url');
+      const url = this.extractValue(dbContent, 'url');
+      config.database.url = url || undefined;
       config.database.host = this.extractValue(dbContent, 'host') || 'localhost';
       config.database.port = parseInt(this.extractValue(dbContent, 'port') || '5432');
       config.database.username = this.extractValue(dbContent, 'username') || 'postgres';
@@ -1639,10 +1586,10 @@ main();`;
   /**
    * Extract value from config block
    */
-  private extractValue(content: string, key: string): string | null {
+  private extractValue(content: string, key: string): string {
     const regex = new RegExp(`${key}\\s*=\\s*"([^"]+)"`);
     const match = content.match(regex);
-    return match ? match[1] : null;
+    return match ? (match[1] || '') : '';
   }
 
   /**
