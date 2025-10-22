@@ -18,7 +18,6 @@ tsconfig.json
 typedoc.json
 
 # Build files
-src/
 *.map
 
 # Documentation

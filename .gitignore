@@ -1,32 +1,12 @@
-# Source files
-src/
-*.ts
-!*.d.ts
-
-# Test files
-__tests__/
-*.test.ts
-*.spec.ts
-jest.config.js
-jest.setup.ts
-
-# Development files
-.eslintrc.json
-.prettierrc
-.prettierignore
-tsconfig.json
-typedoc.json
-
 # Build files
-src/
+dist/
 *.map
 
 # Documentation
 docs/
-*.md
-!README.md
-!CHANGELOG.md
-!LICENSE
+
+# Assets (keep in repo)
+# assets/
 
 # CI/CD
 .github/
