@@ -1,6 +1,6 @@
 {
   "name": "vlodia",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A next-generation TypeScript ORM with reflection, type safety, and database-agnostic design",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
