@@ -1382,12 +1382,11 @@ export default config;`;
    * Generate example entity file
    */
   private generateExampleEntity(): string {
-    return `import { Entity, Column, PrimaryKey } from '../decorators';
+    return `import { Entity, Column, PrimaryKey } from 'vlodia';
 
 @Entity({ tableName: 'users' })
 export class User {
-  @PrimaryKey()
-  @Column({ type: 'number', generated: true })
+  @PrimaryKey({ type: 'number', generated: true })
   id!: number;
 
   @Column({ type: 'string', length: 100 })
@@ -1472,7 +1471,7 @@ VLODIA_TENANCY_DEFAULT_TENANT=default`;
    * Generate app.ts file content
    */
   private generateAppFile(): string {
-    return `import { Vlodia } from './core/vlodia';
+    return `import { Vlodia } from 'vlodia';
 import { User } from './entities/User';
 import config from './config/vlodia';
 
@@ -1673,12 +1672,11 @@ export default config;`;
    * Generate entity file from schema
    */
   private generateEntityFromSchema(entity: any): string {
-    return `import { Entity, Column, PrimaryKey } from 'vlodia';
+    return `import { Entity, Column, PrimaryKey } from '../decorators';
 
 @Entity({ tableName: '${entity.name.toLowerCase()}s' })
 export class ${entity.name} {
-  @PrimaryKey()
-  @Column({ type: 'number', generated: true })
+  @PrimaryKey({ type: 'number', generated: true })
   id!: number;
 
   // Add your properties here based on schema.vlodia

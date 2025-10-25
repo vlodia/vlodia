@@ -10,8 +10,7 @@ import { Vlodia, Entity, Column, PrimaryKey, OneToMany, ManyToOne } from '../ind
 
 @Entity({ tableName: 'users' })
 class User {
-  @PrimaryKey()
-  @Column({ type: 'number', generated: true })
+  @PrimaryKey({ type: 'number', generated: true })
   id!: number;
 
   @Column({ type: 'string', length: 100 })
@@ -38,8 +37,7 @@ class User {
 
 @Entity({ tableName: 'posts' })
 class Post {
-  @PrimaryKey()
-  @Column({ type: 'number', generated: true })
+  @PrimaryKey({ type: 'number', generated: true })
   id!: number;
 
   @Column({ type: 'string', length: 200 })
@@ -66,8 +64,7 @@ class Post {
 
 @Entity({ tableName: 'comments' })
 class Comment {
-  @PrimaryKey()
-  @Column({ type: 'number', generated: true })
+  @PrimaryKey({ type: 'number', generated: true })
   id!: number;
 
   @Column({ type: 'text' })
