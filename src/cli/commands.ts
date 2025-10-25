@@ -1672,7 +1672,7 @@ export default config;`;
    * Generate entity file from schema
    */
   private generateEntityFromSchema(entity: any): string {
-    return `import { Entity, Column, PrimaryKey } from '../decorators';
+    return `import { Entity, Column, PrimaryKey } from 'vlodia';
 
 @Entity({ tableName: '${entity.name.toLowerCase()}s' })
 export class ${entity.name} {
