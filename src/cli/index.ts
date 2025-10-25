@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * CLI Entry Point
  * Main CLI application for Nythera ORM

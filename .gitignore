@@ -35,6 +35,9 @@ yarn-error.log*
 node_modules/
 package-lock.json
 yarn.lock
+discord-announcement-short.txt
+discord-announcement.txt
+twitter-announcement.txt
 
 # Environment files
 .env
